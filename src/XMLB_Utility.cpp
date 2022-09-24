@@ -12,7 +12,7 @@ namespace XMLB
 	*                                  UTILITY
 	**************************************************************************/
 
-	std::vector<std::string> to_buffer(Node_iterator_impl<const Node> first, 
+	std::vector<std::string> to_buffer(Node_iterator_impl<const Node> first,
 		Node_iterator_impl<const Node> last)
 	{
 		std::vector<std::string> result;
@@ -20,7 +20,7 @@ namespace XMLB
 
 		std::stack<Node_iterator_impl<const Node>> node_grous;
 
-		for(; first != last; ++first)
+		for (; first != last; ++first)
 		{
 			//Проверяем, пустой ли стэк с итераторома-группами
 			if (!node_grous.empty())
@@ -217,7 +217,7 @@ namespace XMLB
 		//Проверяем, есть ли аттрибуты в открытом теге. Если есть, то
 		//добавляем их
 		for (auto it = std::sregex_iterator{
-			input.cbegin(), input.cend(), kTag_parameters_template},
+			input.cbegin(), input.cend(), kTag_parameters_template },
 			end = std::sregex_iterator{};
 			it != end;
 			++it)
@@ -246,7 +246,7 @@ namespace XMLB
 				result->add_attribute(
 					Node_attribute{
 						tmp_string.substr(
-							delim_pos[0], 
+							delim_pos[0],
 							delim_pos[1] - delim_pos[0]),
 						tmp_string.substr(
 							delim_pos[2],
