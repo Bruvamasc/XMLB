@@ -24,45 +24,36 @@
     <ClCompile Include="Main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Tools.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="XMLB_Node.cpp">
+    <ClCompile Include="src\XMLB_Document.cpp">
       <Filter>Исходные файлы\XMLB</Filter>
     </ClCompile>
-    <ClCompile Include="XMLB_Document.cpp">
+    <ClCompile Include="src\XMLB_Node.cpp">
       <Filter>Исходные файлы\XMLB</Filter>
     </ClCompile>
-    <ClCompile Include="XMLB_Parser.cpp">
-      <Filter>Исходные файлы\XMLB</Filter>
-    </ClCompile>
-    <ClCompile Include="XMLB_Utility.cpp">
+    <ClCompile Include="src\XMLB_Utility.cpp">
       <Filter>Исходные файлы\XMLB</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Tools.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="XMLB_Node.h">
+    <ClInclude Include="src\XMLB.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="XMLB_Document.h">
+    <ClInclude Include="src\XMLB_Constants.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="XMLB_Parser.h">
+    <ClInclude Include="src\XMLB_Document.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="XMLB_Constants.h">
+    <ClInclude Include="src\XMLB_Node.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="XMLB_Node_iterator_impl.h">
+    <ClInclude Include="src\XMLB_Node_iterator_impl.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="XMLB_Utility.h">
+    <ClInclude Include="src\XMLB_Parser.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="XMLB.h">
+    <ClInclude Include="src\XMLB_Utility.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
   </ItemGroup>

@@ -24,6 +24,7 @@
     <ProjectGuid>{fedef856-7528-4ba1-89f9-dd087654afec}</ProjectGuid>
     <RootNamespace>TestsTools</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>XMLB</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -139,22 +140,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="XMLB_Document.cpp" />
-    <ClCompile Include="XMLB_Node.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Tools.cpp" />
-    <ClCompile Include="XMLB_Parser.cpp" />
-    <ClCompile Include="XMLB_Utility.cpp" />
+    <ClCompile Include="src\XMLB_Document.cpp" />
+    <ClCompile Include="src\XMLB_Node.cpp" />
+    <ClCompile Include="src\XMLB_Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="XMLB.h" />
-    <ClInclude Include="XMLB_Constants.h" />
-    <ClInclude Include="XMLB_Document.h" />
-    <ClInclude Include="XMLB_Node.h" />
-    <ClInclude Include="Tools.h" />
-    <ClInclude Include="XMLB_Node_iterator_impl.h" />
-    <ClInclude Include="XMLB_Parser.h" />
-    <ClInclude Include="XMLB_Utility.h" />
+    <ClInclude Include="src\XMLB.h" />
+    <ClInclude Include="src\XMLB_Constants.h" />
+    <ClInclude Include="src\XMLB_Document.h" />
+    <ClInclude Include="src\XMLB_Node.h" />
+    <ClInclude Include="src\XMLB_Node_iterator_impl.h" />
+    <ClInclude Include="src\XMLB_Parser.h" />
+    <ClInclude Include="src\XMLB_Utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
