@@ -1,4 +1,9 @@
-[*.{cpp, h, hpp}]
+root = true
+
+[*]
 charset = utf-8
+
+
+[*.{cpp,h,hpp}]
 indent_style = tab
 tab_width = 4
