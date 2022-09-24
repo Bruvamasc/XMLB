@@ -1,6 +1,6 @@
 #include "XMLB_Node.h"
 
-#include <iostream>
+//#include <iostream>
 
 namespace XMLB
 {
@@ -13,7 +13,7 @@ namespace XMLB
 		m_value{ value },
 		m_parent{ nullptr }
 	{
-		std::cout << "Node: name == " << m_name << ", value == " << m_value << " - Default Ctor\n";
+		//std::cout << "Node: name == " << m_name << ", value == " << m_value << " - Default Ctor\n";
 	}
 
 	//*************************************************************************
@@ -30,7 +30,7 @@ namespace XMLB
 			m_childs.back()->set_parent(this);
 		}
 
-		std::cout << "Node: name == " << m_name << ", value == " << m_value << " - Copy Ctor\n";
+		//std::cout << "Node: name == " << m_name << ", value == " << m_value << " - Copy Ctor\n";
 	}
 
 	//*************************************************************************
@@ -44,7 +44,7 @@ namespace XMLB
 			swap(temp_node);
 		}
 
-		std::cout << "Node: name == " << m_name << ", value == " << m_value << " - Copy assigment\n";
+		//std::cout << "Node: name == " << m_name << ", value == " << m_value << " - Copy assigment\n";
 
 		return *this;
 	}
@@ -58,7 +58,7 @@ namespace XMLB
 		m_childs{ std::move(node.m_childs) },
 		m_parent{ std::move(node.m_parent) }
 	{
-		std::cout << "Node: name == " << m_name << ", value == " << m_value << " - Move Ctor\n";
+		//std::cout << "Node: name == " << m_name << ", value == " << m_value << " - Move Ctor\n";
 	}
 
 	//*************************************************************************
@@ -70,7 +70,7 @@ namespace XMLB
 			swap(node);
 		}
 
-		std::cout << "Node: name == " << m_name << ", value == " << m_value << " - Move assigment\n";
+		//std::cout << "Node: name == " << m_name << ", value == " << m_value << " - Move assigment\n";
 
 		return *this;
 	}
@@ -79,7 +79,7 @@ namespace XMLB
 
 	Node::~Node()
 	{
-		std::cout << "Node: name == " << m_name << ", value == " << m_value << " - Dtor\n";
+		//std::cout << "Node: name == " << m_name << ", value == " << m_value << " - Dtor\n";
 	}
 
 	//*************************************************************************
