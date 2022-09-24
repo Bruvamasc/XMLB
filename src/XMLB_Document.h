@@ -10,6 +10,9 @@
 *
 ******************************************************************************/
 
+#ifndef XMLB_DOCUMENT_H
+#define XMLB_DOCUMENT_H
+
 #include <string>
 #include <locale>
 #include <memory>
@@ -100,3 +103,5 @@ namespace std
 	}
 
 } // namespace std
+
+#endif // !XMLB_DOCUMENT_H

@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include "XMLB.h"
+#include "src/XMLB.h"
 
 struct User
 {
