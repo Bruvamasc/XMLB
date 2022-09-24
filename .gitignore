@@ -1,6 +1,7 @@
 x64/
 .vs/
 *.txt
+*.user
 
 # Prerequisites
 *.d
