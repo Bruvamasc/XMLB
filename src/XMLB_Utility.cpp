@@ -9,7 +9,7 @@
 namespace XMLB
 {
 	/**************************************************************************
-	*                                  UTILITY
+	*								UTILITY
 	**************************************************************************/
 
 	std::vector<std::string> to_buffer(Node_iterator_impl<const Node> first,
