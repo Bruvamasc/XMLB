@@ -56,5 +56,8 @@
     <ClInclude Include="src\XMLB_Utility.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
+    <ClInclude Include="src\XMLB_Templates.h">
+      <Filter>Файлы заголовков\XMLB</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

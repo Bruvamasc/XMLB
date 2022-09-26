@@ -152,6 +152,7 @@
     <ClInclude Include="src\XMLB_Node.h" />
     <ClInclude Include="src\XMLB_Node_iterator_impl.h" />
     <ClInclude Include="src\XMLB_Parser.h" />
+    <ClInclude Include="src\XMLB_Templates.h" />
     <ClInclude Include="src\XMLB_Utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

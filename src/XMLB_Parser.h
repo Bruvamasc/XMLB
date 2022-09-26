@@ -21,19 +21,10 @@
 #include "XMLB_Node.h"
 #include "XMLB_Constants.h"
 #include "XMLB_Utility.h"
+#include "XMLB_Templates.h"
 
 namespace XMLB
 {
-	template<typename Iter>
-	struct Tag_range
-	{
-		Iter first;
-		Iter last;
-		Node::Ptr node;
-	};
-
-
-
 	/**************************************************************************
 	* @brief Данная функция конвертирует последовательность строк в XML
 	* структуру
@@ -44,10 +35,29 @@ namespace XMLB
 	* @return умный указатель с XML узлом и всем дочерними узлами, если они
 	* есть
 	**************************************************************************/
-	template<typename Iter>
+	template<typename Iter,
+		typename = std::void_t<is_has_operator_plus_plus<Iter>, 
+		is_has_operator_indirect_conversion<Iter>, 
+		is_has_operator_self_equality<Iter>>,
+
+		std::enable_if_t<std::is_same_v<std::string, iterator_value_t<Iter>> ||
+		std::is_same_v<const std::string, 
+		iterator_value_t<Iter>>, std::nullptr_t> = nullptr,
+
+		std::enable_if_t<std::is_same_v<std::string&, 
+		iterator_reference_t<Iter>> || std::is_same_v<const std::string&, 
+		iterator_reference_t<Iter>>, std::nullptr_t> = nullptr,
+
+		std::enable_if_t<std::is_base_of_v<std::forward_iterator_tag, 
+		iterator_category_t<std::remove_reference_t<Iter>>>, 
+		std::nullptr_t> = nullptr,
+
+		std::enable_if_t<std::is_copy_assignable_v<Iter>, 
+		std::nullptr_t> = nullptr
+	>
 	Node::Ptr parse_to_node(Iter first, Iter last)
 	{
-		using Tag = Tag_range<Iter>;
+		using Tag = Tag_range_impl<Iter>;
 
 		Node::Ptr result{ nullptr };
 		bool is_container_correct = true;
