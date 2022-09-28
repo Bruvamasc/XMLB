@@ -2,7 +2,6 @@
 
 #include <stack>
 #include <exception>
-#include <iostream>
 
 #include "XMLB_Constants.h"
 
@@ -184,7 +183,7 @@ namespace XMLB
 
 	std::locale string_to_encoding(const std::string& input)
 	{
-		std::locale result("ru_RU.UTF-8");
+		std::locale result("en_US.UTF-8");
 
 		std::smatch encoding_match;
 
@@ -193,13 +192,13 @@ namespace XMLB
 		{
 			try
 			{
-				std::locale tmp_locale("ru_RU." + encoding_match[1].str());
+				std::locale tmp_locale("en_US." + encoding_match[1].str());
 
 				result = tmp_locale;
 			}
 			catch (const std::exception& e)
 			{
-				std::cout << "EXCEPTION: " << e.what() << '\n';
+
 			}
 		}
 

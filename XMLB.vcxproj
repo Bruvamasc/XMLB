@@ -89,6 +89,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Bruvamasc\source\repos\XMLB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -103,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Bruvamasc\source\repos\XMLB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -117,6 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Bruvamasc\source\repos\XMLB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,6 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Bruvamasc\source\repos\XMLB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,14 +150,14 @@
     <ClCompile Include="src\XMLB_Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\XMLB.h" />
-    <ClInclude Include="src\XMLB_Constants.h" />
-    <ClInclude Include="src\XMLB_Document.h" />
-    <ClInclude Include="src\XMLB_Node.h" />
-    <ClInclude Include="src\XMLB_Node_iterator_impl.h" />
-    <ClInclude Include="src\XMLB_Parser.h" />
-    <ClInclude Include="src\XMLB_Templates.h" />
-    <ClInclude Include="src\XMLB_Utility.h" />
+    <ClInclude Include="include\XMLB.h" />
+    <ClInclude Include="include\XMLB_Constants.h" />
+    <ClInclude Include="include\XMLB_Document.h" />
+    <ClInclude Include="include\XMLB_Node.h" />
+    <ClInclude Include="include\XMLB_Node_iterator_impl.h" />
+    <ClInclude Include="include\XMLB_Parser.h" />
+    <ClInclude Include="include\XMLB_Templates.h" />
+    <ClInclude Include="include\XMLB_Utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

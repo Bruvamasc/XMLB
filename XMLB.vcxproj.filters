@@ -35,28 +35,28 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\XMLB.h">
+    <ClInclude Include="include\XMLB.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="src\XMLB_Constants.h">
+    <ClInclude Include="include\XMLB_Constants.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="src\XMLB_Document.h">
+    <ClInclude Include="include\XMLB_Document.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="src\XMLB_Node.h">
+    <ClInclude Include="include\XMLB_Node.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="src\XMLB_Node_iterator_impl.h">
+    <ClInclude Include="include\XMLB_Node_iterator_impl.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="src\XMLB_Parser.h">
+    <ClInclude Include="include\XMLB_Parser.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="src\XMLB_Utility.h">
+    <ClInclude Include="include\XMLB_Templates.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="src\XMLB_Templates.h">
+    <ClInclude Include="include\XMLB_Utility.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,7 +11,7 @@
 
 #include <string>
 
-#include "src/XMLB.h"
+#include "XMLB.h"
 //#include "src/XMLB_Node.h"
 //#include "src/XMLB_Node_iterator_impl.h"
 

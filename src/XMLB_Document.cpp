@@ -325,7 +325,7 @@ namespace XMLB
 			std::getline(file, temp_string);
 
 			auto doc_version = string_to_version(temp_string);
-			auto doc_encoding = string_to_encoding("ru_RU." + temp_string);
+			auto doc_encoding = string_to_encoding(temp_string);
 
 			result.reset(new Document{ doc_encoding, doc_version });
 			
