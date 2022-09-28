@@ -140,44 +140,44 @@ namespace XMLB
 
 	//*************************************************************************
 
-	Document::iterator Document::begin() noexcept
+	Node::iterator Document::begin() noexcept
 	{
-		return iterator(m_parent.get());
+		return m_parent->begin();
 	}
 
 	//*************************************************************************
 
-	Document::iterator Document::end() noexcept
+	Node::iterator Document::end() noexcept
 	{
-		return iterator(nullptr);
+		return m_parent->end();
 	}
 
 	//*************************************************************************
 
-	Document::const_iterator Document::begin() const noexcept
+	Node::const_iterator Document::begin() const noexcept
 	{
-		return const_iterator(m_parent.get());
+		return m_parent->cbegin();
 	}
 
 	//*************************************************************************
 
-	Document::const_iterator Document::end() const noexcept
+	Node::const_iterator Document::end() const noexcept
 	{
-		return const_iterator(nullptr);
+		return m_parent->cend();
 	}
 
 	//*************************************************************************
 
-	Document::const_iterator Document::cbegin() const noexcept
+	Node::const_iterator Document::cbegin() const noexcept
 	{
-		return const_iterator(m_parent.get());
+		return m_parent->cbegin();
 	}
 
 	//*************************************************************************
 
-	Document::const_iterator Document::cend() const noexcept
+	Node::const_iterator Document::cend() const noexcept
 	{
-		return const_iterator(nullptr);
+		return m_parent->cend();
 	}
 
 	//*************************************************************************
@@ -210,7 +210,7 @@ namespace XMLB
 			std::string encoding = encoding_to_string(doc.get_file_locale());			
 
 			//Контейнер итераторова, чтобы правильно закрывать теги с потомками
-			std::stack<Document::const_iterator> node_grous;
+			std::stack<Node::const_iterator> node_grous;
 
 			//Записываем в файл первую строчку и информацией о документе
 			file << kOpen_tag << "?xml version=\"" << version << "\" ";

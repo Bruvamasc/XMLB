@@ -19,7 +19,6 @@
 #include <locale>
 
 #include "XMLB_Node.h"
-#include "XMLB_Node_iterator_impl.h"
 
 namespace XMLB
 {
@@ -31,8 +30,8 @@ namespace XMLB
 	*
 	* @return контейнер из строк
 	**************************************************************************/
-	std::vector<std::string> to_buffer(Node_iterator_impl<const Node> first,
-		Node_iterator_impl<const Node> last);
+	std::vector<std::string> to_buffer(Node::const_iterator first,
+		Node::const_iterator last);
 
 
 

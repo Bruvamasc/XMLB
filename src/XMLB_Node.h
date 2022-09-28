@@ -6,7 +6,10 @@
 * @author Bruvamasc
 * @date   2022-09-17
 *
-* @todo Нужно подумать, как добавить режим дебага
+* @todo Нужно подумать, как добавить режим дебага; Возможно заменить способ
+* хранения дочерних узлов; Возможно заменить Node_tree_impl на что-то другое;
+* Придумать, как конструировать итератор, указывающий на конец узлов, но чтобы
+* его можно было декрементировать
 * ///< Указывает, что элемент недоступен для использования
 *
 ******************************************************************************/
@@ -18,6 +21,9 @@
 #include <list>
 #include <memory>
 
+#include "XMLB_Templates.h"
+#include "XMLB_Node_iterator_impl.h"
+
 namespace XMLB
 {
 	/**************************************************************************
@@ -28,6 +34,8 @@ namespace XMLB
 		std::string name;
 		std::string value;
 	};
+
+	//*************************************************************************
 
 
 
@@ -42,6 +50,10 @@ namespace XMLB
 		using attr_const_iterator = std::list<Node_attribute>::const_iterator;
 		using node_iterator = std::list<Ptr>::iterator;
 		using node_const_iterator = std::list<Ptr>::const_iterator;
+		using tree_node = Node_tree_impl<Node>;
+		using iterator = Node_iterator_impl<Node, Node>;
+		using const_iterator = Node_iterator_impl<const Node, Node>;
+		
 
 		Node(const std::string& name, const std::string& value = "");
 
@@ -104,9 +116,19 @@ namespace XMLB
 
 		std::size_t child_size() const noexcept;
 
+		// Блок с итераторами
+
+		iterator begin() noexcept;
+		iterator end() noexcept;
+
+		const_iterator begin() const noexcept;
+		const_iterator end() const noexcept;
+
+		const_iterator cbegin() const noexcept;
+		const_iterator cend() const noexcept;
+
 		// Работа с родителем
 
-		void set_parent(const Node* parent) noexcept;
 		const Node* get_parent() const noexcept;
 
 		// Вспомагательные функции
@@ -114,14 +136,29 @@ namespace XMLB
 		void swap(Node& node) noexcept;
 
 	private:
+		tree_node* find_last_tree_node() const;
+		void connect_tree_nodes(tree_node* prev_node);
+
+		void erase_element(std::size_t index, node_const_iterator iterator);
+		void erase_first_or_last_child(node_const_iterator erase_iterator);
+		void erase_one_child(node_const_iterator erase_iterator, 
+			node_const_iterator next_iterator);
+
+	private:
 		std::string m_name;
 		std::string m_value;
 		std::list<Node_attribute> m_attributes;
 		std::list<Ptr> m_childs;
-		const Node* m_parent;
+		mutable tree_node m_tree_node;
 	};
 
 	//*************************************************************************
+
+
+
+	/**************************************************************************
+	*								FUNCTIONS
+	**************************************************************************/
 
 	bool operator==(const Node& lhs, const Node& rhs);
 	bool operator!=(const Node& lhs, const Node& rhs);
@@ -149,6 +186,8 @@ namespace std
 		swap(lhs.name, rhs.name);
 		swap(lhs.value, rhs.value);
 	}
+
+	//*************************************************************************
 
 } // namespace std
 

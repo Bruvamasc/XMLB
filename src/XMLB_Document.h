@@ -18,7 +18,6 @@
 #include <memory>
 
 #include "XMLB_Node.h"
-#include "XMLB_Node_iterator_impl.h"
 
 namespace XMLB
 {
@@ -33,8 +32,6 @@ namespace XMLB
 	class Document final
 	{
 	public:
-		using iterator = Node_iterator_impl<Node>;
-		using const_iterator = Node_iterator_impl<const Node>;
 		using Ptr = std::unique_ptr<Document>;
 
 		Document(const std::locale& file_locale, float version);
@@ -60,14 +57,14 @@ namespace XMLB
 
 		void clear() noexcept;
 
-		iterator begin() noexcept;
-		iterator end() noexcept;
+		Node::iterator begin() noexcept;
+		Node::iterator end() noexcept;
 
-		const_iterator begin() const noexcept;
-		const_iterator end() const noexcept;
+		Node::const_iterator begin() const noexcept;
+		Node::const_iterator end() const noexcept;
 
-		const_iterator cbegin() const noexcept;
-		const_iterator cend() const noexcept;
+		Node::const_iterator cbegin() const noexcept;
+		Node::const_iterator cend() const noexcept;
 
 		void swap(Document& doc) noexcept;
 

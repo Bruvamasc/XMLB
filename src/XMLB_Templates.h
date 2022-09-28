@@ -6,7 +6,7 @@
 * @author Bruvamasc
 * @date   2022-08-25
 *
-* @todo ТАААТАТ
+* @todo Подумать над возможными изменениями Node_tree_impl
 * ///< Указывает, что элемент недоступен для использования
 *
 ******************************************************************************/
@@ -23,6 +23,8 @@ namespace XMLB
 	using iterator_category_t = 
 		typename std::iterator_traits<Iter>::iterator_category;
 
+	//*************************************************************************
+
 
 
 	/**************************************************************************
@@ -30,6 +32,8 @@ namespace XMLB
 	**************************************************************************/
 	template<typename Iter>
 	using iterator_value_t = typename std::iterator_traits<Iter>::value_type;
+
+	//*************************************************************************
 
 
 
@@ -40,6 +44,8 @@ namespace XMLB
 	using iterator_reference_t = 
 		typename std::iterator_traits<Iter>::reference;
 
+	//*************************************************************************
+
 
 
 	/**************************************************************************
@@ -48,6 +54,8 @@ namespace XMLB
 	template<typename T>
 	using is_has_operator_plus_plus = decltype(++std::declval<T&>());
 
+	//*************************************************************************
+
 
 
 	/**************************************************************************
@@ -55,7 +63,9 @@ namespace XMLB
 	**************************************************************************/
 	template<typename T>
 	using is_has_operator_indirect_conversion = 
-		decltype(*std::declval<Iter&>());
+		decltype(*std::declval<T&>());
+
+	//*************************************************************************
 
 
 
@@ -64,20 +74,65 @@ namespace XMLB
 	**************************************************************************/
 	template<typename T>
 	using is_has_operator_self_equality = 
-		decltype(std::declval<Iter&>().operator==(std::declval<Iter&>()));
+		decltype(std::declval<T&>().operator==(std::declval<T&>()));
+
+	//*************************************************************************
+
 
 
 	/**************************************************************************
 	* @brief Вспомагательная структура, для реализации функции parse_to_node
 	* Является деталью реализации!
 	**************************************************************************/
-	template<typename Iter>
+	template<typename Iter, typename T>
 	struct Tag_range_impl final
 	{
 		Iter first;				//Итератор на начало диапазона
 		Iter last;				//Итератор на конец диапазона
-		Node::Ptr node;			//XML узел
+		T node;					//XML узел
 	};
-}
+
+	//*************************************************************************
+
+	template<typename Iter, typename T>
+	inline void swap(Tag_range_impl<Iter, T>& lhs,
+		Tag_range_impl<Iter, T>& rhs) noexcept
+	{
+		std::swap(lhs.first, rhs.first);
+		std::swap(lhs.last, rhs.last);
+		std::swap(lhs.node, rhs.node);
+	}
+
+	//*************************************************************************
+
+
+
+	/**************************************************************************
+	* @brief Вспомагательная структура, для "дерева" XML узлов.
+	* Является деталбю реализации!
+	**************************************************************************/
+	template<typename T>
+	struct Node_tree_impl final
+	{
+		T* element = nullptr;					//Указатель на текущий узел
+		Node_tree_impl<T>* parent = nullptr;	//Указатель на родителя узала
+		Node_tree_impl<T>* next = nullptr;		//Указатель на следующий узел
+		Node_tree_impl<T>* prev = nullptr;		//Указатель на предыдущий узел
+	};
+
+	//*************************************************************************
+
+	template<typename T>
+	inline void swap(Node_tree_impl<T>& lhs, Node_tree_impl<T>& rhs) noexcept
+	{
+		std::swap(lhs.next, rhs.next);
+		std::swap(lhs.prev, rhs.prev);
+		std::swap(lhs.parent, rhs.parent);
+		std::swap(lhs.element, rhs.element);
+	}
+
+	//*************************************************************************
+
+} // namespace XMLB
 
 #endif // !XMLB_TEMPLATES_H

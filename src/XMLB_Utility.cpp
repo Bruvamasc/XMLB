@@ -12,13 +12,13 @@ namespace XMLB
 	*								UTILITY
 	**************************************************************************/
 
-	std::vector<std::string> to_buffer(Node_iterator_impl<const Node> first,
-		Node_iterator_impl<const Node> last)
+	std::vector<std::string> to_buffer(Node::const_iterator first,
+		Node::const_iterator last)
 	{
 		std::vector<std::string> result;
 		result.reserve(std::distance(first, last));
 
-		std::stack<Node_iterator_impl<const Node>> node_grous;
+		std::stack<Node::const_iterator> node_grous;
 
 		for (; first != last; ++first)
 		{

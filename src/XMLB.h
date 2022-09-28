@@ -13,7 +13,6 @@
 #ifndef XMLB_H
 #define XMLB_H
 
-#include "XMLB_Constants.h"
 #include "XMLB_Document.h"
 #include "XMLB_Node.h"
 #include "XMLB_Parser.h"

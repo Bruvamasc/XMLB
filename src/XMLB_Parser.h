@@ -15,7 +15,6 @@
 
 #include <string>
 #include <regex>
-#include <queue>
 #include <stack>
 
 #include "XMLB_Node.h"
@@ -57,7 +56,7 @@ namespace XMLB
 	>
 	Node::Ptr parse_to_node(Iter first, Iter last)
 	{
-		using Tag = Tag_range_impl<Iter>;
+		using Tag = Tag_range_impl<Iter, XMLB::Node::Ptr>;
 
 		Node::Ptr result{ nullptr };
 		bool is_container_correct = true;
@@ -126,13 +125,18 @@ namespace XMLB
 				}
 			}
 
-			//Если найден открытый тег и он не одиночный, то ищем закрывающий тег
+			//Если найден открытый тег и он не одиночный, ищем закрывающий тег
 			if (is_one_tag)
 			{
 				auto tag_iter = first;
 
+				//Подсчет дистанции между итератором first и tag_iter.
+				//Сделано так, а не через функцию, из-за того, что итератор
+				//может быть не std::random_access_iterator_tag
+				std::size_t iter_distance = 0;
+			
 				//Ищем соответствующий закрытый тег
-				for (; tag_iter != last; ++tag_iter)
+				for (; tag_iter != last; ++tag_iter, ++iter_distance)
 				{
 					if (std::regex_search(*tag_iter,
 						close_match,
@@ -154,7 +158,7 @@ namespace XMLB
 				//Считаем расстояние между началом и концом диапазона тега.
 				//Если он больше 1, то конструируем этот тег, добавляем в стек
 				//тегов, и изменяем указатель последнего родителя на этот тег
-				if (std::distance(first, tag_iter) > 1)
+				if (iter_distance > 1)
 				{
 					tags.push(
 						Tag{ first,
@@ -162,12 +166,12 @@ namespace XMLB
 						create_node(open_match[1], *first) }
 					);
 
-					//Если последний родитель есть, до устанавливаем его
-					//родителем созданного тега из стека tags
-					if (last_parent)
-					{
-						tags.top().node->set_parent(&(*(last_parent->node)));
-					}
+					////Если последний родитель есть, до устанавливаем его
+					////родителем созданного тега из стека tags
+					//if (last_parent)
+					//{
+					//	tags.top().node->set_parent(&(*(last_parent->node)));
+					//}
 
 					//Изменяем указатель на последнего родителя
 					last_parent = &tags.top();
