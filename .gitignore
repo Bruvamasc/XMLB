@@ -1,10 +1,16 @@
 x64/
 .vs/
-*.txt
 *.user
+*.xml
+samples/
+some_reserve/
 
 test_1.txt
 test_2.txt
+test_3.txt
+Just_impl.txt
+Main.cpp
+main.cpp
 
 # Prerequisites
 *.d

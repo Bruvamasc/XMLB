@@ -24,15 +24,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\XMLB_Document.cpp">
-      <Filter>Исходные файлы\XMLB</Filter>
-    </ClCompile>
-    <ClCompile Include="src\XMLB_Node.cpp">
-      <Filter>Исходные файлы\XMLB</Filter>
-    </ClCompile>
-    <ClCompile Include="src\XMLB_Utility.cpp">
-      <Filter>Исходные файлы\XMLB</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\XMLB.h">

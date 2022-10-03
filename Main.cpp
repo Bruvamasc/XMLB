@@ -4,45 +4,216 @@
 #define DBG_NEW new( _NORMAL_BLOCK , __FILE__ , __LINE__ )
 #define newDBG_NEW
 
-#include <vector>
 #include <iostream>
-#include <memory>
-#include <iomanip>
-
 #include <string>
 
 #include "XMLB.h"
-//#include "src/XMLB_Node.h"
-//#include "src/XMLB_Node_iterator_impl.h"
 
-struct User
+template<typename CharT>
+void print_some_info(XMLB::Document<CharT>& doc)
 {
-	std::string name;
-	std::string job;
-	std::size_t age;
-};
+	std::cout << "DOC version: " << doc.get_version() << '\n';
+	std::cout << "DOC encode: " << 
+		XMLB::encoding_to_string<char>(XMLB::get_doc_encode(doc)) << '\n';
+	std::cout << "DOC nodes size: " << std::distance(doc.cbegin(), doc.cend());
+	std::cout << '\n' << '\n';
+}
 
-void print_XML_nodes(XMLB::Node::const_iterator first, XMLB::Node::const_iterator last)
+void print_file_saved_or_not(const std::string& file_name, bool status)
 {
-	for (; first != last; ++first)
+	if (status)
 	{
-		std::cout << std::setfill('\t');
-		std::cout << std::setw(first.get_offset() + 5);
-		std::cout << "Tag: ";
+		std::cout << "File: " << file_name << " was saved!" << '\n';
+	}
+	else
+	{
+		std::cout << "File: " << file_name << " was not saved!" << '\n';
+	}
+}
 
-		std::cout << first->get_name() << "; Name: " << first->get_value();
-
-		if (first->get_parent())
-		{
-			std::cout << " ; Parent: " << first->get_parent()->get_name();
-		}
-
-		std::cout << '\n';
+void print_file_loaded_or_not(const std::string& file_name, bool status)
+{
+	if (status)
+	{
+		std::cout << "File: " << file_name << " was loaded!" << '\n';
+	}
+	else
+	{
+		std::cout << "File: " << file_name << " was not loaded!" << '\n';
 	}
 }
 
 int main()
 {
+	/**************************************************************************
+	*								ВАРИАНТ 1
+	**************************************************************************/
+
+	std::string load_file_name_1{ "sample_load_1.xml" };
+	std::string save_file_name_1{ "sample_save_1.xml" };
+
+	//Получаем кодировку файла, если это необходимо. Так как это необязательно
+	//Может пригодится, если нужно хранить данные именно в так, как на то
+	//указывается в XML файле
+	XMLB::Encode_type file_type = XMLB::get_file_encode(load_file_name_1);
+
+	//Считываем с файла XML данные и создаём XML документ в зависимости от
+	//указанной кодировки в XML файле
+	if (file_type == XMLB::Encode_type::UTF_32)
+	{
+		XMLB::u32Document::Ptr file_1 = 
+			XMLB::load_from_file<char32_t>(load_file_name_1);
+
+		//Проверяем, был ли создан XML документ
+		if (file_1)
+		{
+			//Просто выводи некоторую информацию о документе
+			print_some_info(*file_1);
+
+			//Сохраняем в файл загруженный XML документ
+			if (XMLB::save_to_file(*file_1, save_file_name_1))
+			{
+				print_file_saved_or_not(save_file_name_1, true);
+			}
+			else
+			{
+				print_file_saved_or_not(save_file_name_1, false);
+			}
+		}
+		else
+		{
+			print_file_loaded_or_not(save_file_name_1, false);
+		}
+	}
+	else if (file_type == XMLB::Encode_type::UTF_16)
+	{
+		XMLB::u16Document::Ptr file_1 = 
+			XMLB::load_from_file<char16_t>(load_file_name_1);
+
+		//Проверяем, был ли создан XML документ
+		if (file_1)
+		{
+			//Просто выводи некоторую информацию о документе
+			print_some_info(*file_1);
+
+			//Сохраняем в файл загруженный XML документ
+			if (XMLB::save_to_file(*file_1, save_file_name_1))
+			{
+				print_file_saved_or_not(save_file_name_1, true);
+			}
+			else
+			{
+				print_file_saved_or_not(save_file_name_1, false);
+			}
+		}
+		else
+		{
+			print_file_loaded_or_not(save_file_name_1, false);
+		}
+	}
+	else
+	{
+		XMLB::u8Document::Ptr file_1 =
+			XMLB::load_from_file<char>(load_file_name_1);
+
+		//Проверяем, был ли создан XML документ
+		if (file_1)
+		{
+			//Просто выводи некоторую информацию о документе
+			print_some_info(*file_1);
+
+			//Сохраняем в файл загруженный XML документ
+			if (XMLB::save_to_file(*file_1, save_file_name_1))
+			{
+				print_file_saved_or_not(save_file_name_1, true);
+			}
+			else
+			{
+				print_file_saved_or_not(save_file_name_1, false);
+			}
+		}
+		else
+		{
+			print_file_loaded_or_not(save_file_name_1, false);
+		}
+	}
+
+
+
+	/**************************************************************************
+	*								ВАРИАНТ 2
+	**************************************************************************/
+
+	std::string load_file_name_2{ "sample_load_2.xml" };
+	std::string save_file_name_2{ "sample_save_2.xml" };
+
+	//Считываем с файла XML данные и создаём XML документ в UTF-16. Сам XML
+	//файл, конечно же, может хранится в другой кодировке
+	auto&& file_2 = XMLB::load_from_file<char16_t>(load_file_name_2);
+
+	//Проверяем, был ли создан XML документ
+	if (file_2)
+	{
+		//Просто выводи некоторую информацию о документе
+		print_some_info(*file_2);
+
+		//Сохраняем в файл загруженный XML документ
+		if (XMLB::save_to_file(*file_2, save_file_name_2))
+		{
+			print_file_saved_or_not(save_file_name_2, true);
+		}
+		else
+		{
+			print_file_saved_or_not(save_file_name_2, false);
+		}
+	}
+	else
+	{
+		print_file_loaded_or_not(save_file_name_2, false);
+	}
+
+
+
+	/*auto&& file_encode_type = XMLB::get_file_encode("test_3.txt");
+
+	auto temp_doc = XMLB::load_from_file<char32_t>("test_3.txt");
+
+	if (temp_doc)
+	{
+		std::cout << "File: test_2.txt was loaded!" << '\n';
+
+		if (XMLB::save_to_file(*temp_doc, "test_2.txt"))
+		{
+			std::cout << "File: test_3.txt was saved!" << '\n';
+		}
+	}*/
+
+
+	_CrtDumpMemoryLeaks();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	//using std::swap; 
 
 	//XMLB::Node::Ptr obj_1{ new XMLB::Node{"Object_0", "Object name 0"} };
@@ -93,20 +264,8 @@ int main()
 
 
 	//auto temp_doc = std::move(XMLB::load_from_file("test_1.txt"));
-	auto temp_doc = XMLB::load_from_file("test_1.txt");
 
-	if (temp_doc)
-	{
-		std::cout << "File: test_1.txt was loaded!" << '\n';
-
-		if (XMLB::save_to_file(*temp_doc, "test_2.txt"))
-		{
-			std::cout << "File: test_2.txt was saved!" << '\n';
-		}
-	}
-
-
-	_CrtDumpMemoryLeaks();
+	
 	
 	////User a = { "asd", "srs", 5 };
 
