@@ -13,7 +13,9 @@
 #ifndef XMLB_H
 #define XMLB_H
 
-#include "XMLB_Document.h"
+#include "XMLB/XMLB_Node.h"
+#include "XMLB/XMLB_Document.h"
+#include "XMLB/XMLB_utility.h"
 
 namespace XMLB
 {
@@ -26,6 +28,11 @@ namespace XMLB
 	using u16Document = Document<char16_t>;
 	using u32Document = Document<char32_t>;
 	using wDocument = Document<wchar_t>;
+
+	using u8Decorator = detail::Decorator<char>;
+	using u16Decorator = detail::Decorator<char16_t>;
+	using u32Decorator = detail::Decorator<char32_t>;
+	using wDecorator = detail::Decorator<wchar_t>;
 }
 
 #endif // !XMLB_H

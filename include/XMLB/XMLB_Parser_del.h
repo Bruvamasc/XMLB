@@ -170,9 +170,10 @@ namespace XMLB
 	**************************************************************************/
 	template<typename CharT,
 		typename Iter,
-		typename = std::void_t<is_has_operator_plus_plus<Iter>, 
-		is_has_operator_indirect_conversion<Iter>, 
-		is_has_operator_self_equality<Iter>>,
+
+		std::enable_if_t<is_has_pre_increment_v<Iter>&&
+		is_has_dereferencing_v<Iter>&&
+		is_has_self_equality_v<Iter>, std::nullptr_t> = nullptr,
 
 		std::enable_if_t<std::is_same_v<std::string, iterator_value_t<Iter>> ||
 		std::is_same_v<const std::string, 

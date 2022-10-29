@@ -18,11 +18,13 @@
 #define XMLB_NODE_H
 
 #include <string>
+#include <string_view>
 #include <list>
 #include <memory>
 
-#include "XMLB_Templates.h"
-#include "XMLB_Node_iterator_impl.h"
+#include "XMLB/detail/XMLB_Node_iterator.h"
+#include "XMLB/detail/traits/XMLB_Type_traits.h"
+#include "XMLB/detail/traits/XMLB_Type_methods_traits.h"
 
 namespace XMLB
 {
@@ -47,11 +49,12 @@ namespace XMLB
 	class Node final
 	{
 	public:
-		using encoding_type = CharT;
-		using string_type = std::basic_string<encoding_type>;
-		using attribute_type = Node_attribute<encoding_type>;
-		using node_type = Node<encoding_type>;
-		using tree_node = Node_tree_impl<node_type>;
+		using symbol_type = CharT;
+		using string_type = std::basic_string<symbol_type>;
+		using string_wrapper = std::basic_string_view<symbol_type>;
+		using attribute_type = Node_attribute<symbol_type>;
+		using node_type = Node<symbol_type>;
+		using tree_node = detail::Node_tree<node_type>;
 		using size_type = typename std::list<CharT>::size_type;
 
 		using Ptr = std::unique_ptr<node_type>;
@@ -63,13 +66,15 @@ namespace XMLB
 		using node_iterator = typename std::list<Ptr>::iterator;
 		using node_const_iterator = typename std::list<Ptr>::const_iterator;
 
-		using iterator = Node_iterator_impl<node_type, node_type>;
-		using const_iterator = Node_iterator_impl<const node_type, node_type>;
+		using iterator = detail::Node_iterator<node_type>;
+		using const_iterator = detail::Node_const_iterator<node_type>;
 		
 		// Конструкторы, деструкторы и т.п.
 
 		Node(const string_type& name, 
 			const string_type& value = string_type{});
+
+		Node(string_type&& name, string_type&& value = string_type{});
 
 		Node(const Node& node);
 		Node& operator=(const Node& node);
@@ -82,21 +87,25 @@ namespace XMLB
 		// Работа с именем тега
 
 		void set_name(const string_type& name);
-		const string_type& get_name() const & noexcept;
+		string_wrapper get_name() const & noexcept;
 
 		// Работа со значением тега
 
 		void set_value(const string_type& value);
-		const string_type& get_value() const & noexcept;
+		string_wrapper get_value() const & noexcept;
 
 		// Работа с аттрибутами тега
 
 		void add_attribute(const attribute_type& attribute);
 		void add_attribute(attribute_type&& attribute);
 
-		void erase_attribute(std::size_t index);
-		void erase_attribute(attr_iterator attr_iter);
-		void erase_attribute(attr_const_iterator attr_iter);
+		attr_iterator erase_attribute(std::size_t index);
+		attr_iterator erase_attribute(attr_iterator attribute);
+		attr_iterator erase_attribute(attr_const_iterator attribute);
+		attr_iterator erase_attribute(attr_iterator attribute_first,
+			attr_iterator attribute_last);
+		attr_iterator erase_attribute(attr_const_iterator attribute_fisrt,
+			attr_const_iterator attribute_last);
 
 		size_type attr_size() const noexcept;
 
@@ -109,28 +118,60 @@ namespace XMLB
 		attr_const_iterator attr_cbegin() const noexcept;
 		attr_const_iterator attr_cend() const noexcept;
 
-		// Работа с дочерними node
+		// Работа с дочерними узлами
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		* 
+		* @todo Вариант с Variadic template и распаковки параметров подходит, 
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		*
+		* @param[in] tag_names - список имён тегов
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT = std::initializer_list<string_type>,
+			std::enable_if_t<detail::is_has_value_type_v<ContT> &&
+			detail::is_has_begin_and_end_v<ContT> && 
+			std::is_constructible_v<typename ContT::value_type, string_type>, 
+			std::nullptr_t> = nullptr>
+		iterator find(ContT&& container, 
+			const_iterator offset = const_iterator{ nullptr });
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		*
+		* @param[in] tag_names - список имён тегов
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT = std::initializer_list<string_type>,
+			std::enable_if_t<detail::is_has_value_type_v<ContT> &&
+			detail::is_has_begin_and_end_v<ContT> &&
+			std::is_constructible_v<typename ContT::value_type, string_type>,
+			std::nullptr_t> = nullptr>
+		const_iterator find(ContT&& container,
+			const_iterator offset = const_iterator{ nullptr }) const;
 
 		void add_child(const node_type& node);
 		void add_child(node_type&& node);
 		void add_child(Ptr node);
 
-		void erase_child(std::size_t index) noexcept;
-		void erase_child(node_iterator node_iter) noexcept;
-		void erase_child(node_const_iterator node_iter) noexcept;
-
-		node_iterator child_begin() noexcept;
-		node_iterator child_end() noexcept;
-
-		node_const_iterator child_begin() const noexcept;
-		node_const_iterator child_end() const noexcept;
-
-		node_const_iterator child_cbegin() const noexcept;
-		node_const_iterator child_cend() const noexcept;
-
-		size_type child_size() const noexcept;
-
-		// Блок с итераторами
+		iterator erase_child(std::size_t index);
+		iterator erase_child(const_iterator node);
+		iterator erase_child(const_iterator node_first, 
+			const_iterator node_last);
 
 		iterator begin() noexcept;
 		iterator end() noexcept;
@@ -141,22 +182,26 @@ namespace XMLB
 		const_iterator cbegin() const noexcept;
 		const_iterator cend() const noexcept;
 
+		size_type child_size() const noexcept;
+
 		// Работа с родителем
 
 		const node_type* get_parent() const noexcept;
 
 		// Вспомагательные функции
 
-		void swap(node_type&& node) noexcept;
+		void swap(node_type& node) noexcept;
 
 	private:
 		tree_node* find_last_tree_node() const;
 		void connect_tree_nodes(tree_node* prev_node);
 
-		void erase_element(size_type index, node_const_iterator iterator);
-		void erase_first_or_last_child(node_const_iterator erase_iterator);
-		void erase_one_child(node_const_iterator erase_iterator, 
-			node_const_iterator next_iterator);
+		iterator erase_element(const_iterator node);
+		iterator erase_element(const_iterator node_first, 
+			const_iterator node_last);
+
+		iterator find_element(const_iterator first,
+			const_iterator last, const string_type& tag_name) const;
 
 	private:
 		string_type m_name;
@@ -180,8 +225,16 @@ namespace XMLB
 		m_value{ value }
 	{
 		m_tree_node.element = this;
-		//std::cout << "Node: name == " << m_name;
-		//std::cout << ", value == " << m_value << " - Default Ctor\n";
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline Node<CharT>::Node(string_type&& name, string_type&& value)
+		:m_name{ std::move(name) },
+		m_value{ std::move(value) }
+	{
+		m_tree_node.element = this;
 	}
 
 	//*************************************************************************
@@ -198,9 +251,6 @@ namespace XMLB
 		{
 			add_child(*elem);
 		}
-
-		//std::cout << "Node: name == " << m_name;
-		//std::cout << ", value == " << m_value << " - Copy Ctor\n";
 	}
 
 	//*************************************************************************
@@ -210,13 +260,8 @@ namespace XMLB
 	{
 		if (this != &node)
 		{
-			Node<CharT> temp_node(node);
-
-			swap(std::forward(temp_node));
+			*this = Node{ node };
 		}
-
-		//std::cout << "Node: name == " << m_name;
-		//std::cout << ", value == " << m_value << " - Copy assigment\n";
 
 		return *this;
 	}
@@ -233,11 +278,8 @@ namespace XMLB
 
 		for (auto&& elem : node.m_childs)
 		{
-			add_child(std::forward(elem));
+			add_child(std::move(elem));
 		}
-
-		//std::cout << "Node: name == " << m_name;
-		//std::cout << ", value == " << m_value << " - Move Ctor\n";
 	}
 
 	//*************************************************************************
@@ -247,11 +289,8 @@ namespace XMLB
 	{
 		if (this != &node)
 		{
-			swap(std::forward(node));
+			swap(node);
 		}
-
-		//std::cout << "Node: name == " << m_name;
-		//std::cout << ", value == " << m_value << " - Move assigment\n";
 
 		return *this;
 	}
@@ -267,10 +306,10 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline const typename Node<CharT>::string_type& Node<CharT>::get_name() 
+	inline typename Node<CharT>::string_wrapper Node<CharT>::get_name() 
 		const & noexcept
 	{
-		return m_name;
+		return string_wrapper{ m_name };
 	}
 
 	//*************************************************************************
@@ -284,10 +323,10 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline const typename Node<CharT>::string_type& Node<CharT>::get_value() 
+	inline typename Node<CharT>::string_wrapper Node<CharT>::get_value() 
 		const & noexcept
 	{
-		return m_value;
+		return string_wrapper{ m_value };
 	}
 
 	//*************************************************************************
@@ -309,47 +348,54 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::erase_attribute(std::size_t index)
+	inline typename Node<CharT>::attr_iterator Node<CharT>::erase_attribute(
+		std::size_t index)
 	{
 		if (index < m_attributes.size())
 		{
-			m_attributes.erase(std::next(m_attributes.cbegin(), index));
+			return m_attributes.erase(std::next(m_attributes.cbegin(), index));
+		}
+		else
+		{
+			return m_attributes.end();
 		}
 	}
 
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::erase_attribute(attr_iterator attr_iter)
+	inline typename Node<CharT>::attr_iterator Node<CharT>::erase_attribute(
+		attr_iterator attr_iter)
 	{
-		for (auto it = m_attributes.cbegin(), end = m_attributes.cend();
-			it != end;
-			++it)
-		{
-			if (it == attr_iter)
-			{
-				m_attributes.erase(it);
-				return;
-			}
-		}
+		return m_attributes.erase(attr_iter);
 	}
 
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::erase_attribute(attr_const_iterator attr_iter)
+	inline typename Node<CharT>::attr_iterator Node<CharT>::erase_attribute(
+		attr_const_iterator attr_iter)
 	{
-		for (auto it = m_attributes.cbegin(), end = m_attributes.cend();
-			it != end;
-			++it)
-		{
-			if (it == attr_iter)
-			{
-				m_attributes.erase(it);
+		return m_attributes.erase(attr_iter);
+	}
 
-				return;
-			}
-		}
+	//*************************************************************************
+
+	template<typename CharT>
+	inline typename Node<CharT>::attr_iterator Node<CharT>::erase_attribute(
+		attr_iterator attribute_first, attr_iterator attribute_last)
+	{
+		return m_attributes.erase(attribute_first, attribute_last);
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline typename Node<CharT>::attr_iterator Node<CharT>::erase_attribute(
+		attr_const_iterator attribute_fisrt, 
+		attr_const_iterator attribute_last)
+	{
+		return m_attributes.erase(attribute_fisrt, attribute_last);
 	}
 
 	//*************************************************************************
@@ -417,6 +463,111 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
+	template<typename ContT, 
+		std::enable_if_t<detail::is_has_value_type_v<ContT> &&
+		detail::is_has_begin_and_end_v<ContT> &&
+		std::is_constructible_v<typename ContT::value_type, 
+		std::basic_string<CharT>>, std::nullptr_t>
+	>
+	inline typename Node<CharT>::iterator Node<CharT>::find(ContT&& container, 
+		const_iterator offset)
+	{
+		using std::begin;
+		using std::end;
+
+		iterator first = this->begin();
+		iterator last = this->end();
+
+		auto word_it = begin(container);
+		auto word_end = end(container);
+
+		if (offset != const_iterator{ nullptr } &&
+			offset._is_in_sequences(this->begin()))
+		{
+			first = iterator{ &offset->m_tree_node };
+		}
+
+		if (offset == last)
+		{
+			first = last;
+		}
+
+		for (; first != last && word_it != word_end;)
+		{
+			first = find_element(first, last, *word_it);
+
+			if (first != last)
+			{
+				++word_it;
+
+				if (word_it != word_end)
+				{
+					last = first->end();
+					first = first->begin();
+				}
+			}
+		}
+
+		return first;
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	template<typename ContT,
+		std::enable_if_t<detail::is_has_value_type_v<ContT>&&
+		detail::is_has_begin_and_end_v<ContT>&&
+		std::is_constructible_v<typename ContT::value_type,
+		std::basic_string<CharT>>, std::nullptr_t>>
+		inline typename Node<CharT>::const_iterator Node<CharT>::find(
+			ContT&& container, const_iterator offset) const
+	{
+		using std::begin;
+		using std::end;
+
+		auto result = cend();
+
+		auto first = cbegin();
+		auto last = result;
+
+		if (offset != const_iterator{ nullptr })
+		{
+			first = offset;
+		}
+
+		auto words_first = begin(container);
+		auto words_last = end(container);
+
+		for (; first != last && words_first != words_last; )
+		{
+			auto found_iter = find_element(first, last, *words_first);
+
+			if (found_iter != last)
+			{
+				++words_first;
+
+				last = first->cend();
+				first = first->cbegin();
+			}
+			else
+			{
+				++first;
+			}
+		}
+
+		if (first != last)
+		{
+			return first;
+		}
+		else
+		{
+			return result;
+		}
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
 	inline void Node<CharT>::add_child(const node_type& node)
 	{
 		tree_node* last_tree_node = find_last_tree_node();
@@ -458,116 +609,57 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::erase_child(std::size_t index) noexcept
+	inline typename Node<CharT>::iterator Node<CharT>::erase_child(
+		std::size_t index)
 	{
+		auto result = end();
+
 		if (index < m_childs.size())
 		{
-			erase_element(index, std::next(m_childs.cbegin(), index));
+			auto erase_iter = std::next(m_childs.cbegin(), index);
+
+			result = erase_element(const_iterator
+				{
+					&erase_iter->get()->m_tree_node
+				});
 		}
+
+		return result;
 	}
 
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::erase_child(node_iterator node_iter) noexcept
+	inline typename Node<CharT>::iterator Node<CharT>::erase_child(
+		const_iterator node)
 	{
-		for (auto it = m_childs.begin(), end = m_childs.end();
-			it != end;
-			++it)
+		auto result = end();
+
+		if (node._is_in_sequences(begin()))
 		{
-			if (it == node_iter)
+			if (node != result)
 			{
-				auto index = std::distance(m_childs.begin(), it);
-
-				erase_element(index, it);
-
-				return;
+				result = erase_element(node);
 			}
 		}
+
+		return result;
 	}
 
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::erase_child(node_const_iterator node_iter) 
-		noexcept
+	inline typename Node<CharT>::iterator Node<CharT>::erase_child(
+		const_iterator node_first, const_iterator node_last)
 	{
-		for (auto it = m_childs.cbegin(), end = m_childs.cend();
-			it != end;
-			++it)
+		auto result = end();
+
+		if (node_first != node_last && node_first._is_in_sequences(begin()))
 		{
-			if (it == node_iter)
-			{
-				auto index = std::distance(m_childs.cbegin(), it);
-
-				erase_element(index, it);
-
-				return;
-			}
+			result = erase_element(node_first, node_last);
 		}
-	}
 
-	//*************************************************************************
-
-	template<typename CharT>
-	inline typename Node<CharT>::node_iterator Node<CharT>::child_begin() 
-		noexcept
-	{
-		return m_childs.begin();
-	}
-
-	//*************************************************************************
-
-	template<typename CharT>
-	inline typename Node<CharT>::node_iterator Node<CharT>::child_end() 
-		noexcept
-	{
-		return m_childs.end();
-	}
-
-	//*************************************************************************
-
-	template<typename CharT>
-	inline typename Node<CharT>::node_const_iterator Node<CharT>::child_begin() 
-		const noexcept
-	{
-		return m_childs.cbegin();
-	}
-
-	//*************************************************************************
-
-	template<typename CharT>
-	inline typename Node<CharT>::node_const_iterator Node<CharT>::child_end() 
-		const noexcept
-	{
-		return m_childs.cend();
-	}
-
-	//*************************************************************************
-
-	template<typename CharT>
-	inline typename Node<CharT>::node_const_iterator 
-		Node<CharT>::child_cbegin() const noexcept
-	{
-		return m_childs.cbegin();
-	}
-
-	//*************************************************************************
-
-	template<typename CharT>
-	inline typename Node<CharT>::node_const_iterator Node<CharT>::child_cend() 
-		const noexcept
-	{
-		return m_childs.cend();
-	}
-
-	//*************************************************************************
-
-	template<typename CharT>
-	inline typename Node<CharT>::size_type Node<CharT>::child_size() const 
-		noexcept
-	{
-		return m_childs.size();
+		return result;
 	}
 
 	//*************************************************************************
@@ -575,7 +667,7 @@ namespace XMLB
 	template<typename CharT>
 	inline typename Node<CharT>::iterator Node<CharT>::begin() noexcept
 	{
-		return iterator{ &m_tree_node };
+		return iterator{ m_tree_node.next };
 	}
 
 	//*************************************************************************
@@ -592,7 +684,7 @@ namespace XMLB
 	inline typename Node<CharT>::const_iterator Node<CharT>::begin() const 
 		noexcept
 	{
-		return const_iterator{ &m_tree_node };
+		return const_iterator{ m_tree_node.next };
 	}
 
 	//*************************************************************************
@@ -610,7 +702,7 @@ namespace XMLB
 	inline typename Node<CharT>::const_iterator Node<CharT>::cbegin() const 
 		noexcept
 	{
-		return const_iterator{ &m_tree_node };
+		return const_iterator{ m_tree_node.next };
 	}
 
 	//*************************************************************************
@@ -620,6 +712,15 @@ namespace XMLB
 		noexcept
 	{
 		return const_iterator{ find_last_tree_node()->next };
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline typename Node<CharT>::size_type Node<CharT>::child_size() const 
+		noexcept
+	{
+		return m_childs.size();
 	}
 
 	//*************************************************************************
@@ -641,7 +742,7 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::swap(node_type&& node) noexcept
+	inline void Node<CharT>::swap(node_type& node) noexcept
 	{
 		using std::swap;
 
@@ -787,48 +888,60 @@ namespace XMLB
 		//Укатаель на последний дочерний элемент
 		Node* last_child = m_childs.back().get();
 
+		//Указатель на последний дочерний элемент последного дочерного элемента
+		//текущего узла
+		Node* last_child_element = last_child;
+
+		//Находим элемент, который является последним элементов в списка
+		//удаляемого элемента
+		while (last_child_element->m_childs.size())
+		{
+			last_child_element = last_child_element->m_childs.back().get();
+		}
+
+		//Узел, который следует после прошлого предыщущего элемента
+		tree_node* next_node = prev_node->next;
+
 		//Конектим узлы между собой
 		prev_node->next = &last_child->m_tree_node;
+		last_child->m_tree_node.prev = prev_node;
 
-		if (prev_node->prev)
+		if (!next_node)
 		{
-			last_child->m_tree_node.prev = prev_node;
+			last_child_element->m_tree_node.next = &m_tree_node;
+			m_tree_node.prev = &last_child_element->m_tree_node;
 		}
 		else
 		{
-			last_child->m_tree_node.prev = &m_tree_node;
+			last_child_element->m_tree_node.next = next_node;
+			next_node->prev = &last_child_element->m_tree_node;
 		}
 
-		last_child->m_tree_node.prev = prev_node;
 		last_child->m_tree_node.parent = &m_tree_node;
 	}
 
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::erase_element(size_type index, 
-		node_const_iterator iterator)
+	inline typename Node<CharT>::iterator Node<CharT>::erase_element(
+		const_iterator node)
 	{
-		if (index == 0)
-		{
-			erase_first_or_last_child(iterator);
-		}
-		else if (index == m_childs.size() - 1)
-		{
-			erase_first_or_last_child(iterator);
-		}
-		else
-		{
-			erase_one_child(iterator, std::next(iterator, 1));
-		}
-	}
+		auto erase_iterator = node->get_parent()->m_childs.begin();
 
-	//*************************************************************************
+		//Ищем среди дочерних узлов родителя узла, на который указывает
+		//итератор. Ищем для того, чтобы удалить его из контейнера std::list
+		for (auto it = node->get_parent()->m_childs.begin(),
+			end = node->get_parent()->m_childs.end();
+			it != end;
+			++it)
+		{
+			if (it->get() == &*node)
+			{
+				erase_iterator = it;
+				break;
+			}
+		}
 
-	template<typename CharT>
-	inline void Node<CharT>::erase_first_or_last_child(
-		node_const_iterator erase_iterator)
-	{
 		//Элемент, которй нужно удалить и который будет указывать на последний
 		//элемент, который является дочерним этого элемент
 		Node<CharT>* erase_child = erase_iterator->get();
@@ -851,30 +964,50 @@ namespace XMLB
 
 		next_node->prev = prev_node;
 
-		//Удаляем элемент
-		m_childs.erase(erase_iterator);
+		//Удаляем элемент. Временное решение с const_castom...
+		Node* parent = const_cast<Node*>(node->get_parent());
+		parent->m_childs.erase(erase_iterator);
+
+		return iterator{ next_node };
 	}
 
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::erase_one_child(
-		node_const_iterator erase_iterator, 
-		node_const_iterator next_iterator)
+	inline typename Node<CharT>::iterator Node<CharT>::erase_element(
+		const_iterator node_first, const_iterator node_last)
 	{
-		//Узел, расположенный до элемента, который нужно удалить
-		tree_node* prev_node = erase_iterator->get()->m_tree_node.prev;
+		auto result = end();
 
-		//Узел элемента, который идёт после элемента, который нужно удалить
-		tree_node* next_node = &next_iterator->get()->m_tree_node;
+		if (node_first != node_last)
+		{
+			result = erase_element(node_first);
 
-		//Конектим узлы между собой
-		prev_node->next = next_node;
+			while (result != node_last)
+			{
+				result = erase_element(result);
+			}
+		}
 
-		next_node->prev = prev_node;
+		return result;
+	}
 
-		//Удаляем элемент
-		m_childs.erase(erase_iterator);
+	//*************************************************************************
+
+	template<typename CharT>
+	inline typename Node<CharT>::iterator Node<CharT>::find_element(
+		const_iterator first, const_iterator last, 
+		const string_type& tag_name) const
+	{
+		for (; first != last; ++first)
+		{
+			if (first->get_name() == tag_name)
+			{
+				return iterator{ &first->m_tree_node };
+			}
+		}
+
+		return iterator{ &last->m_tree_node };
 	}
 
 	//*************************************************************************
@@ -882,7 +1015,7 @@ namespace XMLB
 
 
 	/**************************************************************************
-	*							SUPPORT FUNCTIONS
+	*						NODE SUPPORT FUNCTIONS
 	**************************************************************************/
 
 	template<typename CharT>

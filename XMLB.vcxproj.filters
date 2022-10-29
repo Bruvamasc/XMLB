@@ -16,8 +16,17 @@
     <Filter Include="Файлы заголовков\XMLB">
       <UniqueIdentifier>{f48745d6-da99-4d09-878b-84fed1cfae51}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Исходные файлы\XMLB">
-      <UniqueIdentifier>{dbcd2983-d760-4aa8-88bf-e15e61896622}</UniqueIdentifier>
+    <Filter Include="Файлы заголовков\XMLB\detail">
+      <UniqueIdentifier>{7fd19e0b-c736-4b37-9376-1bf384a253ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\XMLB\detail\parser">
+      <UniqueIdentifier>{6c00b87f-864d-4af7-8fd6-575f50c6b042}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\XMLB\detail\traits">
+      <UniqueIdentifier>{57214fa5-cd0f-4be7-8669-c026ff01d4eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\XMLB\detail\utilities">
+      <UniqueIdentifier>{d3b952eb-1bd3-4e4c-ab05-70bcc501ac2d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -26,29 +35,59 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\XMLB.h">
+    <ClInclude Include="include\XMLB\XMLB.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="include\XMLB_Constants.h">
+    <ClInclude Include="include\XMLB\XMLB_Code_converter.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="include\XMLB_Document.h">
+    <ClInclude Include="include\XMLB\XMLB_Document.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="include\XMLB_Node.h">
+    <ClInclude Include="include\XMLB\XMLB_Node.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="include\XMLB_Node_iterator_impl.h">
+    <ClInclude Include="include\XMLB\XMLB_utility.h">
       <Filter>Файлы заголовков\XMLB</Filter>
     </ClInclude>
-    <ClInclude Include="include\XMLB_Parser.h">
-      <Filter>Файлы заголовков\XMLB</Filter>
+    <ClInclude Include="include\XMLB\detail\traits\XMLB_Type_callable_traits.h">
+      <Filter>Файлы заголовков\XMLB\detail\traits</Filter>
     </ClInclude>
-    <ClInclude Include="include\XMLB_Templates.h">
-      <Filter>Файлы заголовков\XMLB</Filter>
+    <ClInclude Include="include\XMLB\detail\traits\XMLB_Type_converting_traits.h">
+      <Filter>Файлы заголовков\XMLB\detail\traits</Filter>
     </ClInclude>
-    <ClInclude Include="include\XMLB_Utility.h">
-      <Filter>Файлы заголовков\XMLB</Filter>
+    <ClInclude Include="include\XMLB\detail\traits\XMLB_Type_methods_traits.h">
+      <Filter>Файлы заголовков\XMLB\detail\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XMLB\detail\traits\XMLB_Type_special_general_traits.h">
+      <Filter>Файлы заголовков\XMLB\detail\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XMLB\detail\traits\XMLB_Type_traits.h">
+      <Filter>Файлы заголовков\XMLB\detail\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XMLB\detail\parser\XMLB_Parser.h">
+      <Filter>Файлы заголовков\XMLB\detail\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XMLB\detail\parser\XMLB_Parser_data_controller.h">
+      <Filter>Файлы заголовков\XMLB\detail\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XMLB\detail\parser\XMLB_Parser_functors.h">
+      <Filter>Файлы заголовков\XMLB\detail\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XMLB\detail\parser\XMLB_Parser_states.h">
+      <Filter>Файлы заголовков\XMLB\detail\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XMLB\detail\XMLB_Node_iterator.h">
+      <Filter>Файлы заголовков\XMLB\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XMLB\detail\XMLB_Decorator.h">
+      <Filter>Файлы заголовков\XMLB\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XMLB\detail\utilities\XMLB_sup_types.h">
+      <Filter>Файлы заголовков\XMLB\detail\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="include\XMLB\detail\utilities\XMLB_sup_functions.h">
+      <Filter>Файлы заголовков\XMLB\detail\utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

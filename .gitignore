@@ -4,7 +4,12 @@ x64/
 *.xml
 samples/
 some_reserve/
+some_support_data/
+*.vcxproj
+*.filters
+*.sln
 
+#Temp files
 test_1.txt
 test_2.txt
 test_3.txt
