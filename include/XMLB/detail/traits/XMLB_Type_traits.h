@@ -471,7 +471,7 @@ namespace XMLB { namespace detail {
 
 	template<typename T>
 	struct universal_value_type<T, 
-		std::enable_if_t<std::is_arithmetic_v<T>, void>>
+		std::enable_if_t<std::is_arithmetic_v<T> && !std::is_class_v<T>, void>>
 	{
 		using type = T;
 	};
@@ -489,12 +489,12 @@ namespace XMLB { namespace detail {
 	//-------------------------------------------------------------------------
 
 	template<typename T>
-	struct universal_value_type<T, 
-		std::enable_if_t<!is_has_container_type_v<T> &&
+	struct universal_value_type<T,
+		std::enable_if_t<!is_has_container_type_v<T>&&
 
 		is_has_value_type_v<T>, void>>
 	{
-		using type = typename T::value_type;
+		using type = typename universal_value_type<value_type_t<T>>::type;
 	};
 
 	//-------------------------------------------------------------------------

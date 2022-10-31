@@ -17,6 +17,20 @@
 
 #include <string>
 
+///@todo Нужно подумать, как убрать forward declaration или же создать файлі
+///с ними
+namespace XMLB
+{
+	template<typename CharT>
+	class Document;
+
+	template<typename T>
+	class Node_const_iterator;
+
+	template<typename CharT>
+	class Node;
+}
+
 namespace XMLB
 {
 	/**************************************************************************
@@ -279,6 +293,321 @@ namespace XMLB
 	}
 
 	//*************************************************************************
+
+
+
+	/**************************************************************************
+	* @brief Данная функция считает суммарное количество символов, необходимое
+	* для хранения готового XML документа
+	*
+	* @param document - XML документ
+	* @param line_break_status - false - если не учитывать перевод на новую
+	* строку
+	*
+	* @return количество необходимых символов для хранения готового XML
+	* документа
+	**************************************************************************/
+	template<typename CharT>
+	inline std::size_t symbols_count(
+		const XMLB::Document<CharT>& document, bool line_break_status = true)
+	{
+		using symbol_type = CharT;
+		std::size_t result = 0;
+
+		const auto kSpace = 1;
+		const auto kOpen_tag = 1;
+		const auto kClose_tag = 1;
+		const auto kOpen_attr = 1;
+		const auto kClose_attr = 1;
+		const auto kEqual_attr = 1;
+		const auto kDoc_info = 1;
+		const auto kDoc_last_info = 1;
+		const auto kLine_break = line_break_status ? 1 : 0;
+
+		const auto kXml = 3;
+		const auto kVersion = 7;
+		const auto kEncoding = 8;
+
+		result += kOpen_tag;
+		result += kDoc_info;
+		result += kXml;
+
+		result += kSpace;
+		result += kVersion;
+		result += kEqual_attr;
+		result += kOpen_attr;
+		result += cut_doc_version<symbol_type>(document.get_version()).size();
+		result += kClose_attr;
+
+		result += kSpace;
+		result += kEncoding;
+		result += kEqual_attr;
+		result += kOpen_attr;
+		result += document.get_encoding_type().size();
+		result += kClose_attr;
+
+		result += kDoc_last_info;
+		result += kClose_tag;
+		result += kLine_break;
+
+		result += symbols_count(
+			document.cbegin(), document.cend(), line_break_status);
+
+		return result;
+	}
+
+	//*************************************************************************
+
+
+
+	/**************************************************************************
+	* @brief Данная функция считает суммарное количество символов, необходимое
+	* для хранения последовательности XML узлов
+	*
+	* @param first - итератор на начало XML последовательности
+	* @param last - итератор на конец XML последовательности
+	* @param line_break_status - false - если не учитывать перевод на новую
+	* строку
+	*
+	* @return количество необходимых символов для хранения готового XML
+	* документа
+	**************************************************************************/
+	template<typename CharT>
+	inline std::size_t symbols_count(
+		detail::Node_const_iterator<CharT> first, 
+		detail::Node_const_iterator<CharT> last, 
+		bool line_break_status = true)
+	{
+		using const_iterator = detail::Node_const_iterator<CharT>;
+
+		std::size_t result = 0;
+
+		if (first == last)
+		{
+			return result;
+		}
+
+		const auto kFill = 1;
+		const auto kSpace = 1;
+		const auto kOpen_tag = 1;
+		const auto kClose_tag = 1;
+		const auto kSingle_tag = 1;
+		const auto kLast_tag = 1;
+		const auto kOpen_attr = 1;
+		const auto kClose_attr = 1;
+		const auto kEqual_attr = 1;
+		const auto kLine_break = line_break_status ? 1 : 0;
+		const auto kTab = 1;
+		const auto kCarriage = 1;
+
+		//Контейнер итераторова, чтобы правильно закрывать теги с потомками
+		std::stack<const_iterator> node_groups;
+
+		for (; first != last; ++first)
+		{
+			//Проверяем, пустой ли стэк с итераторома-группами
+			if (!node_groups.empty())
+			{
+				//Если текущее значение табуляции равно с последним
+				//добавленным в стэк итератором, то заносим в файл
+				//закрытие предыдущего тега
+				while (first.get_offset() <= node_groups.top().get_offset())
+				{
+					//Записываем нужное количество табов для тега
+					result += node_groups.top().get_offset();
+
+					result += kOpen_tag;
+					result += kLast_tag;
+					result += node_groups.top()->get_name().size();
+					result += kClose_tag;
+					result += kLine_break;
+
+					node_groups.pop();
+				}
+			}
+
+			//Если у текущего тега есть под-теги, то добавляем его
+			//в стек в качестве итератора-группы
+			if (first->child_size())
+			{
+				node_groups.push(first);
+			}
+
+			//Устанавливаем нужное количество табов для тега
+			result += first.get_offset();
+
+			//Заносим в файл сам тег и его информацию
+			result += kOpen_tag;
+			result += first->get_name().size();
+
+			//Если у XML тега есть аттрибуты, то записываем в файл
+			//их имена и значения
+			if (first->attr_size())
+			{
+				for (auto at_it = first->attr_begin(),
+					at_end = first->attr_end();
+					at_it != at_end;
+					++at_it)
+				{
+					result += kSpace;
+
+					result += at_it->name.size();
+					result += kEqual_attr;
+
+					result += kOpen_attr;
+					result += at_it->value.size();
+					result += kClose_attr;
+				}
+			}
+
+			//Если у XML тега нет дочерних узлов и есть значение, то
+			//записываем это значение и доп. символы по шаблону
+			if (!first->child_size() && first->get_value().size())
+			{
+				result += kClose_tag;
+				result += first->get_value().size();
+
+				result += kOpen_tag;
+				result += kLast_tag;
+
+				result += first->get_name().size();
+				result += kClose_tag;
+			}
+			//Если у XML тега нет дочерних узлов и нет значения, то
+			//записываем доп. символы по шаблону одиночного XML тега
+			else if (!first->child_size())
+			{
+				result += kSpace;
+				result += kSingle_tag;
+				result += kClose_tag;
+			}
+			//В противном случае, просто записываем в файл символ
+			//закрытия XML тега
+			else
+			{
+				result += kClose_tag;
+			}
+
+			result += kLine_break;
+		}
+
+		//Если остались ещё незакрытые теги, то заносим в файл их закрытие
+		while (!node_groups.empty())
+		{
+			//Записываем нужное количество табов для тега
+			result += node_groups.top().get_offset();
+
+			result += kOpen_tag;
+			result += kLast_tag;
+			result += node_groups.top()->get_name().size();
+			result += kClose_tag;
+			result += kLine_break;
+
+			node_groups.pop();
+		}
+
+		return result;
+	}
+
+	//*************************************************************************
+
+
+
+	/**************************************************************************
+	* @brief Данная функция считает суммарное количество символов, необходимое
+	* для хранения последовательности XML узлов
+	*
+	* @param node - XML узел
+	* @param line_break_status - false - если не учитывать перевод на новую
+	* строку
+	*
+	* @return количество необходимых символов для хранения готового XML
+	* документа
+	**************************************************************************/
+	template<typename CharT>
+	inline std::size_t symbols_count(const Node<CharT>& node,
+		bool line_break_status = true)
+	{
+		using const_iterator = detail::Node_const_iterator<CharT>;
+
+		std::size_t result = 0;
+
+		const auto kFill = 1;
+		const auto kSpace = 1;
+		const auto kOpen_tag = 1;
+		const auto kClose_tag = 1;
+		const auto kSingle_tag = 1;
+		const auto kLast_tag = 1;
+		const auto kOpen_attr = 1;
+		const auto kClose_attr = 1;
+		const auto kEqual_attr = 1;
+		const auto kLine_break = line_break_status ? 1 : 0;
+		const auto kTab = 1;
+		const auto kCarriage = 1;
+
+		result += kOpen_tag;
+		result += node.get_name().size();
+
+		//Если у XML тега есть аттрибуты, то записываем в файл
+		//их имена и значения
+		if (node.attr_size())
+		{
+			for (auto at_it = node.attr_begin(),
+				at_end = node.attr_end();
+				at_it != at_end;
+				++at_it)
+			{
+				result += kSpace;
+
+				result += at_it->name.size();
+				result += kEqual_attr;
+
+				result += kOpen_attr;
+				result += at_it->value.size();
+				result += kClose_attr;
+			}
+		}
+
+		//Если у XML тега нет дочерних узлов и есть значение, то
+		//записываем это значение и доп. символы по шаблону
+		if (!node.child_size() && node.get_value().size())
+		{
+			result += kClose_tag;
+			result += node.get_value().size();
+
+			result += kOpen_tag;
+			result += kLast_tag;
+
+			result += node.get_name().size();
+			result += kClose_tag;
+		}
+		//Если у XML тега нет дочерних узлов и нет значения, то
+		//записываем доп. символы по шаблону одиночного XML тега
+		else if (!node.child_size())
+		{
+			result += kSpace;
+			result += kSingle_tag;
+			result += kClose_tag;
+		}
+		//В противном случае, просто записываем в файл символ
+		//закрытия XML тега
+		else
+		{
+			result += kClose_tag;
+
+			result += kLine_break;
+			result += kFill;
+
+			result += kOpen_tag;
+			result += kLast_tag;
+			result += node.get_name().size();
+			result += kClose_tag;
+		}
+
+		result += symbols_count(node.begin(), node.end(), line_break_status);
+
+		return result;
+	}
 
 } // namespace XMLB
 

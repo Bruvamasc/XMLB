@@ -38,10 +38,11 @@ namespace XMLB { namespace detail {
 
 		// Конструкторы, деструкторы и т.п.
 
-		Node_const_iterator(detail::Node_tree<T>* ptr = nullptr);
+		Node_const_iterator(detail::Node_tree<T>* ptr = nullptr) noexcept;
 
-		Node_const_iterator(const Node_const_iterator& iter);
-		Node_const_iterator& operator=(const Node_const_iterator& iter);
+		Node_const_iterator(const Node_const_iterator& iter) noexcept;
+		Node_const_iterator& operator=(const Node_const_iterator& iter) 
+			noexcept;
 
 		Node_const_iterator(Node_const_iterator&& iter) noexcept;
 		Node_const_iterator& operator=(Node_const_iterator&& iter) noexcept;
@@ -140,7 +141,7 @@ namespace XMLB { namespace detail {
 
 	template<typename T>
 	inline Node_const_iterator<T>::Node_const_iterator(
-		detail::Node_tree<T>* ptr)
+		detail::Node_tree<T>* ptr) noexcept
 		:m_ptr{ ptr },
 		m_offset{ 0 }
 	{
@@ -151,7 +152,7 @@ namespace XMLB { namespace detail {
 
 	template<typename T>
 	inline Node_const_iterator<T>::Node_const_iterator(
-		const Node_const_iterator& iter)
+		const Node_const_iterator& iter) noexcept
 		:m_ptr{ iter.m_ptr },
 		m_offset{ iter.m_offset }
 	{
@@ -162,7 +163,7 @@ namespace XMLB { namespace detail {
 
 	template<typename T>
 	inline Node_const_iterator<T>& Node_const_iterator<T>::operator=(
-		const Node_const_iterator& iter)
+		const Node_const_iterator& iter) noexcept
 	{
 		if (this != &iter)
 		{

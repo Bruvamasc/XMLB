@@ -78,9 +78,9 @@ namespace XMLB { namespace detail {
 
 	
 
-	/**************************************************************************
-	*					Parser<CharT, DecorT, DataT> IMPLEMENTATION
-	**************************************************************************/
+	//*************************************************************************
+	//					Parser<CharT, DecorT, DataT> IMPLEMENTATION
+	//*************************************************************************
 
 	template<typename InputT, typename DecorT, typename DataT>
 	Parser<InputT, DecorT, DataT>::Parser(std::size_t functors_count)

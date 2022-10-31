@@ -16,6 +16,7 @@
 #include "XMLB/XMLB_Node.h"
 #include "XMLB/XMLB_Document.h"
 #include "XMLB/XMLB_utility.h"
+#include "XMLB_Code_converter.h"
 
 namespace XMLB
 {
@@ -28,6 +29,16 @@ namespace XMLB
 	using u16Document = Document<char16_t>;
 	using u32Document = Document<char32_t>;
 	using wDocument = Document<wchar_t>;
+
+	using u8Node_iterator = detail::Node_iterator<char>;
+	using u16Node_iterator = detail::Node_iterator<char16_t>;
+	using u32Node_iterator = detail::Node_iterator<char32_t>;
+	using wNode_iterator = detail::Node_iterator<wchar_t>;
+
+	using u8Node_const_iterator = detail::Node_const_iterator<char>;
+	using u16Node_const_iterator = detail::Node_const_iterator<char16_t>;
+	using u32Node_const_iterator = detail::Node_const_iterator<char32_t>;
+	using wNode_const_iterator = detail::Node_const_iterator<wchar_t>;
 
 	using u8Decorator = detail::Decorator<char>;
 	using u16Decorator = detail::Decorator<char16_t>;

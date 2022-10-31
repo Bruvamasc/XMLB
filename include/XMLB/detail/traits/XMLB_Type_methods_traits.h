@@ -108,20 +108,20 @@ namespace XMLB { namespace detail {
 
 	//#########################################################################
 
-	template<typename, typename = void>
+	template<typename, typename, typename = void>
 	struct is_can_equality : std::false_type {};
 
 	//-------------------------------------------------------------------------
 
-	template<typename T>
-	struct is_can_equality<T,
-		std::void_t<decltype(std::declval<T>() == (std::declval<T>()))>
+	template<typename T, typename U>
+	struct is_can_equality<T, U,
+		std::void_t<decltype(std::declval<T>() == (std::declval<U>()))>
 	> : std::true_type {};
 
 	//-------------------------------------------------------------------------
 
-	template<typename T>
-	inline constexpr bool is_can_equality_v = is_can_equality<T>::value;
+	template<typename T, typename U = T>
+	inline constexpr bool is_can_equality_v = is_can_equality<T, U>::value;
 
 	//#########################################################################
 

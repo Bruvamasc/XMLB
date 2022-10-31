@@ -21,6 +21,7 @@
 #include <string_view>
 #include <list>
 #include <memory>
+#include <iostream>
 
 #include "XMLB/detail/XMLB_Node_iterator.h"
 #include "XMLB/detail/traits/XMLB_Type_traits.h"
@@ -63,8 +64,9 @@ namespace XMLB
 		using attr_const_iterator = 
 			typename std::list<attribute_type>::const_iterator;
 
-		using node_iterator = typename std::list<Ptr>::iterator;
-		using node_const_iterator = typename std::list<Ptr>::const_iterator;
+		using first_level_iterator = typename std::list<Ptr>::iterator;
+		using first_level_const_iterator = 
+			typename std::list<Ptr>::const_iterator;
 
 		using iterator = detail::Node_iterator<node_type>;
 		using const_iterator = detail::Node_const_iterator<node_type>;
@@ -87,11 +89,13 @@ namespace XMLB
 		// Работа с именем тега
 
 		void set_name(const string_type& name);
+		void set_name(string_type&& name) noexcept;
 		string_wrapper get_name() const & noexcept;
 
 		// Работа со значением тега
 
 		void set_value(const string_type& value);
+		void set_value(string_type&& value) noexcept;
 		string_wrapper get_value() const & noexcept;
 
 		// Работа с аттрибутами тега
@@ -100,10 +104,7 @@ namespace XMLB
 		void add_attribute(attribute_type&& attribute);
 
 		attr_iterator erase_attribute(std::size_t index);
-		attr_iterator erase_attribute(attr_iterator attribute);
 		attr_iterator erase_attribute(attr_const_iterator attribute);
-		attr_iterator erase_attribute(attr_iterator attribute_first,
-			attr_iterator attribute_last);
 		attr_iterator erase_attribute(attr_const_iterator attribute_fisrt,
 			attr_const_iterator attribute_last);
 
@@ -120,50 +121,6 @@ namespace XMLB
 
 		// Работа с дочерними узлами
 
-		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
-		* 
-		* @todo Вариант с Variadic template и распаковки параметров подходит, 
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
-		*
-		* @param[in] tag_names - список имён тегов
-		* @param[in] iter_start - итератор, с которого начать искать
-		*
-		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
-		**********************************************************************/
-		template<typename ContT = std::initializer_list<string_type>,
-			std::enable_if_t<detail::is_has_value_type_v<ContT> &&
-			detail::is_has_begin_and_end_v<ContT> && 
-			std::is_constructible_v<typename ContT::value_type, string_type>, 
-			std::nullptr_t> = nullptr>
-		iterator find(ContT&& container, 
-			const_iterator offset = const_iterator{ nullptr });
-
-		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
-		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
-		*
-		* @param[in] tag_names - список имён тегов
-		* @param[in] iter_start - итератор, с которого начать искать
-		*
-		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
-		**********************************************************************/
-		template<typename ContT = std::initializer_list<string_type>,
-			std::enable_if_t<detail::is_has_value_type_v<ContT> &&
-			detail::is_has_begin_and_end_v<ContT> &&
-			std::is_constructible_v<typename ContT::value_type, string_type>,
-			std::nullptr_t> = nullptr>
-		const_iterator find(ContT&& container,
-			const_iterator offset = const_iterator{ nullptr }) const;
-
 		void add_child(const node_type& node);
 		void add_child(node_type&& node);
 		void add_child(Ptr node);
@@ -172,6 +129,15 @@ namespace XMLB
 		iterator erase_child(const_iterator node);
 		iterator erase_child(const_iterator node_first, 
 			const_iterator node_last);
+
+		first_level_iterator first_level_begin() noexcept;
+		first_level_iterator first_level_end() noexcept;
+
+		first_level_const_iterator first_level_begin() const noexcept;
+		first_level_const_iterator first_level_end() const noexcept;
+
+		first_level_const_iterator first_level_cbegin() const noexcept;
+		first_level_const_iterator first_level_cend() const noexcept;
 
 		iterator begin() noexcept;
 		iterator end() noexcept;
@@ -183,6 +149,7 @@ namespace XMLB
 		const_iterator cend() const noexcept;
 
 		size_type child_size() const noexcept;
+		size_type size() const noexcept;
 
 		// Работа с родителем
 
@@ -192,22 +159,227 @@ namespace XMLB
 
 		void swap(node_type& node) noexcept;
 
+		// Функции поиска
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		* 
+		* @details Перегрузка для работы с указателями на строки, например:
+		* const char*, const wchar_t*
+		*
+		* @param[in] tag_name - имя или имена тега, которое нужно найти
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT, 
+			std::enable_if_t<std::is_same_v<ContT, symbol_type> &&
+			std::is_constructible_v<string_wrapper, const ContT*>, 
+			std::nullptr_t> = nullptr>
+		iterator find(const ContT* container, 
+			const_iterator offset = const_iterator{ nullptr });
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		* 
+		* @details Перегрузка для работы с контейнерами содержащие простые 
+		* типы, например: std::string, std::vector<char>, std::string_view
+		*
+		* @param[in] tag_names - список имён тегов
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT,
+			std::enable_if_t<
+			
+			detail::is_has_begin_and_end_v<ContT> &&
+
+			detail::is_has_value_type_v<ContT> &&
+
+			std::is_constructible_v<string_wrapper,
+			std::add_pointer_t<std::remove_reference_t<
+			detail::dereferenced_t<detail::const_iterator_t<ContT>>>>>&&
+
+			std::is_same_v<detail::universal_value_type_t<ContT>, symbol_type>,
+
+			std::nullptr_t> = nullptr>
+		iterator find(const ContT& container, 
+			const_iterator offset = const_iterator{ nullptr });
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		*
+		* @details Перегрузка для работы с контейнерами содержащие 
+		* строко-подобные типы, например: std::vector<std::string>, 
+		* std::vector<const char*>, std::initializer_list<const char*>, 
+		* std::initializer_list<std::string>
+		*
+		* @param[in] tag_names - список имён тегов
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT = std::initializer_list<string_type>,
+			std::enable_if_t<
+
+			detail::is_has_begin_and_end_v<ContT> &&
+
+			detail::is_has_value_type_v<ContT> &&
+
+			!std::is_arithmetic_v<detail::value_type_t<ContT>> &&
+
+			(std::is_constructible_v<string_wrapper,
+				std::decay_t<
+				detail::dereferenced_t<detail::const_iterator_t<ContT>>>> ||
+
+				std::is_constructible_v<string_wrapper,
+				detail::dereferenced_t<detail::const_iterator_t<ContT>>>) &&
+
+			std::is_same_v<std::remove_const_t<
+			detail::universal_value_type_t<ContT>>, symbol_type>,
+
+			std::nullptr_t> = nullptr>
+		iterator find(const ContT& container, 
+			const_iterator offset = const_iterator{ nullptr });
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		*
+		* @details Перегрузка для работы с указателями на строки, например:
+		* const char*, const wchar_t*
+		*
+		* @param[in] tag_name - имя или имена тега, которое нужно найти
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT,
+			std::enable_if_t<std::is_same_v<ContT, symbol_type>&&
+			std::is_constructible_v<string_wrapper, const ContT*>,
+			std::nullptr_t> = nullptr>
+		const_iterator find(const ContT* container,
+			const_iterator offset = const_iterator{ nullptr }) const;
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		*
+		* @details Перегрузка для работы с контейнерами содержащие простые
+		* типы, например: std::string, std::vector<char>, std::string_view
+		*
+		* @param[in] tag_names - список имён тегов
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT,
+			std::enable_if_t<
+
+			detail::is_has_begin_and_end_v<ContT>&&
+
+			detail::is_has_value_type_v<ContT>&&
+
+			std::is_constructible_v<string_wrapper,
+			std::add_pointer_t<std::remove_reference_t<
+			detail::dereferenced_t<detail::const_iterator_t<ContT>>>>>&&
+
+			std::is_same_v<detail::universal_value_type_t<ContT>, symbol_type>,
+
+			std::nullptr_t> = nullptr>
+		const_iterator find(const ContT& container, 
+			const_iterator offset = const_iterator{ nullptr }) const;
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		*
+		* @details Перегрузка для работы с контейнерами содержащие
+		* строко-подобные типы, например: std::vector<std::string>,
+		* std::vector<const char*>, std::initializer_list<const char*>,
+		* std::initializer_list<std::string>
+		*
+		* @param[in] tag_names - список имён тегов
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT = std::initializer_list<string_type>,
+			std::enable_if_t<
+
+			detail::is_has_begin_and_end_v<ContT>&&
+
+			detail::is_has_value_type_v<ContT> &&
+
+			!std::is_arithmetic_v<detail::value_type_t<ContT>> &&
+
+			(std::is_constructible_v<string_wrapper,
+				std::decay_t<
+				detail::dereferenced_t<detail::const_iterator_t<ContT>>>> ||
+
+				std::is_constructible_v<string_wrapper,
+				detail::dereferenced_t<detail::const_iterator_t<ContT>>>) &&
+
+			std::is_same_v<std::remove_const_t<
+			detail::universal_value_type_t<ContT>>, symbol_type>,
+
+			std::nullptr_t> = nullptr>
+		const_iterator find(const ContT& container, 
+			const_iterator offset = const_iterator{ nullptr }) const;
+
 	private:
 		tree_node* find_last_tree_node() const;
-		void connect_tree_nodes(tree_node* prev_node);
+		void connect_tree_nodes(tree_node* current_node, tree_node* add_node);
 
 		iterator erase_element(const_iterator node);
 		iterator erase_element(const_iterator node_first, 
 			const_iterator node_last);
 
 		iterator find_element(const_iterator first,
-			const_iterator last, const string_type& tag_name) const;
+			const_iterator last, string_wrapper tag_name) const;
+
+		void update_size(int size) noexcept;
 
 	private:
 		string_type m_name;
 		string_type m_value;
 		std::list<attribute_type> m_attributes;
 		std::list<Ptr> m_childs;
+		size_type m_size;
 		mutable tree_node m_tree_node;
 	};
 
@@ -221,8 +393,7 @@ namespace XMLB
 
 	template<typename CharT>
 	inline Node<CharT>::Node(const string_type& name, const string_type& value)
-		:m_name{ name },
-		m_value{ value }
+		:m_name{ name }, m_value{ value }, m_size{ 0 }
 	{
 		m_tree_node.element = this;
 	}
@@ -231,8 +402,7 @@ namespace XMLB
 
 	template<typename CharT>
 	inline Node<CharT>::Node(string_type&& name, string_type&& value)
-		:m_name{ std::move(name) },
-		m_value{ std::move(value) }
+		:m_name{ std::move(name) }, m_value{ std::move(value) }, m_size{ 0 }
 	{
 		m_tree_node.element = this;
 	}
@@ -243,7 +413,8 @@ namespace XMLB
 	inline Node<CharT>::Node(const Node<CharT>& node)
 		:m_name{ node.m_name },
 		m_value{ node.m_value },
-		m_attributes{ node.m_attributes.cbegin(), node.m_attributes.cend() }
+		m_attributes{ node.m_attributes.cbegin(), node.m_attributes.cend() },
+		m_size{ 0 }
 	{
 		m_tree_node.element = this;
 
@@ -272,9 +443,25 @@ namespace XMLB
 	inline Node<CharT>::Node(Node<CharT>&& node) noexcept
 		:m_name{ std::move(node.m_name) },
 		m_value{ std::move(node.m_value) },
-		m_attributes{ std::move(node.m_attributes) }
+		m_attributes{ std::move(node.m_attributes) },
+		//m_childs{ std::move(node.m_childs) },
+		m_size{ 0 }
+		//m_tree_node{ std::move(node.m_tree_node) }
 	{
 		m_tree_node.element = this;
+
+		node.m_tree_node.next = nullptr;
+		node.m_tree_node.prev = nullptr;
+		node.m_tree_node.parent = nullptr;
+
+		/*if (m_childs.size())
+		{
+
+		tree_node* last_tree_node = find_last_tree_node();
+
+		
+			connect_tree_nodes(last_tree_node);
+		}*/
 
 		for (auto&& elem : node.m_childs)
 		{
@@ -306,6 +493,14 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
+	inline void Node<CharT>::set_name(string_type&& name) noexcept
+	{
+		m_name = std::move(name);
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
 	inline typename Node<CharT>::string_wrapper Node<CharT>::get_name() 
 		const & noexcept
 	{
@@ -318,6 +513,14 @@ namespace XMLB
 	inline void Node<CharT>::set_value(const string_type& value)
 	{
 		m_value = value;
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline void Node<CharT>::set_value(string_type&& value) noexcept
+	{
+		m_value = std::move(value);
 	}
 
 	//*************************************************************************
@@ -365,27 +568,9 @@ namespace XMLB
 
 	template<typename CharT>
 	inline typename Node<CharT>::attr_iterator Node<CharT>::erase_attribute(
-		attr_iterator attr_iter)
-	{
-		return m_attributes.erase(attr_iter);
-	}
-
-	//*************************************************************************
-
-	template<typename CharT>
-	inline typename Node<CharT>::attr_iterator Node<CharT>::erase_attribute(
 		attr_const_iterator attr_iter)
 	{
 		return m_attributes.erase(attr_iter);
-	}
-
-	//*************************************************************************
-
-	template<typename CharT>
-	inline typename Node<CharT>::attr_iterator Node<CharT>::erase_attribute(
-		attr_iterator attribute_first, attr_iterator attribute_last)
-	{
-		return m_attributes.erase(attribute_first, attribute_last);
 	}
 
 	//*************************************************************************
@@ -463,118 +648,14 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	template<typename ContT, 
-		std::enable_if_t<detail::is_has_value_type_v<ContT> &&
-		detail::is_has_begin_and_end_v<ContT> &&
-		std::is_constructible_v<typename ContT::value_type, 
-		std::basic_string<CharT>>, std::nullptr_t>
-	>
-	inline typename Node<CharT>::iterator Node<CharT>::find(ContT&& container, 
-		const_iterator offset)
-	{
-		using std::begin;
-		using std::end;
-
-		iterator first = this->begin();
-		iterator last = this->end();
-
-		auto word_it = begin(container);
-		auto word_end = end(container);
-
-		if (offset != const_iterator{ nullptr } &&
-			offset._is_in_sequences(this->begin()))
-		{
-			first = iterator{ &offset->m_tree_node };
-		}
-
-		if (offset == last)
-		{
-			first = last;
-		}
-
-		for (; first != last && word_it != word_end;)
-		{
-			first = find_element(first, last, *word_it);
-
-			if (first != last)
-			{
-				++word_it;
-
-				if (word_it != word_end)
-				{
-					last = first->end();
-					first = first->begin();
-				}
-			}
-		}
-
-		return first;
-	}
-
-	//*************************************************************************
-
-	template<typename CharT>
-	template<typename ContT,
-		std::enable_if_t<detail::is_has_value_type_v<ContT>&&
-		detail::is_has_begin_and_end_v<ContT>&&
-		std::is_constructible_v<typename ContT::value_type,
-		std::basic_string<CharT>>, std::nullptr_t>>
-		inline typename Node<CharT>::const_iterator Node<CharT>::find(
-			ContT&& container, const_iterator offset) const
-	{
-		using std::begin;
-		using std::end;
-
-		auto result = cend();
-
-		auto first = cbegin();
-		auto last = result;
-
-		if (offset != const_iterator{ nullptr })
-		{
-			first = offset;
-		}
-
-		auto words_first = begin(container);
-		auto words_last = end(container);
-
-		for (; first != last && words_first != words_last; )
-		{
-			auto found_iter = find_element(first, last, *words_first);
-
-			if (found_iter != last)
-			{
-				++words_first;
-
-				last = first->cend();
-				first = first->cbegin();
-			}
-			else
-			{
-				++first;
-			}
-		}
-
-		if (first != last)
-		{
-			return first;
-		}
-		else
-		{
-			return result;
-		}
-	}
-
-	//*************************************************************************
-
-	template<typename CharT>
 	inline void Node<CharT>::add_child(const node_type& node)
 	{
 		tree_node* last_tree_node = find_last_tree_node();
 
 		m_childs.push_back(std::make_unique<Node<CharT>>(node));
 
-		connect_tree_nodes(last_tree_node);
+		connect_tree_nodes(
+			last_tree_node, &m_childs.back().get()->m_tree_node);
 	}
 
 	//*************************************************************************
@@ -582,11 +663,17 @@ namespace XMLB
 	template<typename CharT>
 	inline void Node<CharT>::add_child(node_type&& node)
 	{
+		if (this == &node)
+		{
+			return;
+		}
+
 		tree_node* last_tree_node = find_last_tree_node();
 
 		m_childs.push_back(std::make_unique<Node<CharT>>(std::move(node)));
 
-		connect_tree_nodes(last_tree_node);
+		connect_tree_nodes(
+			last_tree_node, &m_childs.back().get()->m_tree_node);
 	}
 
 	//*************************************************************************
@@ -594,7 +681,7 @@ namespace XMLB
 	template<typename CharT>
 	inline void Node<CharT>::add_child(Ptr node)
 	{
-		if (!node)
+		if (!node || this == node.get())
 		{
 			return;
 		}
@@ -603,7 +690,8 @@ namespace XMLB
 
 		m_childs.push_back(std::move(node));
 
-		connect_tree_nodes(last_tree_node);
+		connect_tree_nodes(
+			last_tree_node, &m_childs.back().get()->m_tree_node);
 	}
 
 	//*************************************************************************
@@ -616,12 +704,9 @@ namespace XMLB
 
 		if (index < m_childs.size())
 		{
-			auto erase_iter = std::next(m_childs.cbegin(), index);
+			auto erase_iter = std::next(cbegin(), index);
 
-			result = erase_element(const_iterator
-				{
-					&erase_iter->get()->m_tree_node
-				});
+			result = erase_element(erase_iter);
 		}
 
 		return result;
@@ -660,6 +745,60 @@ namespace XMLB
 		}
 
 		return result;
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline typename Node<CharT>::first_level_iterator 
+		Node<CharT>::first_level_begin() noexcept
+	{
+		return m_childs.begin();
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline typename Node<CharT>::first_level_iterator
+		Node<CharT>::first_level_end() noexcept
+	{
+		return m_childs.end();
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline typename Node<CharT>::first_level_const_iterator
+		Node<CharT>::first_level_begin() const noexcept
+	{
+		return m_childs.begin();
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline typename Node<CharT>::first_level_const_iterator
+		Node<CharT>::first_level_end() const noexcept
+	{
+		return m_childs.end();
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline typename Node<CharT>::first_level_const_iterator
+		Node<CharT>::first_level_cbegin() const noexcept
+	{
+		return m_childs.cbegin();
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline typename Node<CharT>::first_level_const_iterator
+		Node<CharT>::first_level_cend() const noexcept
+	{
+		return m_childs.cend();
 	}
 
 	//*************************************************************************
@@ -726,6 +865,15 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
+	inline typename Node<CharT>::size_type Node<CharT>::size() const
+		noexcept
+	{
+		return m_size;
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
 	inline const typename Node<CharT>::node_type* Node<CharT>::get_parent() 
 		const noexcept
 	{
@@ -747,33 +895,21 @@ namespace XMLB
 		using std::swap;
 
 		//Получаем необходимые начальные узлы текущего элемента
+		//start -> swap_element -> end
 
-		//Узел, который идёт перед текущим элементом
-		auto lhs_first_node = m_tree_node.prev;
+		auto lhs_start = m_tree_node.prev;
+		auto lhs_end = find_last_tree_node()->next;
+		auto lhs_parent = m_tree_node.parent;	
 
-		//Узел родитель текущего элемент
-		auto lhs_parent_node = m_tree_node.parent;
-
-		//Узел, который идёт после самого последнего дочернего узла 
-		//текущего элемента
-		auto lhs_last_node = find_last_tree_node()->next;
-
-		//Получаем необходимые начальные узлы элемента node
-
-		//Узел, который идёт перед элементом node
-		auto rhs_first_node = node.m_tree_node.prev;
-
-		//Узел родитель элемента node
-		auto rhs_parent_node = node.m_tree_node.parent;
-
-		//Узел, который идёт после самого последнего дочернего узла 
-		//элемента node
-		auto rhs_last_node = node.find_last_tree_node()->next;
+		auto rhs_start = node.m_tree_node.prev;
+		auto rhs_end = node.find_last_tree_node()->next;
+		auto rhs_parent = node.m_tree_node.parent;
 
 		swap(m_name, node.m_name);
 		swap(m_value, node.m_value);
 		swap(m_attributes, node.m_attributes);
 		swap(m_childs, node.m_childs);
+		swap(m_size, node.m_size);
 		swap(m_tree_node, node.m_tree_node);
 
 		//Присваиваем узлам указатели на текущие элементы
@@ -806,59 +942,410 @@ namespace XMLB
 			}
 		}
 
-		//Получем новый узел, который является самым последним узлом 
+		//Получем новый узел, который является самым последним дочерним узлом
 		//или же текущим
-		auto lhs_new_last_node = find_last_tree_node();
 
-		//Получем новый узел, который является самым последним узлом 
-		//или же текущим node
-		auto rhs_new_last_node = node.find_last_tree_node();
+		auto lhs_last_child = find_last_tree_node();
+		auto rhs_last_child = node.find_last_tree_node();
 
-		//Соеденяем узлы текущего элемента
-		if (lhs_first_node)
+
+		//Коннектим начальные узлы текущего объекта
+
+		if (lhs_start && lhs_start != rhs_last_child)
 		{
-			lhs_first_node->next = &m_tree_node;
-			m_tree_node.prev = lhs_first_node;
+			lhs_start->next = &m_tree_node;
+			m_tree_node.prev = lhs_start;
 		}
 		else
+		{
+			lhs_last_child->next = &m_tree_node;
+			m_tree_node.prev = lhs_last_child;
+		}
+
+		if (lhs_end && lhs_end != rhs_start)
+		{
+			lhs_end->prev = lhs_last_child;
+			lhs_last_child->next = lhs_end;
+		}
+
+		if (&m_tree_node == lhs_last_child)
 		{
 			m_tree_node.prev = nullptr;
-		}
-
-		m_tree_node.parent = lhs_parent_node;
-
-		if (lhs_last_node)
-		{
-			lhs_last_node->prev = lhs_new_last_node;
-			lhs_new_last_node->next = lhs_last_node;
-		}
-		else
-		{
 			m_tree_node.next = nullptr;
 		}
 
-		//Соеденяем узлы элемента node
-		if (rhs_first_node)
+		m_tree_node.parent = lhs_parent;
+
+		//Коннектим узлы в переданном node
+
+		if (rhs_start && rhs_start != lhs_last_child)
 		{
-			rhs_first_node->next = &node.m_tree_node;
-			node.m_tree_node.prev = rhs_first_node;
+			rhs_start->next = &node.m_tree_node;
+			node.m_tree_node.prev = rhs_start;
 		}
 		else
+		{
+			rhs_last_child->next = &node.m_tree_node;
+			node.m_tree_node.prev = rhs_last_child;
+		}
+
+		if (rhs_end && rhs_end != lhs_start)
+		{
+			rhs_end->prev = rhs_last_child;
+			rhs_last_child->next = rhs_end;
+		}
+
+		if (&node.m_tree_node == rhs_last_child)
 		{
 			node.m_tree_node.prev = nullptr;
+			node.m_tree_node.next = nullptr;
 		}
 
-		node.m_tree_node.parent = rhs_parent_node;
+		node.m_tree_node.parent = rhs_parent;
 
-		if (rhs_last_node)
+		//Обновляем общее количество узлов
+		
+		int lhs_size_old = static_cast<int>(node.m_size);
+		int rhs_size_old = static_cast<int>(m_size);
+
+		int lhs_size_new = rhs_size_old;
+		int rhs_size_new = lhs_size_old;
+
+		if (node.m_tree_node.parent)
 		{
-			rhs_last_node->prev = rhs_new_last_node;
-			rhs_new_last_node->next = rhs_last_node;
+			node.m_tree_node.parent->element->update_size(
+				rhs_size_new - rhs_size_old);
 		}
-		else
+
+		if (m_tree_node.parent)
 		{
-			rhs_new_last_node->next = nullptr;
+			m_tree_node.parent->element->update_size(
+				lhs_size_new - lhs_size_old);
 		}
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	template<typename ContT,
+		std::enable_if_t<std::is_same_v<ContT, CharT>&&
+
+		std::is_constructible_v<
+		std::basic_string_view<CharT>, const ContT*>,
+
+		std::nullptr_t>>
+		inline typename Node<CharT>::iterator Node<CharT>::find(
+			const ContT* container, const_iterator offset)
+	{
+		using std::begin;
+		using std::end;
+
+		iterator first = this->begin();
+		iterator last = this->end();
+
+		if (offset != const_iterator{ nullptr } &&
+			offset._is_in_sequences(this->begin()))
+		{
+			first = iterator{ &offset->m_tree_node };
+		}
+
+		if (offset == last)
+		{
+			first = last;
+		}
+
+		for (; first != last;)
+		{
+			first = find_element(first, last, string_wrapper{ container });
+
+			if (first != last)
+			{
+				break;
+			}
+		}
+
+		return first;
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	template<typename ContT,
+		std::enable_if_t<
+
+		detail::is_has_begin_and_end_v<ContT>&&
+
+		detail::is_has_value_type_v<ContT>&&
+
+		std::is_constructible_v<std::basic_string_view<CharT>,
+		std::add_pointer_t<std::remove_reference_t<
+		detail::dereferenced_t<detail::const_iterator_t<ContT>>>>>&&
+
+		std::is_same_v<detail::universal_value_type_t<ContT>, CharT>,
+
+		std::nullptr_t>>
+		inline typename Node<CharT>::iterator Node<CharT>::find(
+			const ContT& container, const_iterator offset)
+	{
+		using std::begin;
+		using std::end;
+
+		iterator first = this->begin();
+		iterator last = this->end();
+
+		auto word_it = begin(container);
+		auto word_end = end(container);
+
+		if (offset != const_iterator{ nullptr } &&
+			offset._is_in_sequences(this->begin()))
+		{
+			first = iterator{ &offset->m_tree_node };
+		}
+
+		if (offset == last)
+		{
+			first = last;
+		}
+
+		for (; first != last;)
+		{
+			first = find_element(first, last,
+				string_wrapper{ &*container.begin(), container.size() });
+
+			if (first != last)
+			{
+				break;
+			}
+		}
+
+		return first;
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	template<typename ContT,
+		std::enable_if_t<
+
+		detail::is_has_begin_and_end_v<ContT>&&
+
+		detail::is_has_value_type_v<ContT> &&
+
+		!std::is_arithmetic_v<detail::value_type_t<ContT>> &&
+
+		(std::is_constructible_v<std::basic_string_view<CharT>,
+			std::decay_t<
+			detail::dereferenced_t<detail::const_iterator_t<ContT>>>> ||
+
+			std::is_constructible_v<std::basic_string_view<CharT>,
+			detail::dereferenced_t<detail::const_iterator_t<ContT>>>) &&
+
+		std::is_same_v<std::remove_const_t<
+		detail::universal_value_type_t<ContT>>, CharT>,
+
+		std::nullptr_t>>
+		inline typename Node<CharT>::iterator Node<CharT>::find(
+			const ContT& container, const_iterator offset)
+	{
+		using std::begin;
+		using std::end;
+
+		iterator first = this->begin();
+		iterator last = this->end();
+
+		auto word_it = begin(container);
+		auto word_end = end(container);
+
+		if (offset != const_iterator{ nullptr } &&
+			offset._is_in_sequences(this->begin()))
+		{
+			first = iterator{ &offset->m_tree_node };
+		}
+
+		if (offset == last)
+		{
+			first = last;
+		}
+
+		for (; first != last && word_it != word_end;)
+		{
+			first = find_element(first, last, *word_it);
+
+			if (first != last)
+			{
+				++word_it;
+
+				if (word_it != word_end)
+				{
+					last = first->end();
+					first = first->begin();
+				}
+			}
+		}
+
+		return first;
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	template<typename ContT,
+		std::enable_if_t<std::is_same_v<ContT, CharT>&&
+
+		std::is_constructible_v<
+		std::basic_string_view<CharT>, const ContT*>,
+
+		std::nullptr_t>>
+		inline typename Node<CharT>::const_iterator Node<CharT>::find(
+			const ContT* container, const_iterator offset) const
+	{
+		using std::begin;
+		using std::end;
+
+		iterator first = this->begin();
+		iterator last = this->end();
+
+		if (offset != const_iterator{ nullptr } &&
+			offset._is_in_sequences(this->begin()))
+		{
+			first = iterator{ &offset->m_tree_node };
+		}
+
+		if (offset == last)
+		{
+			first = last;
+		}
+
+		for (; first != last;)
+		{
+			first = find_element(first, last, string_wrapper{ container });
+
+			if (first != last)
+			{
+				break;
+			}
+		}
+
+		return first;
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	template<typename ContT,
+		std::enable_if_t<
+
+		detail::is_has_begin_and_end_v<ContT>&&
+
+		detail::is_has_value_type_v<ContT>&&
+
+		std::is_constructible_v<std::basic_string_view<CharT>,
+		std::add_pointer_t<std::remove_reference_t<
+		detail::dereferenced_t<detail::const_iterator_t<ContT>>>>>&&
+
+		std::is_same_v<detail::universal_value_type_t<ContT>, CharT>,
+
+		std::nullptr_t>>
+		inline typename Node<CharT>::const_iterator Node<CharT>::find(
+			const ContT& container, const_iterator offset) const
+	{
+		using std::begin;
+		using std::end;
+
+		iterator first = this->begin();
+		iterator last = this->end();
+
+		auto word_it = begin(container);
+		auto word_end = end(container);
+
+		if (offset != const_iterator{ nullptr } &&
+			offset._is_in_sequences(this->begin()))
+		{
+			first = iterator{ &offset->m_tree_node };
+		}
+
+		if (offset == last)
+		{
+			first = last;
+		}
+
+		for (; first != last;)
+		{
+			first = find_element(first, last,
+				string_wrapper{ &*container.begin(), container.size() });
+
+			if (first != last)
+			{
+				break;
+			}
+		}
+
+		return first;
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	template<typename ContT,
+		std::enable_if_t<
+
+		detail::is_has_begin_and_end_v<ContT>&&
+
+		detail::is_has_value_type_v<ContT> &&
+
+		!std::is_arithmetic_v<detail::value_type_t<ContT>> &&
+
+		(std::is_constructible_v<std::basic_string_view<CharT>,
+			std::decay_t<
+			detail::dereferenced_t<detail::const_iterator_t<ContT>>>> ||
+
+			std::is_constructible_v<std::basic_string_view<CharT>,
+			detail::dereferenced_t<detail::const_iterator_t<ContT>>>) &&
+
+		std::is_same_v<std::remove_const_t<
+		detail::universal_value_type_t<ContT>>, CharT>,
+
+		std::nullptr_t>>
+		inline typename Node<CharT>::const_iterator Node<CharT>::find(
+			const ContT& container, const_iterator offset) const
+	{
+		using std::begin;
+		using std::end;
+
+		iterator first = this->begin();
+		iterator last = this->end();
+
+		auto word_it = begin(container);
+		auto word_end = end(container);
+
+		if (offset != const_iterator{ nullptr } &&
+			offset._is_in_sequences(this->begin()))
+		{
+			first = iterator{ &offset->m_tree_node };
+		}
+
+		if (offset == last)
+		{
+			first = last;
+		}
+
+		for (; first != last && word_it != word_end;)
+		{
+			first = find_element(first, last, *word_it);
+
+			if (first != last)
+			{
+				++word_it;
+
+				if (word_it != word_end)
+				{
+					last = first->end();
+					first = first->begin();
+				}
+			}
+		}
+
+		return first;
 	}
 
 	//*************************************************************************
@@ -883,41 +1370,41 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::connect_tree_nodes(tree_node* prev_node)
+	inline void Node<CharT>::connect_tree_nodes(tree_node* current_node, 
+		tree_node* add_node)
 	{
-		//Укатаель на последний дочерний элемент
-		Node* last_child = m_childs.back().get();
-
-		//Указатель на последний дочерний элемент последного дочерного элемента
-		//текущего узла
-		Node* last_child_element = last_child;
-
-		//Находим элемент, который является последним элементов в списка
-		//удаляемого элемента
-		while (last_child_element->m_childs.size())
+		if (!add_node)
 		{
-			last_child_element = last_child_element->m_childs.back().get();
+			return;
 		}
 
-		//Узел, который следует после прошлого предыщущего элемента
-		tree_node* next_node = prev_node->next;
+		//Следующей узел, после текущего
+		tree_node* next_node = current_node->next;
 
-		//Конектим узлы между собой
-		prev_node->next = &last_child->m_tree_node;
-		last_child->m_tree_node.prev = prev_node;
+		//Последний дочерний узел у добавочного узла
+		tree_node* last_add_node = add_node->element->find_last_tree_node();
 
-		if (!next_node)
+		//Коннектим между собой текущий, добавочный и следующий узлы
+
+		current_node->next = add_node;
+		add_node->prev = current_node;
+
+		if (next_node)
 		{
-			last_child_element->m_tree_node.next = &m_tree_node;
-			m_tree_node.prev = &last_child_element->m_tree_node;
+			last_add_node->next = next_node;
+			next_node->prev = last_add_node;
 		}
 		else
 		{
-			last_child_element->m_tree_node.next = next_node;
-			next_node->prev = &last_child_element->m_tree_node;
+			last_add_node->next = current_node;
+			current_node->prev = last_add_node;
 		}
+		
+		//Меняем родителя у добавочного узла
+		add_node->parent = &m_tree_node;
 
-		last_child->m_tree_node.parent = &m_tree_node;
+		//Увелививаем общее количество узлов
+		update_size(static_cast<int>(add_node->element->m_size + 1));
 	}
 
 	//*************************************************************************
@@ -964,9 +1451,17 @@ namespace XMLB
 
 		next_node->prev = prev_node;
 
-		//Удаляем элемент. Временное решение с const_castom...
+		//Удаляем элемент и уменьшаем общее количество узлов.
+		//Временное решение с const_castom...
 		Node* parent = const_cast<Node*>(node->get_parent());
+
 		parent->m_childs.erase(erase_iterator);
+
+		//В родителях тоже корректируем количество узлов
+		tree_node* parent_tree = node->m_tree_node.parent;
+
+		//Уменьшаем общее количество узлов
+		update_size(static_cast<int>(-1 * node->m_size + 1));
 
 		return iterator{ next_node };
 	}
@@ -997,7 +1492,7 @@ namespace XMLB
 	template<typename CharT>
 	inline typename Node<CharT>::iterator Node<CharT>::find_element(
 		const_iterator first, const_iterator last, 
-		const string_type& tag_name) const
+		string_wrapper tag_name) const
 	{
 		for (; first != last; ++first)
 		{
@@ -1008,6 +1503,23 @@ namespace XMLB
 		}
 
 		return iterator{ &last->m_tree_node };
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline void Node<CharT>::update_size(int size) noexcept
+	{
+		m_size += size;
+
+		auto current_parent = m_tree_node.parent;
+
+		while (current_parent)
+		{	
+			current_parent->element->update_size(size);
+			
+			current_parent = current_parent->parent;
+		}
 	}
 
 	//*************************************************************************

@@ -14,8 +14,6 @@
 #define XMLB_DOCUMENT_H
 
 #include <stack>
-#include <iomanip>
-#include <string>
 #include <memory>
 
 #include "XMLB_Node.h"
@@ -30,6 +28,7 @@
 
 namespace XMLB
 {
+
 	/**************************************************************************
 	* @brief XML документ, структура
 	*
@@ -37,7 +36,8 @@ namespace XMLB
 	*
 	* @todo Нужно подумать, над кодировкой документа 
 	* (пока ещё до конца не понимаю нужна ли она вообще, так как документ то 
-	* считывается в уже заданном пользователем формате (char, char16_t и т.п.)
+	* считывается в уже заданном пользователем формате (char, char16_t и т.п.).
+	* Возможно, стоит приватно наследоваться от Node<CharT>
 	**************************************************************************/
 	template<typename CharT>
 	class Document final
@@ -71,11 +71,30 @@ namespace XMLB
 
 		// Работа с XML корнем у другими узлами
 
-		void set_general_node(const node_type& node);
-		void set_general_node(node_type&& node);
-		void set_general_node(node_pointer node);
-		node_type* get_general_node() & noexcept;
-		const node_type* get_general_node() const & noexcept;
+		/**********************************************************************
+		* @brief Заменить корневой XML узел
+		**********************************************************************/
+		void root(const node_type& node);
+
+		/**********************************************************************
+		* @brief Заменить корневой XML узел
+		**********************************************************************/
+		void root(node_type&& node);
+
+		/**********************************************************************
+		* @brief Заменить корневой XML узел
+		**********************************************************************/
+		void root(node_pointer node);
+
+		/**********************************************************************
+		* @brief Вернуть корневой XML узел
+		**********************************************************************/
+		node_type& root() &;
+
+		/**********************************************************************
+		* @brief Вернуть корневой XML узел
+		**********************************************************************/
+		const node_type& root() const &;
 
 		// Работа с версией документа
 
@@ -85,6 +104,7 @@ namespace XMLB
 		// Работа с кодировкой документа
 
 		void set_encoding_type(const string_type& encoding_type);
+		void set_encoding_type(string_type&& encoding_type) noexcept;
 		string_wrapper get_encoding_type() const noexcept;	
 
 		// Очистка, удаление XML структуры
@@ -103,6 +123,9 @@ namespace XMLB
 		const_iterator cend() const noexcept;
 
 		// Вспомагательные функции
+
+		bool is_empty() const noexcept;
+		operator bool() const noexcept;
 
 		void swap(Document&& doc) noexcept;
 
@@ -183,7 +206,7 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Document<CharT>::set_general_node(const node_type& node)
+	inline void Document<CharT>::root(const node_type& node)
 	{
 		if (m_parent->child_size())
 		{
@@ -196,7 +219,7 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Document<CharT>::set_general_node(node_type&& node)
+	inline void Document<CharT>::root(node_type&& node)
 	{
 		if (m_parent->child_size())
 		{
@@ -209,7 +232,7 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Document<CharT>::set_general_node(node_pointer node)
+	inline void Document<CharT>::root(node_pointer node)
 	{
 		if (m_parent->child_size())
 		{
@@ -222,19 +245,18 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline typename Document<CharT>::node_type* 
-		Document<CharT>::get_general_node() & noexcept
+	inline typename Document<CharT>::node_type& Document<CharT>::root() &
 	{
-		return m_parent->child_size() ? &*m_parent->begin() : nullptr;
+		return *m_parent->begin();
 	}
 
 	//*************************************************************************
 
 	template<typename CharT>
-	inline const typename Document<CharT>::node_type* 
-		Document<CharT>::get_general_node() const& noexcept
+	inline const typename Document<CharT>::node_type& Document<CharT>::root() 
+		const &
 	{
-		return m_parent->child_size() ? &*m_parent->begin() : nullptr;
+		return m_parent->begin();
 	}
 
 	//*************************************************************************
@@ -260,6 +282,15 @@ namespace XMLB
 		const string_type& encoding_type)
 	{
 		m_encoding_type = encoding_type;
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline void Document<CharT>::set_encoding_type(string_type&& encoding_type)
+		noexcept
+	{
+		m_encoding_type = std::move(encoding_type);
 	}
 
 	//*************************************************************************
@@ -332,6 +363,22 @@ namespace XMLB
 		const noexcept
 	{
 		return m_parent->cend();
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline bool Document<CharT>::is_empty() const noexcept
+	{
+		return m_parent->child_size() ? true : false;
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline Document<CharT>::operator bool() const noexcept
+	{
+		return is_empty();
 	}
 
 	//*************************************************************************
@@ -637,30 +684,35 @@ namespace XMLB
 		detail::is_input_derived_iterator_or_pointer_to_symbol_v<IterT, CharT>,
 
 		std::nullptr_t> = nullptr>
-	bool save_to(detail::Node_const_iterator<Node<CharT>> first,
+	inline bool save_to(detail::Node_const_iterator<Node<CharT>> first,
 		detail::Node_const_iterator<Node<CharT>> last,
 		IterT out,
 		const DecorT& decorator = DecorT{})
 	{
 		bool result = false;
 
+		if (first == last)
+		{
+			return result;
+		}
+
 		using symbol_type = CharT;
 		using string_type = typename Node<symbol_type>::string_type;
 		using string_wrapper = typename Node<symbol_type>::string_wrapper;
 		using const_iterator = typename Node<symbol_type>::const_iterator;
 
-		auto&& kFill = decorator.fill_symbol;
-		auto&& kSpace = decorator.white_space_symbol;
-		auto&& kOpen_tag = decorator.open_tag_symbol;
-		auto&& kClose_tag = decorator.close_tag_symbol;
-		auto&& kSingle_tag = decorator.single_tag_symbol;
-		auto&& kLast_tag = decorator.last_tag_symbol;
-		auto&& kOpen_attr = decorator.open_attribute_symbol;
-		auto&& kClose_attr = decorator.close_attribute_symbol;
-		auto&& kEqual_attr = decorator.equal_attribute_symbol;
-		auto&& kLine_break = decorator.line_break_symbol;
-		auto&& kTab = decorator.tab_symbol;
-		auto&& kCarriage = decorator.carriage_symbol;
+		const auto& kFill = decorator.fill_symbol;
+		const auto& kSpace = decorator.white_space_symbol;
+		const auto& kOpen_tag = decorator.open_tag_symbol;
+		const auto& kClose_tag = decorator.close_tag_symbol;
+		const auto& kSingle_tag = decorator.single_tag_symbol;
+		const auto& kLast_tag = decorator.last_tag_symbol;
+		const auto& kOpen_attr = decorator.open_attribute_symbol;
+		const auto& kClose_attr = decorator.close_attribute_symbol;
+		const auto& kEqual_attr = decorator.equal_attribute_symbol;
+		const auto& kLine_break = decorator.line_break_symbol;
+		const auto& kTab = decorator.tab_symbol;
+		const auto& kCarriage = decorator.carriage_symbol;
 
 		//Контейнер итераторова, чтобы правильно закрывать теги с потомками
 		std::stack<const_iterator> node_groups;
@@ -808,7 +860,7 @@ namespace XMLB
 		detail::is_input_derived_iterator_or_pointer_to_symbol_v<IterT, CharT>,
 
 		std::nullptr_t> = nullptr>
-	bool save_to(const Document<CharT>& document, IterT out,
+	inline bool save_to(const Document<CharT>& document, IterT out,
 		const DecorT& decorator = DecorT{})
 	{
 		using std::begin;
@@ -820,15 +872,15 @@ namespace XMLB
 
 		bool result = false;
 
-		auto&& kSpace = decorator.white_space_symbol;
-		auto&& kOpen_tag = decorator.open_tag_symbol;
-		auto&& kClose_tag = decorator.close_tag_symbol;
-		auto&& kOpen_attr = decorator.open_attribute_symbol;
-		auto&& kClose_attr = decorator.close_attribute_symbol;
-		auto&& kEqual_attr = decorator.equal_attribute_symbol;
-		auto&& kDoc_info = decorator.doc_info_symbol;
-		auto&& kDoc_last_info = decorator.doc_info_last_symbol;
-		auto&& kLine_break = decorator.line_break_symbol;
+		const auto& kSpace = decorator.white_space_symbol;
+		const auto& kOpen_tag = decorator.open_tag_symbol;
+		const auto& kClose_tag = decorator.close_tag_symbol;
+		const auto& kOpen_attr = decorator.open_attribute_symbol;
+		const auto& kClose_attr = decorator.close_attribute_symbol;
+		const auto& kEqual_attr = decorator.equal_attribute_symbol;
+		const auto& kDoc_info = decorator.doc_info_symbol;
+		const auto& kDoc_last_info = decorator.doc_info_last_symbol;
+		const auto& kLine_break = decorator.line_break_symbol;
 
 		*out = kOpen_tag; ++out;
 		*out = kDoc_info; ++out;
@@ -889,7 +941,7 @@ namespace XMLB
 		IterT, typename Document<CharT>::string_type>,
 
 		std::nullptr_t> = nullptr>
-	bool save_to(detail::Node_const_iterator<Node<CharT>> first,
+	inline bool save_to(detail::Node_const_iterator<Node<CharT>> first,
 		detail::Node_const_iterator<Node<CharT>> last,
 		IterT out,
 		const DecorT& decorator = DecorT{})
@@ -1137,7 +1189,7 @@ namespace XMLB
 		IterT, typename Document<CharT>::string_type>,
 
 		std::nullptr_t> = nullptr>
-	bool save_to(const Document<CharT>& document, IterT out,
+	inline bool save_to(const Document<CharT>& document, IterT out,
 		const DecorT& decorator = DecorT{})
 	{
 		using std::begin;
@@ -1255,7 +1307,7 @@ namespace XMLB
 			result = std::move(
 				detail::create_doc_from_info(parser.get_doc_info()));
 
-			result->set_general_node(std::move(general_node));
+			result->root(std::move(general_node));
 		}
 
 		return result;
@@ -1316,7 +1368,7 @@ namespace XMLB
 			result = std::move(
 				detail::create_doc_from_info(parser.get_doc_info()));
 
-			result->set_general_node(std::move(general_node));
+			result->root(std::move(general_node));
 		}
 
 		return result;
@@ -1356,7 +1408,7 @@ namespace XMLB
 		IterT, DecorT, ParserT>,
 
 		std::nullptr_t> = nullptr>
-		inline decltype(auto) load_from(IterT first, IterT last,
+	inline decltype(auto) load_from(IterT first, IterT last,
 			const DecorT& decorator = DecorT{},
 			ParserT&& parser = detail::create_default_parser<ParserT>())
 	{
@@ -1376,7 +1428,7 @@ namespace XMLB
 			result = std::move(
 				detail::create_doc_from_info(parser.get_doc_info()));
 
-			result->set_general_node(std::move(general_node));
+			result->root(std::move(general_node));
 		}
 
 		return result;
@@ -1417,7 +1469,7 @@ namespace XMLB
 		IterT, DecorT, ParserT>,
 
 		std::nullptr_t> = nullptr>
-		inline decltype(auto) load_from(IterT first, IterT last,
+	inline decltype(auto) load_from(IterT first, IterT last,
 			const DecorT& decorator = DecorT{},
 			ParserT&& parser = detail::create_default_parser<ParserT>())
 	{
@@ -1438,7 +1490,7 @@ namespace XMLB
 			result = std::move(
 				detail::create_doc_from_info(parser.get_doc_info()));
 
-			result->set_general_node(std::move(general_node));
+			result->root(std::move(general_node));
 		}
 
 		return result;
