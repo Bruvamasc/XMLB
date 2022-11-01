@@ -20,6 +20,11 @@
 
 namespace XMLB
 {
+	using u8Node_attribute = Node_attribute<char>;
+	using u16Node_attribute = Node_attribute<char16_t>;
+	using u32Node_attribute = Node_attribute<char32_t>;
+	using wNode_attribute = Node_attribute<wchar_t>;
+
 	using u8Node = Node<char>;
 	using u16Node = Node<char16_t>;
 	using u32Node = Node<char32_t>;

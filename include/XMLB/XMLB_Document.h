@@ -59,7 +59,11 @@ namespace XMLB
 		// Конструкторы, деструкторы и т.п.
 
 		Document(float version = 1.f, 
-			const string_type& encoding_type = "UTF-8");
+			const string_type& encoding_type = 
+			detail::to_string<symbol_type>('U', 'T', 'F', '-', '8'));
+
+		Document(float version, string_type&& encoding_type);
+		//Document(float version, string_wrapper encoding_type);
 
 		Document(const Document& doc);
 		Document& operator=(const Document& doc);
@@ -122,7 +126,235 @@ namespace XMLB
 		const_iterator cbegin() const noexcept;
 		const_iterator cend() const noexcept;
 
+		// Функции поиска
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		*
+		* @details Перегрузка для работы с указателями на строки, например:
+		* const char*, const wchar_t*
+		*
+		* @param[in] tag_name - имя или имена тега, которое нужно найти
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT,
+			std::enable_if_t<std::is_same_v<ContT, symbol_type>&&
+			std::is_constructible_v<string_wrapper, const ContT*>,
+			std::nullptr_t> = nullptr>
+		iterator find(const ContT* container,
+			const_iterator offset = const_iterator{ nullptr })
+		{
+			return is_empty() ? end() :
+				m_parent->begin()->find(container, offset);
+		}
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		*
+		* @details Перегрузка для работы с контейнерами содержащие простые
+		* типы, например: std::string, std::vector<char>, std::string_view
+		*
+		* @param[in] tag_names - список имён тегов
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT,
+			std::enable_if_t<
+
+			detail::is_has_begin_and_end_v<ContT>&&
+
+			detail::is_has_value_type_v<ContT>&&
+
+			std::is_constructible_v<string_wrapper,
+			std::add_pointer_t<std::remove_reference_t<
+			detail::dereferenced_t<detail::const_iterator_t<ContT>>>>>&&
+
+			std::is_same_v<detail::universal_value_type_t<ContT>, symbol_type>,
+
+			std::nullptr_t> = nullptr>
+			iterator find(const ContT & container,
+				const_iterator offset = const_iterator{ nullptr })
+		{
+			return is_empty() ? end() :
+				m_parent->begin()->find(container, offset);
+		}
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		*
+		* @details Перегрузка для работы с контейнерами содержащие
+		* строко-подобные типы, например: std::vector<std::string>,
+		* std::vector<const char*>, std::initializer_list<const char*>,
+		* std::initializer_list<std::string>
+		*
+		* @param[in] tag_names - список имён тегов
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT = std::initializer_list<string_wrapper>,
+			std::enable_if_t<
+
+			detail::is_has_begin_and_end_v<ContT>&&
+
+			detail::is_has_value_type_v<ContT> &&
+
+			!std::is_arithmetic_v<detail::value_type_t<ContT>> &&
+
+			(std::is_constructible_v<string_wrapper,
+				std::decay_t<
+				detail::dereferenced_t<detail::const_iterator_t<ContT>>>> ||
+
+				std::is_constructible_v<string_wrapper,
+				detail::dereferenced_t<detail::const_iterator_t<ContT>>>) &&
+
+			std::is_same_v<std::remove_const_t<
+			detail::universal_value_type_t<ContT>>, symbol_type>,
+
+			std::nullptr_t> = nullptr>
+			iterator find(const ContT & container,
+				const_iterator offset = const_iterator{ nullptr })
+		{
+			return is_empty() ? end() :
+				m_parent->begin()->find(container, offset);
+		}
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		*
+		* @details Перегрузка для работы с указателями на строки, например:
+		* const char*, const wchar_t*
+		*
+		* @param[in] tag_name - имя или имена тега, которое нужно найти
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT,
+			std::enable_if_t<std::is_same_v<ContT, symbol_type>&&
+			std::is_constructible_v<string_wrapper, const ContT*>,
+			std::nullptr_t> = nullptr>
+		const_iterator find(const ContT* container,
+			const_iterator offset = const_iterator{ nullptr }) const
+		{
+			return is_empty() ? cend() :
+				m_parent->begin()->find(container, offset);
+		}
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		*
+		* @details Перегрузка для работы с контейнерами содержащие простые
+		* типы, например: std::string, std::vector<char>, std::string_view
+		*
+		* @param[in] tag_names - список имён тегов
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT,
+			std::enable_if_t<
+
+			detail::is_has_begin_and_end_v<ContT>&&
+
+			detail::is_has_value_type_v<ContT>&&
+
+			std::is_constructible_v<string_wrapper,
+			std::add_pointer_t<std::remove_reference_t<
+			detail::dereferenced_t<detail::const_iterator_t<ContT>>>>>&&
+
+			std::is_same_v<detail::universal_value_type_t<ContT>, symbol_type>,
+
+			std::nullptr_t> = nullptr>
+			const_iterator find(const ContT & container,
+				const_iterator offset = const_iterator{ nullptr }) const
+		{
+			return is_empty() ? cend() :
+				m_parent->begin()->find(container, offset);
+		}
+
+		/**********************************************************************
+		* @brief Данная фукция ищет узел следуя последовательности в списке
+		* переданных имён
+		*
+		* @todo Вариант с Variadic template и распаковки параметров подходит,
+		* но с ними не будет работать поиск с зарнее созданными контейнерами.
+		* Нужно подумать над этим.
+		*
+		* @details Перегрузка для работы с контейнерами содержащие
+		* строко-подобные типы, например: std::vector<std::string>,
+		* std::vector<const char*>, std::initializer_list<const char*>,
+		* std::initializer_list<std::string>
+		*
+		* @param[in] tag_names - список имён тегов
+		* @param[in] iter_start - итератор, с которого начать искать
+		*
+		* @return итератор на узел - если он был найден. В противном случае
+		* возвращает итератор указывающий равный end()
+		**********************************************************************/
+		template<typename ContT = std::initializer_list<string_wrapper>,
+			std::enable_if_t<
+
+			detail::is_has_begin_and_end_v<ContT>&&
+
+			detail::is_has_value_type_v<ContT> &&
+
+			!std::is_arithmetic_v<detail::value_type_t<ContT>> &&
+
+			(std::is_constructible_v<string_wrapper,
+				std::decay_t<
+				detail::dereferenced_t<detail::const_iterator_t<ContT>>>> ||
+
+				std::is_constructible_v<string_wrapper,
+				detail::dereferenced_t<detail::const_iterator_t<ContT>>>) &&
+
+			std::is_same_v<std::remove_const_t<
+			detail::universal_value_type_t<ContT>>, symbol_type>,
+
+			std::nullptr_t> = nullptr>
+			const_iterator find(const ContT & container,
+				const_iterator offset = const_iterator{ nullptr }) const
+		{
+			return is_empty() ? cend() :
+				m_parent->begin()->find(container, offset);
+		}
+
 		// Вспомагательные функции
+
+		size_type size() const noexcept;
 
 		bool is_empty() const noexcept;
 		operator bool() const noexcept;
@@ -153,6 +385,30 @@ namespace XMLB
 	{
 
 	}
+
+	//*************************************************************************
+
+	template<typename CharT>
+	inline Document<CharT>::Document(float version,
+		string_type&& encoding_type)
+		:m_parent{ std::make_unique<typename Document<CharT>::node_type>(
+			typename node_type::string_type{}) },
+		m_encoding_type{ std::move(encoding_type) },
+		m_version{ version }
+	{
+	}
+
+	//*************************************************************************
+
+	/*template<typename CharT>
+	inline Document<CharT>::Document(float version, string_wrapper encoding_type)
+		:m_parent{ std::make_unique<typename Document<CharT>::node_type>(
+			typename node_type::string_type{}) },
+		m_encoding_type{ encoding_type },
+		m_version{ version }
+	{
+
+	}*/
 
 	//*************************************************************************
 
@@ -368,9 +624,18 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
+	inline typename Document<CharT>::size_type 
+		Document<CharT>::size() const noexcept
+	{
+		return m_parent->size();
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
 	inline bool Document<CharT>::is_empty() const noexcept
 	{
-		return m_parent->child_size() ? true : false;
+		return m_parent->child_size() ? false : true;
 	}
 
 	//*************************************************************************
@@ -484,17 +749,24 @@ namespace XMLB { namespace detail {
 
 	//*************************************************************************
 
-	template<typename StringT, typename ContainerT>
+	template<typename StringT, typename ContainerT, std::enable_if_t<
+		std::is_same_v<std::decay_t<StringT>, 
+		std::basic_string<value_type_t<std::decay_t<StringT>>>> &&
+
+		std::is_same_v<value_type_t<std::decay_t<ContainerT>>, 
+		std::basic_string<universal_value_type_t<std::decay_t<ContainerT>>>>,
+
+		std::nullptr_t> = nullptr>
 	inline decltype(auto) create_node(StringT&& name, StringT&& value,
 		ContainerT&& attribute_names, ContainerT&& attribute_values)
 	{
-		using symbol_type = typename StringT::value_type;
+		using symbol_type = std::decay_t<typename StringT::value_type>;
 		using node_type = Node<symbol_type>;
 		using node_pointer = typename Node<symbol_type>::Ptr;
-		using node_attribute = Node_attribute<symbol_type>;
+		using node_attribute = typename Node<symbol_type>::attribute_type;
+		using string_type = typename Node<symbol_type>::string_type;
 
-		node_pointer result = std::make_unique<node_type>(
-			std::forward<StringT>(name), std::forward<StringT>(value));
+		node_pointer result = std::make_unique<node_type>(name, value);
 
 		auto attr_names_beg = attribute_names.begin();
 		auto attr_names_end = attribute_names.end();
@@ -507,7 +779,49 @@ namespace XMLB { namespace detail {
 			++attr_names_beg, ++attr_values_beg)
 		{
 			result->add_attribute(node_attribute{
-				std::move(*attr_names_beg), std::move(*attr_values_beg) });
+					std::move(*attr_names_beg), std::move(*attr_values_beg) });
+		}
+
+		return result;
+	}
+
+	//*************************************************************************
+
+	template<typename StringT, typename ContainerT, 
+		std::enable_if_t<
+		std::is_same_v<std::decay_t<StringT>,
+		std::basic_string_view<value_type_t<std::decay_t<StringT>>>>&&
+
+		std::is_same_v<value_type_t<std::decay_t<ContainerT>>,
+		std::basic_string_view<
+		universal_value_type_t<std::decay_t<ContainerT>>>>,
+		
+		std::nullptr_t> = nullptr>
+	inline decltype(auto) create_node(StringT&& name, StringT&& value,
+		ContainerT&& attribute_names, ContainerT&& attribute_values)
+	{
+		using symbol_type = std::decay_t<typename StringT::value_type>;
+		using node_type = Node<symbol_type>;
+		using node_pointer = typename Node<symbol_type>::Ptr;
+		using node_attribute = typename Node<symbol_type>::attribute_type;
+		using string_type = typename Node<symbol_type>::string_type;
+
+		node_pointer result = std::make_unique<node_type>(
+			string_type{ name }, string_type{ value });
+
+		auto attr_names_beg = attribute_names.begin();
+		auto attr_names_end = attribute_names.end();
+
+		auto attr_values_beg = attribute_values.begin();
+		auto attr_values_end = attribute_values.end();
+
+		for (; attr_names_beg != attr_names_end &&
+			attr_values_beg != attr_values_end;
+			++attr_names_beg, ++attr_values_beg)
+		{
+			result->add_attribute(node_attribute{
+					string_type{ *attr_names_beg }, 
+					string_type{ *attr_values_beg} });
 		}
 
 		return result;
@@ -607,6 +921,7 @@ namespace XMLB { namespace detail {
 		using tag_container_type =
 			typename std::decay_t<ContainerT>::value_type;
 		using symbol_type = symbol_type_t<tag_container_type>;
+		//using string_wrapper = typename Document<symbol_type>::string_wrapper;
 		using document_type = Document<symbol_type>;
 		using document_pointer = typename Document<symbol_type>::Ptr;
 
@@ -631,7 +946,7 @@ namespace XMLB { namespace detail {
 			else if (source_doc_info.attribute_names.size() ==
 				doc_version_and_encoding)
 			{
-				auto&& doc_version = to_float<symbol_type>(
+				auto doc_version = to_float<symbol_type>(
 					*source_doc_info.attribute_values.begin());
 
 				auto&& doc_encoding =
@@ -689,7 +1004,7 @@ namespace XMLB
 		IterT out,
 		const DecorT& decorator = DecorT{})
 	{
-		bool result = false;
+		bool result = true;
 
 		if (first == last)
 		{
@@ -766,6 +1081,12 @@ namespace XMLB
 					at_it != at_end;
 					++at_it)
 				{
+					if (!at_it->name.size())
+					{
+						result = false;
+						break;
+					}
+
 					*out = kSpace; ++out;
 
 					detail::copy_symbol_from_container(
@@ -777,6 +1098,12 @@ namespace XMLB
 						string_wrapper{ at_it->value }, out);
 					*out = kClose_attr; ++out;
 				}
+			}
+
+			if (!result || !first->get_name().size())
+			{
+				result = false;
+				break;
 			}
 
 			//Если у XML тега нет дочерних узлов и есть значение, то
@@ -813,7 +1140,7 @@ namespace XMLB
 		}
 
 		//Если остались ещё незакрытые теги, то заносим в файл их закрытие
-		while (!node_groups.empty())
+		while (result && !node_groups.empty())
 		{
 			//Записываем нужное количество табов для тега
 			detail::copy_symbol_n(kFill,
@@ -829,7 +1156,7 @@ namespace XMLB
 			node_groups.pop();
 		}
 
-		result = true;
+		//result = true;
 
 		return result;
 	}
@@ -870,7 +1197,7 @@ namespace XMLB
 		using string_type = typename Node<symbol_type>::string_type;
 		using string_wrapper = typename Node<symbol_type>::string_wrapper;
 
-		bool result = false;
+		bool result = true;
 
 		const auto& kSpace = decorator.white_space_symbol;
 		const auto& kOpen_tag = decorator.open_tag_symbol;
@@ -884,10 +1211,12 @@ namespace XMLB
 
 		*out = kOpen_tag; ++out;
 		*out = kDoc_info; ++out;
-		detail::copy_symbol_from_container(string_type{ "xml" }, out);
+		detail::copy_symbol_from_container(
+			detail::to_string<symbol_type>('x','m','l'), out);
 
 		*out = kSpace; ++out;
-		detail::copy_symbol_from_container(string_type{ "version" }, out);
+		detail::copy_symbol_from_container(
+			detail::to_string<symbol_type>('v', 'e', 'r', 's', 'i', 'o', 'n'), out);
 		*out = kEqual_attr; ++out;
 		*out = kOpen_attr; ++out;
 		detail::copy_symbol_from_container(
@@ -895,7 +1224,9 @@ namespace XMLB
 		*out = kClose_attr; ++out;
 
 		*out = kSpace; ++out;
-		detail::copy_symbol_from_container(string_type{ "encoding" }, out);
+		detail::copy_symbol_from_container(
+			detail::to_string<symbol_type>(
+				'e', 'n', 'c', 'o', 'd', 'i', 'n', 'g'), out);
 		*out = kEqual_attr; ++out;
 		*out = kOpen_attr; ++out;
 		detail::copy_symbol_from_container(document.get_encoding_type(), out);
@@ -946,7 +1277,7 @@ namespace XMLB
 		IterT out,
 		const DecorT& decorator = DecorT{})
 	{
-		bool result = false;
+		bool result = true;
 
 		using symbol_type = CharT;
 		using string_type = typename Node<symbol_type>::string_type;
@@ -1031,10 +1362,22 @@ namespace XMLB
 					at_it != at_end;
 					++at_it)
 				{
+					if (!at_it->name.size())
+					{
+						result = false;
+						break;
+					}
+
 					additional_symbol_count += 4;
 					additional_symbol_count += at_it->name.size();
 					additional_symbol_count += at_it->value.size();
 				}
+			}
+
+			if (!result || !first->get_name().size())
+			{
+				result = false;
+				break;
 			}
 
 			//Продолжаем суммировать необходимое количество символов
@@ -1123,7 +1466,7 @@ namespace XMLB
 
 
 		//Если остались ещё незакрытые теги, то заносим в файл их закрытие
-		while (!node_groups.empty())
+		while (result && !node_groups.empty())
 		{
 			//Количество дополнительных символов в выходной строке
 			size_type additional_symbol_count = 4;
@@ -1154,7 +1497,7 @@ namespace XMLB
 
 
 
-		result = true;
+		//result = true;
 
 		return result;
 	}
@@ -1214,9 +1557,10 @@ namespace XMLB
 
 		size_type additional_symbol_count = 13;
 
-		string_type kXml{ "xml" };
-		string_type kVersion{ "version" };
-		string_type kEncoding{ "encoding" };
+		string_type kXml = detail::to_string<symbol_type>('x', 'm', 'l');
+		string_type kVersion = detail::to_string<symbol_type>('v', 'e', 'r', 's', 'i', 'o', 'n');
+		string_type kEncoding = detail::to_string<symbol_type>(
+			'e', 'n', 'c', 'o', 'd', 'i', 'n', 'g');
 		string_type doc_version = cut_doc_version<symbol_type>(document.get_version());
 
 		string_type output_string{};

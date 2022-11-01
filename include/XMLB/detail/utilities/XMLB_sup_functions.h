@@ -14,6 +14,7 @@
 #ifndef XMLB_SUP_FUNCTIONS_H
 #define XMLB_SUP_FUNCTIONS_H
 
+#include <string>
 #include <utility>
 
 namespace XMLB { namespace detail {
@@ -57,6 +58,53 @@ namespace XMLB { namespace detail {
 		return (op(std::forward<decltype(obj)>(obj),
 			std::forward<decltype(args)>(args)) && ...);
 	}
+
+	//*************************************************************************
+
+
+
+	//*************************************************************************
+
+	template<typename T, typename ... Chars>
+	inline decltype(auto) to_string(Chars ... symbols)
+	{
+		return std::basic_string<T>{ static_cast<T>(symbols)... };
+	}
+
+	//*************************************************************************
+
+
+	//*************************************************************************
+
+	/*template<typename T>
+	inline std::basic_string<T> default_encode()
+	{
+		return std::basic_string<T>{};
+	}
+
+	template<>
+	inline std::basic_string<char> default_encode()
+	{
+		return to_view<char>('U', 'T', 'F', '-', '8');
+	}
+
+	template<>
+	inline std::basic_string<char16_t> default_encode()
+	{
+		return to_view<char16_t>(u'U', u'T', u'F', u'-', u'8');
+	}
+
+	template<>
+	inline std::basic_string<char32_t> default_encode()
+	{
+		return to_view<char32_t>(U'U', U'T', U'F', U'-', U'8');
+	}
+
+	template<>
+	inline std::basic_string<wchar_t> default_encode()
+	{
+		return to_view<wchar_t>(L'U', L'T', L'F', L'-', L'8');
+	}*/
 
 	//*************************************************************************
 

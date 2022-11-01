@@ -14,6 +14,7 @@
 #include <algorithm>
 
 #include "XMLB/detail/parser/XMLB_Parser_states.h"
+#include "XMLB/detail/utilities/XMLB_sup_functions.h"
 
 namespace XMLB { namespace detail {
 
@@ -301,6 +302,8 @@ namespace XMLB { namespace detail {
 
 				return Open_tag_state{};
 			}
+			///@todo нужно подумать, как более лучше тут сделать контроль, чтобы
+			///не добавлялись лишние символы
 			else if (token == decorator.white_space_symbol)
 			{
 				auto&& tag_value = data.get_tag_value();
@@ -309,7 +312,19 @@ namespace XMLB { namespace detail {
 					tag_value.back() != decorator.white_space_symbol)
 				{
 					data.push_to_tag_value(std::forward<CharT>(token));
+
+					tag_value = data.get_tag_value();
+
+					if (tag_value.back() == decorator.line_break_symbol ||
+						tag_value.back() == decorator.tab_symbol ||
+						tag_value.back() == decorator.carriage_symbol ||
+						tag_value.back() == decorator.fill_symbol)
+					{
+						data.pop_from_tag_value();
+					}
 				}
+
+				
 			}
 			else if (token != decorator.line_break_symbol &&
 				token != decorator.tab_symbol &&
@@ -533,6 +548,8 @@ namespace XMLB { namespace detail {
 		Base_state operator()(CharT&& token, DataT&& data,
 			const DecorT& decorator) const
 		{
+			using symbol_type = std::decay_t<CharT>;
+			using string_type = typename std::decay_t<DataT>::string_type;
 			using string_wrapper =
 				typename std::decay_t<DataT>::string_wrapper;
 			using size_type = typename std::decay_t<DataT>::size_type;
@@ -542,10 +559,35 @@ namespace XMLB { namespace detail {
 				if (data.is_correct_tag_name() &&
 					data.is_correct_tag_attributes())
 				{
-					string_wrapper kDoc_info{ "xml" };
-					string_wrapper kDoc_version{ "version" };
-					string_wrapper kDoc_encode{ "encoding" };
+					string_wrapper kDoc_info{};
+					string_wrapper kDoc_version{};
+					string_wrapper kDoc_encode{};
 
+					if constexpr (std::is_same_v<symbol_type, char16_t>)
+					{
+						kDoc_info = string_wrapper{ u"xml" };
+						kDoc_version = string_wrapper{ u"version" };
+						kDoc_encode = string_wrapper{ u"encoding" };
+					}
+					else if constexpr (std::is_same_v<symbol_type, char32_t>)
+					{
+						kDoc_info = string_wrapper{ U"xml" };
+						kDoc_version = string_wrapper{ U"version" };
+						kDoc_encode = string_wrapper{ U"encoding" };
+					}
+					else if constexpr (std::is_same_v<symbol_type, wchar_t>)
+					{
+						kDoc_info = string_wrapper{ L"xml" };
+						kDoc_version = string_wrapper{ L"version" };
+						kDoc_encode = string_wrapper{ L"encoding" };
+					}
+					else
+					{
+						kDoc_info = string_wrapper{ "xml" };
+						kDoc_version = string_wrapper{ "version" };
+						kDoc_encode = string_wrapper{ "encoding" };
+					}
+					
 					auto&& tag_name = data.get_tag_name();
 					auto&& tag_value = data.get_tag_value();
 

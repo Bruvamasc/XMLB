@@ -96,6 +96,7 @@ namespace XMLB { namespace detail {
 	inline bool Parser<InputT, DecorT, DataT>::parse(CharT&& symbol,
 		const DecorT& decorator)
 	{
+		using std::swap;
 		bool result = true;
 
 		m_current_state = m_functors[m_current_state](
@@ -103,6 +104,7 @@ namespace XMLB { namespace detail {
 
 		if (m_current_state >= m_functors.size())
 		{
+			m_data.get_tags() = tags_container_type{};
 			result = false;
 		}
 

@@ -17,6 +17,7 @@
 #ifndef XMLB_NODE_H
 #define XMLB_NODE_H
 
+#include <iostream>
 #include <string>
 #include <string_view>
 #include <list>
@@ -35,8 +36,16 @@ namespace XMLB
 	template<typename CharT>
 	struct Node_attribute final
 	{
-		std::basic_string<CharT> name;
-		std::basic_string<CharT> value;
+		using symbols_type = CharT;
+		using string_type = std::basic_string<CharT>;
+		using string_wrapper = std::basic_string_view<CharT>;
+
+		string_type name;
+		string_type value;
+
+		//Node_attribute(const string_type& name, const string_type& value);
+		//Node_attribute(string_type&& name, string_type&& value) noexcept;
+		//Node_attribute(string_wrapper name, string_wrapper value);
 	};
 
 	//*************************************************************************
@@ -76,7 +85,10 @@ namespace XMLB
 		Node(const string_type& name, 
 			const string_type& value = string_type{});
 
-		Node(string_type&& name, string_type&& value = string_type{});
+		Node(string_type&& name, string_type&& value = string_type{}) noexcept;
+
+		//explicit Node(string_wrapper name, 
+			//string_wrapper value = string_wrapper{});
 
 		Node(const Node& node);
 		Node& operator=(const Node& node);
@@ -100,8 +112,8 @@ namespace XMLB
 
 		// Работа с аттрибутами тега
 
-		void add_attribute(const attribute_type& attribute);
-		void add_attribute(attribute_type&& attribute);
+		node_type& add_attribute(const attribute_type& attribute) &;
+		node_type& add_attribute(attribute_type&& attribute) &;
 
 		attr_iterator erase_attribute(std::size_t index);
 		attr_iterator erase_attribute(attr_const_iterator attribute);
@@ -121,9 +133,9 @@ namespace XMLB
 
 		// Работа с дочерними узлами
 
-		void add_child(const node_type& node);
-		void add_child(node_type&& node);
-		void add_child(Ptr node);
+		node_type& add_child(const node_type& node) &;
+		node_type& add_child(node_type&& node) &;
+		node_type& add_child(Ptr node) &;
 
 		iterator erase_child(std::size_t index);
 		iterator erase_child(const_iterator node);
@@ -238,7 +250,7 @@ namespace XMLB
 		* @return итератор на узел - если он был найден. В противном случае
 		* возвращает итератор указывающий равный end()
 		**********************************************************************/
-		template<typename ContT = std::initializer_list<string_type>,
+		template<typename ContT = std::initializer_list<string_wrapper>,
 			std::enable_if_t<
 
 			detail::is_has_begin_and_end_v<ContT> &&
@@ -338,7 +350,7 @@ namespace XMLB
 		* @return итератор на узел - если он был найден. В противном случае
 		* возвращает итератор указывающий равный end()
 		**********************************************************************/
-		template<typename ContT = std::initializer_list<string_type>,
+		template<typename ContT = std::initializer_list<string_wrapper>,
 			std::enable_if_t<
 
 			detail::is_has_begin_and_end_v<ContT>&&
@@ -388,6 +400,42 @@ namespace XMLB
 
 
 	/**************************************************************************
+	*						NODE_ATTRIBUTE IMPLEMENTATION
+	**************************************************************************/
+
+	/*template<typename CharT>
+	inline Node_attribute<CharT>::Node_attribute(const string_type& name,
+		const string_type& value)
+		:name{ name }, value{ value }
+	{
+
+	}*/
+
+	//*************************************************************************
+
+	/*template<typename CharT>
+	inline Node_attribute<CharT>::Node_attribute(string_type&& name,
+		string_type&& value) noexcept
+		:name{ std::move(name) }, value{ std::move(value) }
+	{
+		std::cout << "NODE move ctr == " << name << '\n';
+	}*/
+
+	//*************************************************************************
+
+	/*template<typename CharT>
+	inline Node_attribute<CharT>::Node_attribute(string_wrapper name,
+		string_wrapper value)
+		:name{ name }, value{ value }
+	{
+
+	}*/
+
+	//*************************************************************************
+
+
+
+	/**************************************************************************
 	*							NODE IMPLEMENTATION
 	**************************************************************************/
 
@@ -401,11 +449,20 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline Node<CharT>::Node(string_type&& name, string_type&& value)
-		:m_name{ std::move(name) }, m_value{ std::move(value) }, m_size{ 0 }
+	inline Node<CharT>::Node(string_type&& name, string_type&& value) noexcept
+		:m_name{ std::move(name) }, m_value{ std::move(value) }, m_size{ 0 }	
 	{
 		m_tree_node.element = this;
 	}
+
+	//*************************************************************************
+
+	/*template<typename CharT>
+	inline Node<CharT>::Node(string_wrapper name, string_wrapper value)
+		:m_name{ name }, m_value{ value }, m_size{ 0 }
+	{
+		m_tree_node.element = this;
+	}*/
 
 	//*************************************************************************
 
@@ -535,24 +592,30 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::add_attribute(const attribute_type& attribute)
+	inline typename Node<CharT>::node_type& 
+		Node<CharT>::add_attribute(const attribute_type& attribute) &
 	{
 		m_attributes.push_back(attribute);
+
+		return *this;
 	}
 
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::add_attribute(attribute_type&& attribute)
+	inline typename Node<CharT>::node_type& 
+		Node<CharT>::add_attribute(attribute_type&& attribute) &
 	{
 		m_attributes.push_back(std::move(attribute));
+
+		return *this;
 	}
 
 	//*************************************************************************
 
 	template<typename CharT>
-	inline typename Node<CharT>::attr_iterator Node<CharT>::erase_attribute(
-		std::size_t index)
+	inline typename Node<CharT>::attr_iterator 
+		Node<CharT>::erase_attribute(std::size_t index)
 	{
 		if (index < m_attributes.size())
 		{
@@ -576,8 +639,8 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline typename Node<CharT>::attr_iterator Node<CharT>::erase_attribute(
-		attr_const_iterator attribute_fisrt, 
+	inline typename Node<CharT>::attr_iterator 
+		Node<CharT>::erase_attribute(attr_const_iterator attribute_fisrt, 
 		attr_const_iterator attribute_last)
 	{
 		return m_attributes.erase(attribute_fisrt, attribute_last);
@@ -648,7 +711,8 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::add_child(const node_type& node)
+	inline typename Node<CharT>::node_type& 
+		Node<CharT>::add_child(const node_type& node) &
 	{
 		tree_node* last_tree_node = find_last_tree_node();
 
@@ -656,16 +720,19 @@ namespace XMLB
 
 		connect_tree_nodes(
 			last_tree_node, &m_childs.back().get()->m_tree_node);
+
+		return *m_childs.back();
 	}
 
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::add_child(node_type&& node)
+	inline typename Node<CharT>::node_type&
+		Node<CharT>::add_child(node_type&& node) &
 	{
 		if (this == &node)
 		{
-			return;
+			return *this;
 		}
 
 		tree_node* last_tree_node = find_last_tree_node();
@@ -674,16 +741,19 @@ namespace XMLB
 
 		connect_tree_nodes(
 			last_tree_node, &m_childs.back().get()->m_tree_node);
+
+		return *m_childs.back();
 	}
 
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Node<CharT>::add_child(Ptr node)
+	inline typename Node<CharT>::node_type& 
+		Node<CharT>::add_child(Ptr node) &
 	{
 		if (!node || this == node.get())
 		{
-			return;
+			return *this;
 		}
 
 		tree_node* last_tree_node = find_last_tree_node();
@@ -692,6 +762,8 @@ namespace XMLB
 
 		connect_tree_nodes(
 			last_tree_node, &m_childs.back().get()->m_tree_node);
+
+		return *m_childs.back();
 	}
 
 	//*************************************************************************

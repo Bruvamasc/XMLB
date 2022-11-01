@@ -2,7 +2,7 @@ x64/
 .vs/
 *.user
 *.xml
-samples/
+examples/
 some_reserve/
 some_support_data/
 *.vcxproj
@@ -10,10 +10,7 @@ some_support_data/
 *.sln
 
 #Temp files
-test_1.txt
-test_2.txt
-test_3.txt
-Just_impl.txt
+todo.txt
 Main.cpp
 main.cpp
 

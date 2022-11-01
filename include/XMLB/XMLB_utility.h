@@ -16,6 +16,7 @@
 #define XMLB_UTILITY_H
 
 #include <string>
+#include <string_view>
 
 ///@todo Нужно подумать, как убрать forward declaration или же создать файлі
 ///с ними
@@ -43,10 +44,11 @@ namespace XMLB
 	* конвертированное число, которое тоже может быть равно 0.0
 	**************************************************************************/
 	template<typename CharT>
-	inline float to_float(const std::basic_string<CharT>& value)
+	inline float to_float(std::basic_string_view<CharT> value)
 	{
 		using symbol_type = CharT;
-		using size_type = typename std::basic_string<symbol_type>::size_type;
+		using size_type =
+			typename std::basic_string_view<symbol_type>::size_type;
 
 		float result = 0.f;
 
@@ -64,7 +66,7 @@ namespace XMLB
 			size_type head_count = 0;
 			size_type tail_count = 0;
 
-			if (found_dot != std::basic_string<CharT>::npos)
+			if (found_dot != std::basic_string_view<CharT>::npos)
 			{
 				head_count = found_dot;
 				tail_count = value.size() - dot_count - head_count;
@@ -74,20 +76,20 @@ namespace XMLB
 				head_count = value.size();
 			}
 
-			if (found_minus != std::basic_string<CharT>::npos)
+			if (found_minus != std::basic_string_view<CharT>::npos)
 			{
 				--head_count;
 			}
 
 			float head = 0.f;
 			float tail = 0.f;
-			
+
 			float start_base = 1.f;
 			size_type digit_position = found_dot - 1;
 
 			while (head_count)
 			{
-				float digit = static_cast<float>(value[digit_position] - 
+				float digit = static_cast<float>(value[digit_position] -
 					start_ascii_for_dec);
 
 				head += digit * start_base;
@@ -102,7 +104,7 @@ namespace XMLB
 
 			while (tail_count)
 			{
-				float digit = static_cast<float>(value[digit_position] - 
+				float digit = static_cast<float>(value[digit_position] -
 					start_ascii_for_dec);
 
 				tail += digit > 0 ? digit / start_base : 0.f;
@@ -114,7 +116,7 @@ namespace XMLB
 
 			result = head + tail;
 
-			if (found_minus != std::basic_string<CharT>::npos)
+			if (found_minus != std::basic_string_view<CharT>::npos)
 			{
 				result *= -1.f;
 			}
@@ -301,6 +303,7 @@ namespace XMLB
 	* для хранения готового XML документа
 	*
 	* @param document - XML документ
+	* @param fill_status - false - если не учитівать заполняющие символы(табы)
 	* @param line_break_status - false - если не учитывать перевод на новую
 	* строку
 	*
@@ -309,7 +312,8 @@ namespace XMLB
 	**************************************************************************/
 	template<typename CharT>
 	inline std::size_t symbols_count(
-		const XMLB::Document<CharT>& document, bool line_break_status = true)
+		const XMLB::Document<CharT>& document, bool fill_status = true, 
+		bool line_break_status = true)
 	{
 		using symbol_type = CharT;
 		std::size_t result = 0;
@@ -350,8 +354,8 @@ namespace XMLB
 		result += kClose_tag;
 		result += kLine_break;
 
-		result += symbols_count(
-			document.cbegin(), document.cend(), line_break_status);
+		result += symbols_count(document.cbegin(), document.cend(), 
+			fill_status, line_break_status);
 
 		return result;
 	}
@@ -366,6 +370,7 @@ namespace XMLB
 	*
 	* @param first - итератор на начало XML последовательности
 	* @param last - итератор на конец XML последовательности
+	* @param fill_status - false - если не учитівать заполняющие символы(табы)
 	* @param line_break_status - false - если не учитывать перевод на новую
 	* строку
 	*
@@ -375,7 +380,8 @@ namespace XMLB
 	template<typename CharT>
 	inline std::size_t symbols_count(
 		detail::Node_const_iterator<CharT> first, 
-		detail::Node_const_iterator<CharT> last, 
+		detail::Node_const_iterator<CharT> last,
+		bool fill_status = true,
 		bool line_break_status = true)
 	{
 		using const_iterator = detail::Node_const_iterator<CharT>;
@@ -387,7 +393,7 @@ namespace XMLB
 			return result;
 		}
 
-		const auto kFill = 1;
+		const auto kFill = fill_status ? 1 : 0;
 		const auto kSpace = 1;
 		const auto kOpen_tag = 1;
 		const auto kClose_tag = 1;
@@ -414,7 +420,7 @@ namespace XMLB
 				while (first.get_offset() <= node_groups.top().get_offset())
 				{
 					//Записываем нужное количество табов для тега
-					result += node_groups.top().get_offset();
+					result += node_groups.top().get_offset() * kFill;
 
 					result += kOpen_tag;
 					result += kLast_tag;
@@ -434,7 +440,7 @@ namespace XMLB
 			}
 
 			//Устанавливаем нужное количество табов для тега
-			result += first.get_offset();
+			result += first.get_offset() * kFill;
 
 			//Заносим в файл сам тег и его информацию
 			result += kOpen_tag;
@@ -495,7 +501,7 @@ namespace XMLB
 		while (!node_groups.empty())
 		{
 			//Записываем нужное количество табов для тега
-			result += node_groups.top().get_offset();
+			result += node_groups.top().get_offset() * kFill;
 
 			result += kOpen_tag;
 			result += kLast_tag;
@@ -518,6 +524,7 @@ namespace XMLB
 	* для хранения последовательности XML узлов
 	*
 	* @param node - XML узел
+	* @param fill_status - false - если не учитівать заполняющие символы(табы)
 	* @param line_break_status - false - если не учитывать перевод на новую
 	* строку
 	*
@@ -526,13 +533,14 @@ namespace XMLB
 	**************************************************************************/
 	template<typename CharT>
 	inline std::size_t symbols_count(const Node<CharT>& node,
+		bool fill_status = true,
 		bool line_break_status = true)
 	{
 		using const_iterator = detail::Node_const_iterator<CharT>;
 
 		std::size_t result = 0;
 
-		const auto kFill = 1;
+		const auto kFill = fill_status ? 1 : 0;
 		const auto kSpace = 1;
 		const auto kOpen_tag = 1;
 		const auto kClose_tag = 1;
@@ -604,7 +612,8 @@ namespace XMLB
 			result += kClose_tag;
 		}
 
-		result += symbols_count(node.begin(), node.end(), line_break_status);
+		result += symbols_count(node.begin(), node.end(),
+			fill_status, line_break_status);
 
 		return result;
 	}
