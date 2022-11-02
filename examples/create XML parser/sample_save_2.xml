@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edsscript>
+	<sequence>
+		<action>btn*</action>
+		<action>msg_generic</action>
+		<action>all</action>
+		<action>@@Sisteme Giriş@@</action>
+		<action>forward,mainmenu</action>
+		<action>LOGIN_DLG</action>
+		<action>start</action>
+		<action>step2</action>
+	</sequence>
+	<sequence>
+		<action>btnforward</action>
+		<action>login*</action>
+		<action>all</action>
+		<action>check</action>
+	</sequence>
+	<trigger>
+		<condition>login_succeeded</condition>
+		<sequence />
+	</trigger>
+	<trigger>
+		<condition>login_unknownuser</condition>
+		<sequence>
+			<action>all</action>
+			<action>@@Hata@@</action>
+			<action>generic_neg.htm,@@Yanlış kullanıcı ismi@@,@@Lütfen kullanıcı ismini doğru giriniz.@@</action>
+			<action>back</action>
+			<action>btnback</action>
+			<action>start</action>
+		</sequence>
+	</trigger>
+	<trigger>
+		<condition>login_incorrectpwd</condition>
+		<sequence>
+			<action>all</action>
+			<action>@@Hata@@</action>
+			<action>generic_neg.htm,@@Hatalı parola@@,@@Lütfen parolanızı doğru giriniz.@@</action>
+			<action>back</action>
+			<action>btnback</action>
+			<action>start</action>
+		</sequence>
+	</trigger>
+	<trigger>
+		<condition>back</condition>
+		<sequence>
+			<action>btnback</action>
+		</sequence>
+	</trigger>
+	<trigger>
+		<condition>forward</condition>
+		<sequence>
+			<action>btnforward</action>
+		</sequence>
+	</trigger>
+	<trigger>
+		<condition>mainmenu</condition>
+		<sequence>
+			<action />
+		</sequence>
+	</trigger>
+	<trigger>
+		<condition>quitapplication</condition>
+		<sequence>
+			<action>quitapp.xml</action>
+			<action>start</action>
+		</sequence>
+	</trigger>
+	<trigger>
+		<condition>error*</condition>
+		<sequence>
+			<action>errdsc_null.htm,@@Hata@@</action>
+			<action>all</action>
+			<action>forward</action>
+			<action>btnforward</action>
+		</sequence>
+	</trigger>
+	<trigger>
+		<condition>msg_generic</condition>
+		<sequence>
+			<action>generic_msg.htm</action>
+			<action>msg_generic</action>
+		</sequence>
+	</trigger>
+	<trigger>
+		<condition>error_hardcodeside</condition>
+		<sequence>
+			<action>*</action>
+			<action>btnmainmenu</action>
+			<action>btnquitapp</action>
+			<action>all</action>
+			<action>mainmenu</action>
+			<action>errdsc_null.htm,Hata, @@İşlem sırasında bir hata meydana geldi.@@</action>
+			<action>btnmainmenu</action>
+		</sequence>
+	</trigger>
+</edsscript>

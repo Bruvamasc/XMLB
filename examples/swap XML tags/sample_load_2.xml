@@ -1,0 +1,20 @@
+<?xml version="1.1" encoding="UTF-16"?>
+<HOUSE height="10.m" widht="5.m" lenght="4.m">
+	<front_wall color="green">
+		<door>Очень красивая дверь!</door>
+	</front_wall>
+	<left_wall color="white">
+		<window>Чистое окно!</window>
+	</left_wall>
+	<back_wall color="blue" price="3000$">
+		<furnace>Что делает печь на стене?</furnace>
+	</back_wall>
+	<right_wall color="red">
+		<window>
+			<glass color="yellow" />
+			<window_frame manufacturer="Steel and Air">
+				<sealant>Хороший уплотнитель!</sealant>
+			</window_frame>
+		</window>
+	</right_wall>
+</HOUSE>

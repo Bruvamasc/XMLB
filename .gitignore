@@ -1,7 +1,6 @@
 x64/
 .vs/
 *.user
-*.xml
 some_reserve/
 some_support_data/
 *.vcxproj
@@ -10,8 +9,7 @@ some_support_data/
 
 #Temp files
 todo.txt
-Main.cpp
-main.cpp
+Start.cpp
 
 # Prerequisites
 *.d
