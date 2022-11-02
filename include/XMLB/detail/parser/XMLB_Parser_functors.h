@@ -622,6 +622,10 @@ namespace XMLB { namespace detail {
 								data.add_tag_as_doc_info();
 							}
 						}
+						else
+						{
+							data.add_tag_as_doc_info();
+						}
 					}
 				}
 

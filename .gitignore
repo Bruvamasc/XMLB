@@ -2,7 +2,6 @@ x64/
 .vs/
 *.user
 *.xml
-examples/
 some_reserve/
 some_support_data/
 *.vcxproj

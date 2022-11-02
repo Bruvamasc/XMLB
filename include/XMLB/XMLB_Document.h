@@ -925,6 +925,8 @@ namespace XMLB { namespace detail {
 		using document_type = Document<symbol_type>;
 		using document_pointer = typename Document<symbol_type>::Ptr;
 
+		using string_type = typename Document<symbol_type>::string_type;
+
 		document_pointer result{ nullptr };
 
 		if (doc_info.size())
@@ -953,7 +955,7 @@ namespace XMLB { namespace detail {
 					*(++source_doc_info.attribute_values.begin());
 
 				result = std::move(std::make_unique<document_type>(
-					doc_version, doc_encoding));
+					doc_version, string_type(doc_encoding)));
 			}
 		}
 
@@ -1628,7 +1630,7 @@ namespace XMLB
 		detail::default_data_controller<detail::symbol_type_t<DecorT>>>,
 
 		std::enable_if_t<detail::is_input_iterator_and_char_v<
-		IterT, DecorT, ParserT>,
+		IterT, DecorT, std::decay_t<ParserT>>,
 
 		std::nullptr_t> = nullptr>
 	inline decltype(auto) load_from(IterT first, IterT last,
@@ -1688,7 +1690,7 @@ namespace XMLB
 		detail::default_data_controller<detail::symbol_type_t<DecorT>>>,
 
 		std::enable_if_t<detail::is_input_iterator_and_container_v<
-		IterT, DecorT, ParserT>,
+		IterT, DecorT, std::decay_t<ParserT>>,
 
 		std::nullptr_t> = nullptr>
 	inline decltype(auto) load_from(IterT first, IterT last,
@@ -1749,7 +1751,7 @@ namespace XMLB
 		detail::default_data_controller<const detail::symbol_type_t<DecorT>*>>,
 
 		std::enable_if_t<detail::is_forward_iterator_or_pointer_and_char_v<
-		IterT, DecorT, ParserT>,
+		IterT, DecorT, std::decay_t<ParserT>>,
 
 		std::nullptr_t> = nullptr>
 	inline decltype(auto) load_from(IterT first, IterT last,
@@ -1810,7 +1812,7 @@ namespace XMLB
 
 		std::enable_if_t<
 		detail::is_forward_iterator_or_pointer_and_container_v<
-		IterT, DecorT, ParserT>,
+		IterT, DecorT, std::decay_t<ParserT>>,
 
 		std::nullptr_t> = nullptr>
 	inline decltype(auto) load_from(IterT first, IterT last,
