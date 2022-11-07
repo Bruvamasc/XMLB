@@ -25,8 +25,8 @@
 var menudata={children:[
 {text:"Титульная страница",url:"index.html"},
 {text:"Описания",url:"pages.html"},
-{text:"Основные инструменты",url:"group__general.html"},
-{text:"Второстепенные инструменты",url:"group__secondary.html"},
+{text:"Основные интрументы",url:"group__general.html"},
+{text:"Второстепенные интрументы",url:"group__secondary.html"},
 {text:"Классы",url:"annotated.html",children:[
 {text:"Классы",url:"annotated.html"},
 {text:"Алфавитный указатель классов",url:"classes.html"},
