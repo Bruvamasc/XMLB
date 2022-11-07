@@ -22,6 +22,7 @@
 
  @licend  The above is the entire license notice for the JavaScript code in this file
 */
+
 var menudata={children:[
 {text:"Титульная страница",url:"index.html"},
 {text:"Описания",url:"pages.html"},
