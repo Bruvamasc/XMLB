@@ -1,37 +1,52 @@
-/******************************************************************************
-* @file
-* Данный файл объявлет основной строительный элемент(узел) XML документа.
-* На текущий момент, является завершенным без дебаг функций
-*
-* @author Bruvamasc
-* @date   2022-09-17
-*
-* @todo Нужно подумать, как добавить режим дебага; Возможно заменить способ
-* хранения дочерних узлов; Возможно заменить Node_tree_impl на что-то другое;
-* Придумать, как конструировать итератор, указывающий на конец узлов, но чтобы
-* его можно было декрементировать
-* ///< Указывает, что элемент недоступен для использования
-*
-******************************************************************************/
+//*****************************************************************************
+// MIT License
+//
+// Copyright(c) 2022 Vladislav Kurmanenko (Bruvamasc)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+//
+// The above copyright noticeand this permission notice shall be included in 
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//*****************************************************************************
+
+
 
 #ifndef XMLB_NODE_H
 #define XMLB_NODE_H
 
-#include <iostream>
 #include <string>
 #include <string_view>
 #include <list>
 #include <memory>
-#include <iostream>
 
 #include "XMLB/detail/XMLB_Node_iterator.h"
+#include "XMLB/detail/XMLB_Diagnostic_iterator.h"
 #include "XMLB/detail/traits/XMLB_Type_traits.h"
 #include "XMLB/detail/traits/XMLB_Type_methods_traits.h"
+
+
 
 namespace XMLB
 {
 	/**************************************************************************
-	* @brief Аттрибут узла XML структуры
+	* @brief Структура для хранения XML атрибута
+	* 
+	* @ingroup general
+	* 
+	* @tparam CharT - тип символов
 	**************************************************************************/
 	template<typename CharT>
 	struct Node_attribute final
@@ -40,12 +55,8 @@ namespace XMLB
 		using string_type = std::basic_string<CharT>;
 		using string_wrapper = std::basic_string_view<CharT>;
 
-		string_type name;
-		string_type value;
-
-		//Node_attribute(const string_type& name, const string_type& value);
-		//Node_attribute(string_type&& name, string_type&& value) noexcept;
-		//Node_attribute(string_wrapper name, string_wrapper value);
+		string_type name;				///<Имя атрибута
+		string_type value;				///<Значение атрибута
 	};
 
 	//*************************************************************************
@@ -53,7 +64,11 @@ namespace XMLB
 
 
 	/**************************************************************************
-	* @brief Узел XML структуры
+	* @brief XML узел
+	* 
+	* @ingroup general
+	* 
+	* @tparam CharT - тип символов
 	**************************************************************************/
 	template<typename CharT>
 	class Node final
@@ -70,25 +85,32 @@ namespace XMLB
 		using Ptr = std::unique_ptr<node_type>;
 
 		using attr_iterator = typename std::list<attribute_type>::iterator;
-		using attr_const_iterator = 
+		using attr_const_iterator =
 			typename std::list<attribute_type>::const_iterator;
 
 		using first_level_iterator = typename std::list<Ptr>::iterator;
-		using first_level_const_iterator = 
+		using first_level_const_iterator =
 			typename std::list<Ptr>::const_iterator;
 
 		using iterator = detail::Node_iterator<node_type>;
 		using const_iterator = detail::Node_const_iterator<node_type>;
-		
-		// Конструкторы, деструкторы и т.п.
 
-		Node(const string_type& name, 
+
+
+		/// @name Конструкторы, деструктор
+		/// @{
+		/**********************************************************************
+		* @param name - имя узла
+		* @param value - значение узла
+		**********************************************************************/
+		Node(const string_type& name,
 			const string_type& value = string_type{});
 
+		/**********************************************************************
+		* @param name - имя узла
+		* @param value - значение узла
+		**********************************************************************/
 		Node(string_type&& name, string_type&& value = string_type{}) noexcept;
-
-		//explicit Node(string_wrapper name, 
-			//string_wrapper value = string_wrapper{});
 
 		Node(const Node& node);
 		Node& operator=(const Node& node);
@@ -97,29 +119,121 @@ namespace XMLB
 		Node& operator=(Node&& node) noexcept;
 
 		~Node() = default;
+		/// @}
 
-		// Работа с именем тега
 
+
+		/// @name Методы для работы с именем узла
+		/// @{
+		/**********************************************************************
+		* @brief Изменить имя узла
+		*
+		* @param name - новое имя узла
+		**********************************************************************/
 		void set_name(const string_type& name);
+
+		/**********************************************************************
+		* @brief Изменить имя узла
+		*
+		* @param name - новое имя узла
+		**********************************************************************/
 		void set_name(string_type&& name) noexcept;
+
+		/**********************************************************************
+		* @brief Получить имя узла
+		*
+		* @return невладеющий объект-обертку строки с именем узла
+		**********************************************************************/
 		string_wrapper get_name() const & noexcept;
+		/// @}
 
-		// Работа со значением тега
 
+
+		/// @name Методы для работы со значением узла
+		/// @{
+		/**********************************************************************
+		* @brief Изменить значение узла
+		*
+		* @param value - новое значение узла
+		**********************************************************************/
 		void set_value(const string_type& value);
+
+		/**********************************************************************
+		* @brief Изменить значение узла
+		*
+		* @param value - новое значение узла
+		**********************************************************************/
 		void set_value(string_type&& value) noexcept;
+
+		/**********************************************************************
+		* @brief Получить значение узла
+		*
+		* @return невладеющий объект-обертку строки со значением узла
+		**********************************************************************/
 		string_wrapper get_value() const & noexcept;
+		/// @}
 
-		// Работа с аттрибутами тега
 
+
+		/// @name Методы для работы с атрибутами узла
+		/// @{
+		/**********************************************************************
+		* @brief Добавить атрибут
+		* 
+		* @param attribute - атрибута
+		*
+		* @return текущий узел
+		**********************************************************************/
 		node_type& add_attribute(const attribute_type& attribute) &;
+
+		/**********************************************************************
+		* @brief Добавить атрибут
+		*
+		* @param attribute - атрибут
+		*
+		* @return текущий узел
+		**********************************************************************/
 		node_type& add_attribute(attribute_type&& attribute) &;
 
+		/**********************************************************************
+		* @brief Удалить атрибут
+		*
+		* @param index - позиция атрибута
+		*
+		* @return итератор на атрибут после удаленного атрибута. Если не
+		* удалось удалить атрибут, то возвращает итератор на attr_end()
+		**********************************************************************/
 		attr_iterator erase_attribute(std::size_t index);
+
+		/**********************************************************************
+		* @brief Удалить атрибут
+		*
+		* @param attribute - итератор на атрибут
+		*
+		* @return итератор на атрибут после удаленного атрибута. Если не
+		* удалось удалить атрибут, то возвращает итератор на attr_end()
+		**********************************************************************/
 		attr_iterator erase_attribute(attr_const_iterator attribute);
+
+		/**********************************************************************
+		* @brief Удалить атрибуты
+		*
+		* @param attribute_first - итератор на первый атрибут
+		* @param attribute_last - итератор за последним атрибутом
+		*
+		* @return итератор на атрибут после последнего удаленного атрибута. 
+		* Если не удалось удалить атрибуты, то возвращает итератор на 
+		* attr_end() или на атрибут, который после последнего успешно 
+		* удаленного атрибута
+		**********************************************************************/
 		attr_iterator erase_attribute(attr_const_iterator attribute_fisrt,
 			attr_const_iterator attribute_last);
 
+		/**********************************************************************
+		* @brief Получить количество атрибутов
+		*
+		* @return количество атрибутов
+		**********************************************************************/
 		size_type attr_size() const noexcept;
 
 		attr_iterator attr_begin() noexcept;
@@ -130,15 +244,85 @@ namespace XMLB
 
 		attr_const_iterator attr_cbegin() const noexcept;
 		attr_const_iterator attr_cend() const noexcept;
+		/// @}
 
-		// Работа с дочерними узлами
 
+
+		/// @name Методы для работы с дочерними узлами
+		/// @{
+		/**********************************************************************
+		* @brief Добавить дочерний узел
+		* 
+		* @param node - узел, который нужно добавить
+		*
+		* @return добавленный дочерний узел. Если узел не был добавлен,
+		* возращает текущий узел
+		**********************************************************************/
 		node_type& add_child(const node_type& node) &;
+
+		/**********************************************************************
+		* @brief Добавить дочерний узел
+		*
+		* @param node - узел, который нужно добавить
+		*
+		* @return добавленный дочерний узел. Если узел не был добавлен,
+		* возращает текущий узел
+		**********************************************************************/
 		node_type& add_child(node_type&& node) &;
+
+		/**********************************************************************
+		* @brief Добавить дочерний узел
+		*
+		* @param node - узел, который нужно добавить
+		*
+		* @return добавленный дочерний узел. Если узел не был добавлен,
+		* возращает текущий узел
+		**********************************************************************/
 		node_type& add_child(Ptr node) &;
 
+
+		/**********************************************************************
+		* @brief Удалить дочерний узел
+		*
+		* @details Так как все узлы, которые являются дочерними узлами дочерних
+		* узлов текущего узла и т.д., то можно удалить любой дочерний узел в
+		* диапазоне [0, size())
+		* 
+		* @param index - позиция дочернего узла
+		*
+		* @return итератор на следующий узел после удаленного. Если узел не был
+		* удален, возвращает итератор на end()
+		**********************************************************************/
 		iterator erase_child(std::size_t index);
+
+		/**********************************************************************
+		* @brief Удалить дочерний узел
+		*
+		* @details Так как все узлы, которые являются дочерними узлами дочерних
+		* узлов текущего узла и т.д., то можно удалить любой дочерний узел в
+		* диапазоне [begin(), end())
+		*
+		* @param node - итератор указывающий на узел, который нужно удалить
+		*
+		* @return итератор на следующий узел после удаленного. Если узел не был
+		* удален, возвращает итератор на end()
+		**********************************************************************/
 		iterator erase_child(const_iterator node);
+
+		/**********************************************************************
+		* @brief Удалить дочерние узлы
+		*
+		* @details Так как все узлы, которые являются дочерними узлами дочерних
+		* узлов текущего узла и т.д., то можно удалить любой дочерний узел в
+		* диапазоне [begin(), end())
+		*
+		* @param node_first - итератор указывающий на первый удаляемый узел
+		* @param node_last - итератор указывающий за последний удаляемый узел
+		*
+		* @return итератор на следующий узел после последнего удаленного. Если 
+		* узлы не были удалены, возвращает итератор на end() или на следующий
+		* после последнего успешно удаленного узла
+		**********************************************************************/
 		iterator erase_child(const_iterator node_first, 
 			const_iterator node_last);
 
@@ -159,36 +343,58 @@ namespace XMLB
 
 		const_iterator cbegin() const noexcept;
 		const_iterator cend() const noexcept;
+		/// @}
 
+
+
+		/// @name Вспомогательные методы
+		/// @{
+		/**********************************************************************
+		* @brief Получить количество дочерних узлов первого уровня
+		*
+		* @return количество дочерних узлов первого уровня
+		**********************************************************************/
 		size_type child_size() const noexcept;
-		size_type size() const noexcept;
-
-		// Работа с родителем
-
-		const node_type* get_parent() const noexcept;
-
-		// Вспомагательные функции
-
-		void swap(node_type& node) noexcept;
-
-		// Функции поиска
 
 		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
+		* @brief Получить общее количество дочерних узлов
 		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
-		* 
+		* @return общее количество дочерних узлов, не включая текущий узел
+		**********************************************************************/
+		size_type size() const noexcept;
+
+		/**********************************************************************
+		* @brief Получить родителя текущего узла
+		*
+		* @return nullptr - если родителя нет. В противном случае вернет
+		* указатель на родителя
+		**********************************************************************/
+		const node_type* get_parent() const noexcept;
+
+		/**********************************************************************
+		* @brief Обменять данные
+		*
+		* @param node - правый Node
+		**********************************************************************/
+		void swap(node_type& node) noexcept;
+		/// @}
+
+
+
+		/// @name Методы поиска
+		/// @{
+		/**********************************************************************
+		* @brief Найти узел
+		*
 		* @details Перегрузка для работы с указателями на строки, например:
 		* const char*, const wchar_t*
 		*
-		* @param[in] tag_name - имя или имена тега, которое нужно найти
-		* @param[in] iter_start - итератор, с которого начать искать
+		* @tparam ContT - тип контейнера
+		* @param container - имя узла, который нужно найти
+		* @param offset - итератор, с которого начать искать
 		*
 		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
+		* возвращает итератор указывающий на end()
 		**********************************************************************/
 		template<typename ContT, 
 			std::enable_if_t<std::is_same_v<ContT, symbol_type> &&
@@ -198,21 +404,17 @@ namespace XMLB
 			const_iterator offset = const_iterator{ nullptr });
 
 		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
+		* @brief Найти узел(ы)
 		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
-		* 
-		* @details Перегрузка для работы с контейнерами содержащие простые 
+		* @details Перегрузка для работы с контейнерами содержащие простые
 		* типы, например: std::string, std::vector<char>, std::string_view
 		*
-		* @param[in] tag_names - список имён тегов
-		* @param[in] iter_start - итератор, с которого начать искать
+		* @tparam ContT - тип контейнера
+		* @param container - список имён узлов, которые нужно найти
+		* @param offset - итератор, с которого начать искать
 		*
 		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
+		* возвращает итератор указывающий на end()
 		**********************************************************************/
 		template<typename ContT,
 			std::enable_if_t<
@@ -223,7 +425,7 @@ namespace XMLB
 
 			std::is_constructible_v<string_wrapper,
 			std::add_pointer_t<std::remove_reference_t<
-			detail::dereferenced_t<detail::const_iterator_t<ContT>>>>>&&
+			detail::dereferenced_t<detail::const_iterator_t<ContT>>>>> &&
 
 			std::is_same_v<detail::universal_value_type_t<ContT>, symbol_type>,
 
@@ -232,23 +434,19 @@ namespace XMLB
 			const_iterator offset = const_iterator{ nullptr });
 
 		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
+		* @brief Найти узел(ы)
 		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
-		*
-		* @details Перегрузка для работы с контейнерами содержащие 
-		* строко-подобные типы, например: std::vector<std::string>, 
-		* std::vector<const char*>, std::initializer_list<const char*>, 
+		* @details Перегрузка для работы с контейнерами содержащие
+		* строко-подобные типы, например: std::vector<std::string>,
+		* std::vector<const char*>, std::initializer_list<const char*>,
 		* std::initializer_list<std::string>
 		*
-		* @param[in] tag_names - список имён тегов
-		* @param[in] iter_start - итератор, с которого начать искать
+		* @tparam ContT - тип контейнера
+		* @param container - список имён узлов, которые нужно найти
+		* @param offset - итератор, с которого начать искать
 		*
 		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
+		* возвращает итератор указывающий на end()
 		**********************************************************************/
 		template<typename ContT = std::initializer_list<string_wrapper>,
 			std::enable_if_t<
@@ -274,21 +472,18 @@ namespace XMLB
 			const_iterator offset = const_iterator{ nullptr });
 
 		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
-		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
+		* @brief Найти узел
 		*
 		* @details Перегрузка для работы с указателями на строки, например:
 		* const char*, const wchar_t*
 		*
-		* @param[in] tag_name - имя или имена тега, которое нужно найти
-		* @param[in] iter_start - итератор, с которого начать искать
+		* @tparam ContT - тип контейнера
+		* @param container - имя узла, который нужно найти
+		* @param offset - итератор, с которого начать искать
 		*
-		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
+		* @return константный итератор на узел - если он был найден. 
+		* В противном случае возвращает константній итератор указывающий 
+		* на end()
 		**********************************************************************/
 		template<typename ContT,
 			std::enable_if_t<std::is_same_v<ContT, symbol_type>&&
@@ -298,21 +493,18 @@ namespace XMLB
 			const_iterator offset = const_iterator{ nullptr }) const;
 
 		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
-		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
+		* @brief Найти узел(ы)
 		*
 		* @details Перегрузка для работы с контейнерами содержащие простые
 		* типы, например: std::string, std::vector<char>, std::string_view
 		*
-		* @param[in] tag_names - список имён тегов
-		* @param[in] iter_start - итератор, с которого начать искать
+		* @tparam ContT - тип контейнера
+		* @param container - список имён узлов, которые нужно найти
+		* @param offset - итератор, с которого начать искать
 		*
-		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
+		* @return константный итератор на узел - если он был найден. 
+		* В противном случае возвращает константній итератор указывающий 
+		* на end()
 		**********************************************************************/
 		template<typename ContT,
 			std::enable_if_t<
@@ -332,23 +524,20 @@ namespace XMLB
 			const_iterator offset = const_iterator{ nullptr }) const;
 
 		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
-		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
+		* @brief Найти узел(ы)
 		*
 		* @details Перегрузка для работы с контейнерами содержащие
 		* строко-подобные типы, например: std::vector<std::string>,
 		* std::vector<const char*>, std::initializer_list<const char*>,
 		* std::initializer_list<std::string>
 		*
-		* @param[in] tag_names - список имён тегов
-		* @param[in] iter_start - итератор, с которого начать искать
+		* @tparam ContT - тип контейнера
+		* @param container - список имён узлов, которые нужно найти
+		* @param offset - итератор, с которого начать искать
 		*
-		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
+		* @return константный итератор на узел - если он был найден. 
+		* В противном случае возвращает константній итератор указывающий 
+		* на end()
 		**********************************************************************/
 		template<typename ContT = std::initializer_list<string_wrapper>,
 			std::enable_if_t<
@@ -372,6 +561,9 @@ namespace XMLB
 			std::nullptr_t> = nullptr>
 		const_iterator find(const ContT& container, 
 			const_iterator offset = const_iterator{ nullptr }) const;
+
+		//*********************************************************************
+		/// @}
 
 	private:
 		tree_node* find_last_tree_node() const;
@@ -399,45 +591,9 @@ namespace XMLB
 
 
 
-	/**************************************************************************
-	*						NODE_ATTRIBUTE IMPLEMENTATION
-	**************************************************************************/
-
-	/*template<typename CharT>
-	inline Node_attribute<CharT>::Node_attribute(const string_type& name,
-		const string_type& value)
-		:name{ name }, value{ value }
-	{
-
-	}*/
-
 	//*************************************************************************
-
-	/*template<typename CharT>
-	inline Node_attribute<CharT>::Node_attribute(string_type&& name,
-		string_type&& value) noexcept
-		:name{ std::move(name) }, value{ std::move(value) }
-	{
-		std::cout << "NODE move ctr == " << name << '\n';
-	}*/
-
+	//							NODE IMPLEMENTATION
 	//*************************************************************************
-
-	/*template<typename CharT>
-	inline Node_attribute<CharT>::Node_attribute(string_wrapper name,
-		string_wrapper value)
-		:name{ name }, value{ value }
-	{
-
-	}*/
-
-	//*************************************************************************
-
-
-
-	/**************************************************************************
-	*							NODE IMPLEMENTATION
-	**************************************************************************/
 
 	template<typename CharT>
 	inline Node<CharT>::Node(const string_type& name, const string_type& value)
@@ -454,15 +610,6 @@ namespace XMLB
 	{
 		m_tree_node.element = this;
 	}
-
-	//*************************************************************************
-
-	/*template<typename CharT>
-	inline Node<CharT>::Node(string_wrapper name, string_wrapper value)
-		:m_name{ name }, m_value{ value }, m_size{ 0 }
-	{
-		m_tree_node.element = this;
-	}*/
 
 	//*************************************************************************
 
@@ -501,9 +648,8 @@ namespace XMLB
 		:m_name{ std::move(node.m_name) },
 		m_value{ std::move(node.m_value) },
 		m_attributes{ std::move(node.m_attributes) },
-		//m_childs{ std::move(node.m_childs) },
+		m_childs{ std::move(node.m_childs) },
 		m_size{ 0 }
-		//m_tree_node{ std::move(node.m_tree_node) }
 	{
 		m_tree_node.element = this;
 
@@ -511,18 +657,25 @@ namespace XMLB
 		node.m_tree_node.prev = nullptr;
 		node.m_tree_node.parent = nullptr;
 
-		/*if (m_childs.size())
+		//Конектим первый дочерний элемент с текущим и изменяем им родителя на
+		//текущий элемент
+		if (m_childs.size())
 		{
+			m_tree_node.next = &m_childs.front()->m_tree_node;
+			m_childs.front()->m_tree_node.prev = &m_tree_node;
 
-		tree_node* last_tree_node = find_last_tree_node();
+			for (auto&& elem : m_childs)
+			{
+				elem->m_tree_node.parent = &m_tree_node;
+			}
+		}
 
-		
-			connect_tree_nodes(last_tree_node);
-		}*/
+		auto last_child = find_last_tree_node();
 
-		for (auto&& elem : node.m_childs)
+		if (last_child != &m_tree_node)
 		{
-			add_child(std::move(elem));
+			last_child->next = &m_tree_node;
+			m_tree_node.prev = last_child;
 		}
 	}
 
@@ -1598,9 +1751,49 @@ namespace XMLB
 
 
 
+	//*************************************************************************
+	//						NODE SUPPORT FUNCTIONS
+	//*************************************************************************
+
 	/**************************************************************************
-	*						NODE SUPPORT FUNCTIONS
+	* @brief Проверить на валидность XML узел
+	* 
+	* @ingroup general
+	*
+	* @param node - XML узел
+	*
+	* @return диагностический объект, который преобразуется в true, если была
+	* найдена ошибка и false если ошибок не было найдено
 	**************************************************************************/
+	template<typename CharT>
+	inline bool is_correct(const Node<CharT>& node)
+	{
+		bool result = true;
+
+		if (!node.get_name().size())
+		{
+			result = false;
+		}
+		else if (node.attr_size())
+		{
+			auto attr_it = node.attr_cbegin();
+			auto attr_end = node.attr_cend();
+
+			for (; attr_it != attr_end; ++attr_it)
+			{
+				if (!attr_it->name.size())
+				{
+					result = false;
+
+					break;
+				}
+			}
+		}
+
+		return result;
+	}
+
+	//*************************************************************************
 
 	template<typename CharT>
 	inline bool operator==(const Node<CharT>& lhs, const Node<CharT>& rhs)
@@ -1649,6 +1842,16 @@ namespace XMLB
 
 	//*************************************************************************
 
+
+
+	/**************************************************************************
+	* @brief Обменять данные двух Node_attribute
+	*
+	* @tparam CharT - тип символов
+	*
+	* @param lhs - первый Node_attribute
+	* @param rhs - второй Node_attribute
+	**************************************************************************/
 	template<typename CharT>
 	inline void swap(Node_attribute<CharT>& lhs, Node_attribute<CharT>& rhs) 
 		noexcept
@@ -1661,6 +1864,16 @@ namespace XMLB
 
 	//*************************************************************************
 
+
+
+	/**************************************************************************
+	* @brief Обменять данные двух Node
+	*
+	* @tparam CharT - тип символов
+	*
+	* @param lhs - первый Node
+	* @param rhs - второй Node
+	**************************************************************************/
 	template<typename CharT>
 	inline void swap(Node<CharT>& lhs, Node<CharT>& rhs) noexcept
 	{

@@ -1,28 +1,42 @@
-/******************************************************************************
-* @file
-* Данный файл объявлет основной строительный элемент(узел) XML документа.
-* На текущий момент, является завершенным без дебаг функций
-*
-* @author Bruvamasc
-* @date   2022-09-17
-*
-* @todo Нужно подумать, как добавить режим дебага. Также нужно подумать, над
-* кодировками - возможно, как-то их переделать
-* ///< Указывает, что элемент недоступен для использования
-*
-******************************************************************************/
+//*****************************************************************************
+// MIT License
+//
+// Copyright(c) 2022 Vladislav Kurmanenko (Bruvamasc)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+//
+// The above copyright noticeand this permission notice shall be included in 
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//*****************************************************************************
+
+
 
 #ifndef XMLB_TYPE_TRAITS_H
 #define XMLB_TYPE_TRAITS_H
 
-#include <utility>
+#include <type_traits>
 #include <iterator>
+
+
 
 namespace XMLB { namespace detail {
 
-	/**************************************************************************
-	*							LIB TYPE TRAITS
-	**************************************************************************/
+	//*************************************************************************
+	//							LIB TYPE TRAITS
+	//*************************************************************************
 
 	template<typename NodeT>
 	struct node_traits
@@ -61,9 +75,9 @@ namespace XMLB { namespace detail {
 
 
 
-	/**************************************************************************
-	*						LIB TYPE SUPPORT TRAITS
-	**************************************************************************/
+	//*************************************************************************
+	//						LIB TYPE SUPPORT TRAITS
+	//*************************************************************************
 
 	template<typename T>
 	using symbol_type_t = typename T::symbol_type;
@@ -341,9 +355,9 @@ namespace XMLB { namespace detail {
 
 
 
-	/**************************************************************************
-	*						ITERATOR SUPPORT TRAITS
-	**************************************************************************/
+	//*************************************************************************
+	//						ITERATOR SUPPORT TRAITS
+	//*************************************************************************
 
 	template<typename T>
 	using iterator_category_t =
@@ -438,9 +452,9 @@ namespace XMLB { namespace detail {
 
 
 
-	/**************************************************************************
-	*							COMMON SUPPORT TRAITS
-	**************************************************************************/
+	//*************************************************************************
+	//							COMMON SUPPORT TRAITS
+	//*************************************************************************
 
 	template<typename T>
 	using value_type_t = typename T::value_type;
@@ -460,10 +474,9 @@ namespace XMLB { namespace detail {
 	template<typename T>
 	using pre_decrement_t = decltype(--std::declval<T>());
 
-	/**************************************************************************
-	* @brief Шаблон, который "зарывается" внутрь объектов, контейнеров и их 
-	* value_type. Конеыный тип будет простым арифметическим типом.
-	**************************************************************************/
+	//*************************************************************************
+	// @brief Шаблон, который "зарывается" внутрь объектов, контейнеров и их 
+	// value_type. Конеыный тип будет простым арифметическим типом.
 	template<typename, typename = void>
 	struct universal_value_type;
 

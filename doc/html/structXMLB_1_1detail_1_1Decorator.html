@@ -1,0 +1,448 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.5"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>XMLB: Шаблон структуры XMLB::detail::Decorator&lt; CharT &gt;</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">XMLB<span id="projectnumber">&#160;0.1</span>
+   </div>
+   <div id="projectbrief">simple and fast XML parser</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.9.5 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>XMLB</b></li><li class="navelem"><b>detail</b></li><li class="navelem"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html">Decorator</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Открытые атрибуты</a> &#124;
+<a href="structXMLB_1_1detail_1_1Decorator-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle"><div class="title">Шаблон структуры XMLB::detail::Decorator&lt; CharT &gt;<span class="mlabels"><span class="mlabel">final</span></span><div class="ingroups"><a class="el" href="group__secondary.html">Второстепенные классы и функции</a></div></div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Структура, которая хранит в себе необходимые символы для синтаксического анализатора входных XML данных и для вывода готовой XML структуры  
+ <a href="structXMLB_1_1detail_1_1Decorator.html#details">Подробнее...</a></p>
+
+<p><code>#include &lt;<a class="el" href="XMLB__Decorator_8h_source.html">XMLB_Decorator.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Открытые атрибуты</h2></td></tr>
+<tr class="memitem:a54f96de077afb44eeed22b8700e35a20"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#a54f96de077afb44eeed22b8700e35a20">fill_symbol</a> = '\t'</td></tr>
+<tr class="memdesc:a54f96de077afb44eeed22b8700e35a20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ-заполнитель перед началом тегов  <a href="structXMLB_1_1detail_1_1Decorator.html#a54f96de077afb44eeed22b8700e35a20">Подробнее...</a><br /></td></tr>
+<tr class="separator:a54f96de077afb44eeed22b8700e35a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4edd8318bd8f0636532e94e5292c7133"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#a4edd8318bd8f0636532e94e5292c7133">white_space_symbol</a> = ' '</td></tr>
+<tr class="memdesc:a4edd8318bd8f0636532e94e5292c7133"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ оступа между словами  <a href="structXMLB_1_1detail_1_1Decorator.html#a4edd8318bd8f0636532e94e5292c7133">Подробнее...</a><br /></td></tr>
+<tr class="separator:a4edd8318bd8f0636532e94e5292c7133"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c832ee6d8f0f94e875e7122f972ff10"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#a0c832ee6d8f0f94e875e7122f972ff10">open_tag_symbol</a> = '&lt;'</td></tr>
+<tr class="memdesc:a0c832ee6d8f0f94e875e7122f972ff10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ открытия тега  <a href="structXMLB_1_1detail_1_1Decorator.html#a0c832ee6d8f0f94e875e7122f972ff10">Подробнее...</a><br /></td></tr>
+<tr class="separator:a0c832ee6d8f0f94e875e7122f972ff10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3055c1ec806279cb826d54760015edd"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#ae3055c1ec806279cb826d54760015edd">close_tag_symbol</a> = '&gt;'</td></tr>
+<tr class="memdesc:ae3055c1ec806279cb826d54760015edd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ закрытия тега  <a href="structXMLB_1_1detail_1_1Decorator.html#ae3055c1ec806279cb826d54760015edd">Подробнее...</a><br /></td></tr>
+<tr class="separator:ae3055c1ec806279cb826d54760015edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a717ac68392cb925cf46558d1a711eec3"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#a717ac68392cb925cf46558d1a711eec3">single_tag_symbol</a> = '/'</td></tr>
+<tr class="memdesc:a717ac68392cb925cf46558d1a711eec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ перед символом закрытия одиночного тега  <a href="structXMLB_1_1detail_1_1Decorator.html#a717ac68392cb925cf46558d1a711eec3">Подробнее...</a><br /></td></tr>
+<tr class="separator:a717ac68392cb925cf46558d1a711eec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b60332231f930a6f0ccec123b82f1cf"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#a7b60332231f930a6f0ccec123b82f1cf">last_tag_symbol</a> = '/'</td></tr>
+<tr class="memdesc:a7b60332231f930a6f0ccec123b82f1cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ после открытия завершающего тега  <a href="structXMLB_1_1detail_1_1Decorator.html#a7b60332231f930a6f0ccec123b82f1cf">Подробнее...</a><br /></td></tr>
+<tr class="separator:a7b60332231f930a6f0ccec123b82f1cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8f9c79e2ee534fcf2bb7bc5bee8f6e7"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#ac8f9c79e2ee534fcf2bb7bc5bee8f6e7">open_attribute_symbol</a> = '\&quot;'</td></tr>
+<tr class="memdesc:ac8f9c79e2ee534fcf2bb7bc5bee8f6e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ перед значением аттрибута  <a href="structXMLB_1_1detail_1_1Decorator.html#ac8f9c79e2ee534fcf2bb7bc5bee8f6e7">Подробнее...</a><br /></td></tr>
+<tr class="separator:ac8f9c79e2ee534fcf2bb7bc5bee8f6e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7e73c8ad3560600c5482074c97540b1"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#ab7e73c8ad3560600c5482074c97540b1">close_attribute_symbol</a> = '\&quot;'</td></tr>
+<tr class="memdesc:ab7e73c8ad3560600c5482074c97540b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ после значения аттрибута  <a href="structXMLB_1_1detail_1_1Decorator.html#ab7e73c8ad3560600c5482074c97540b1">Подробнее...</a><br /></td></tr>
+<tr class="separator:ab7e73c8ad3560600c5482074c97540b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49123276b106faf62630a25f03a60da4"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#a49123276b106faf62630a25f03a60da4">equal_attribute_symbol</a> = '='</td></tr>
+<tr class="memdesc:a49123276b106faf62630a25f03a60da4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ после имени аттрибута  <a href="structXMLB_1_1detail_1_1Decorator.html#a49123276b106faf62630a25f03a60da4">Подробнее...</a><br /></td></tr>
+<tr class="separator:a49123276b106faf62630a25f03a60da4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad97abaf4616cd67d15aa13ec7480f7cc"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#ad97abaf4616cd67d15aa13ec7480f7cc">comment_symbol</a> = '!'</td></tr>
+<tr class="memdesc:ad97abaf4616cd67d15aa13ec7480f7cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ начала комментария  <a href="structXMLB_1_1detail_1_1Decorator.html#ad97abaf4616cd67d15aa13ec7480f7cc">Подробнее...</a><br /></td></tr>
+<tr class="separator:ad97abaf4616cd67d15aa13ec7480f7cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc69a3100fe37f4b039a7145617b2434"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#adc69a3100fe37f4b039a7145617b2434">comment_last_symbol</a> = '-'</td></tr>
+<tr class="memdesc:adc69a3100fe37f4b039a7145617b2434"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ окончания комментария  <a href="structXMLB_1_1detail_1_1Decorator.html#adc69a3100fe37f4b039a7145617b2434">Подробнее...</a><br /></td></tr>
+<tr class="separator:adc69a3100fe37f4b039a7145617b2434"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a089270e7970010ec351600fad0ba87c4"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#a089270e7970010ec351600fad0ba87c4">line_break_symbol</a> = '\n'</td></tr>
+<tr class="memdesc:a089270e7970010ec351600fad0ba87c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ перевода строки  <a href="structXMLB_1_1detail_1_1Decorator.html#a089270e7970010ec351600fad0ba87c4">Подробнее...</a><br /></td></tr>
+<tr class="separator:a089270e7970010ec351600fad0ba87c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b08a5a7e1c4786f6b4dd48cd1c7b935"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#a5b08a5a7e1c4786f6b4dd48cd1c7b935">tab_symbol</a> = '\t'</td></tr>
+<tr class="memdesc:a5b08a5a7e1c4786f6b4dd48cd1c7b935"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ табуляции  <a href="structXMLB_1_1detail_1_1Decorator.html#a5b08a5a7e1c4786f6b4dd48cd1c7b935">Подробнее...</a><br /></td></tr>
+<tr class="separator:a5b08a5a7e1c4786f6b4dd48cd1c7b935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affeadf696c7f2192263dbc56139d52a8"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#affeadf696c7f2192263dbc56139d52a8">carriage_symbol</a> = '\r'</td></tr>
+<tr class="memdesc:affeadf696c7f2192263dbc56139d52a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ перевода каретки  <a href="structXMLB_1_1detail_1_1Decorator.html#affeadf696c7f2192263dbc56139d52a8">Подробнее...</a><br /></td></tr>
+<tr class="separator:affeadf696c7f2192263dbc56139d52a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7a52bbcc912af7bcb6095ce065e1e80"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#ac7a52bbcc912af7bcb6095ce065e1e80">doc_info_symbol</a> = '?'</td></tr>
+<tr class="memdesc:ac7a52bbcc912af7bcb6095ce065e1e80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ начала информации о документе  <a href="structXMLB_1_1detail_1_1Decorator.html#ac7a52bbcc912af7bcb6095ce065e1e80">Подробнее...</a><br /></td></tr>
+<tr class="separator:ac7a52bbcc912af7bcb6095ce065e1e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ae3d957086588f148c8eabea1417a85"><td class="memItemLeft" align="right" valign="top">symbol_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structXMLB_1_1detail_1_1Decorator.html#a5ae3d957086588f148c8eabea1417a85">doc_info_last_symbol</a> = '?'</td></tr>
+<tr class="memdesc:a5ae3d957086588f148c8eabea1417a85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Символ конца информации о документе  <a href="structXMLB_1_1detail_1_1Decorator.html#a5ae3d957086588f148c8eabea1417a85">Подробнее...</a><br /></td></tr>
+<tr class="separator:a5ae3d957086588f148c8eabea1417a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename CharT&gt;<br />
+struct XMLB::detail::Decorator&lt; CharT &gt;</div><p >Структура, которая хранит в себе необходимые символы для синтаксического анализатора входных XML данных и для вывода готовой XML структуры </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">CharT</td><td>- тип символов</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000019">Необходимо сделать:</a></b></dt><dd>Возможно, убрать некоторые символы и разрешить наследование</dd></dl>
+</div><h2 class="groupheader">Данные класса</h2>
+<a id="affeadf696c7f2192263dbc56139d52a8" name="affeadf696c7f2192263dbc56139d52a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affeadf696c7f2192263dbc56139d52a8">&#9670;&#160;</a></span>carriage_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::carriage_symbol = '\r'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ перевода каретки </p>
+
+</div>
+</div>
+<a id="ab7e73c8ad3560600c5482074c97540b1" name="ab7e73c8ad3560600c5482074c97540b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7e73c8ad3560600c5482074c97540b1">&#9670;&#160;</a></span>close_attribute_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::close_attribute_symbol = '\&quot;'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ после значения аттрибута </p>
+
+</div>
+</div>
+<a id="ae3055c1ec806279cb826d54760015edd" name="ae3055c1ec806279cb826d54760015edd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3055c1ec806279cb826d54760015edd">&#9670;&#160;</a></span>close_tag_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::close_tag_symbol = '&gt;'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ закрытия тега </p>
+
+</div>
+</div>
+<a id="adc69a3100fe37f4b039a7145617b2434" name="adc69a3100fe37f4b039a7145617b2434"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc69a3100fe37f4b039a7145617b2434">&#9670;&#160;</a></span>comment_last_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::comment_last_symbol = '-'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ окончания комментария </p>
+
+</div>
+</div>
+<a id="ad97abaf4616cd67d15aa13ec7480f7cc" name="ad97abaf4616cd67d15aa13ec7480f7cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad97abaf4616cd67d15aa13ec7480f7cc">&#9670;&#160;</a></span>comment_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::comment_symbol = '!'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ начала комментария </p>
+
+</div>
+</div>
+<a id="a5ae3d957086588f148c8eabea1417a85" name="a5ae3d957086588f148c8eabea1417a85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ae3d957086588f148c8eabea1417a85">&#9670;&#160;</a></span>doc_info_last_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::doc_info_last_symbol = '?'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ конца информации о документе </p>
+
+</div>
+</div>
+<a id="ac7a52bbcc912af7bcb6095ce065e1e80" name="ac7a52bbcc912af7bcb6095ce065e1e80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7a52bbcc912af7bcb6095ce065e1e80">&#9670;&#160;</a></span>doc_info_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::doc_info_symbol = '?'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ начала информации о документе </p>
+
+</div>
+</div>
+<a id="a49123276b106faf62630a25f03a60da4" name="a49123276b106faf62630a25f03a60da4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49123276b106faf62630a25f03a60da4">&#9670;&#160;</a></span>equal_attribute_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::equal_attribute_symbol = '='</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ после имени аттрибута </p>
+
+</div>
+</div>
+<a id="a54f96de077afb44eeed22b8700e35a20" name="a54f96de077afb44eeed22b8700e35a20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54f96de077afb44eeed22b8700e35a20">&#9670;&#160;</a></span>fill_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::fill_symbol = '\t'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ-заполнитель перед началом тегов </p>
+
+</div>
+</div>
+<a id="a7b60332231f930a6f0ccec123b82f1cf" name="a7b60332231f930a6f0ccec123b82f1cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b60332231f930a6f0ccec123b82f1cf">&#9670;&#160;</a></span>last_tag_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::last_tag_symbol = '/'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ после открытия завершающего тега </p>
+
+</div>
+</div>
+<a id="a089270e7970010ec351600fad0ba87c4" name="a089270e7970010ec351600fad0ba87c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a089270e7970010ec351600fad0ba87c4">&#9670;&#160;</a></span>line_break_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::line_break_symbol = '\n'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ перевода строки </p>
+
+</div>
+</div>
+<a id="ac8f9c79e2ee534fcf2bb7bc5bee8f6e7" name="ac8f9c79e2ee534fcf2bb7bc5bee8f6e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8f9c79e2ee534fcf2bb7bc5bee8f6e7">&#9670;&#160;</a></span>open_attribute_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::open_attribute_symbol = '\&quot;'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ перед значением аттрибута </p>
+
+</div>
+</div>
+<a id="a0c832ee6d8f0f94e875e7122f972ff10" name="a0c832ee6d8f0f94e875e7122f972ff10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c832ee6d8f0f94e875e7122f972ff10">&#9670;&#160;</a></span>open_tag_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::open_tag_symbol = '&lt;'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ открытия тега </p>
+
+</div>
+</div>
+<a id="a717ac68392cb925cf46558d1a711eec3" name="a717ac68392cb925cf46558d1a711eec3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a717ac68392cb925cf46558d1a711eec3">&#9670;&#160;</a></span>single_tag_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::single_tag_symbol = '/'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ перед символом закрытия одиночного тега </p>
+
+</div>
+</div>
+<a id="a5b08a5a7e1c4786f6b4dd48cd1c7b935" name="a5b08a5a7e1c4786f6b4dd48cd1c7b935"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b08a5a7e1c4786f6b4dd48cd1c7b935">&#9670;&#160;</a></span>tab_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::tab_symbol = '\t'</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ табуляции </p>
+
+</div>
+</div>
+<a id="a4edd8318bd8f0636532e94e5292c7133" name="a4edd8318bd8f0636532e94e5292c7133"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4edd8318bd8f0636532e94e5292c7133">&#9670;&#160;</a></span>white_space_symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">symbol_type <a class="el" href="structXMLB_1_1detail_1_1Decorator.html">XMLB::detail::Decorator</a>&lt; CharT &gt;::white_space_symbol = ' '</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Символ оступа между словами </p>
+
+</div>
+</div>
+<hr/>Объявления и описания членов структуры находятся в файле:<ul>
+<li><a class="el" href="XMLB__Decorator_8h_source.html">XMLB_Decorator.h</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5
+</small></address>
+</body>
+</html>

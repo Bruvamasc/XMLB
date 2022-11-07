@@ -2,7 +2,6 @@ x64/
 .vs/
 *.user
 some_reserve/
-some_support_data/
 *.vcxproj
 *.filters
 *.sln
@@ -10,6 +9,7 @@ some_support_data/
 #Temp files
 todo.txt
 Start.cpp
+Doxyfile.in
 
 # Prerequisites
 *.d

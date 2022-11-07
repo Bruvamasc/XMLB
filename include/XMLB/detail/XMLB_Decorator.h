@@ -1,25 +1,46 @@
-/******************************************************************************
-* @file
-* Данный файл объявляет и определяет структура Декоратора
-*
-* @author Bruvamasc
-* @date   2022-08-25
-*
-* @todo Подумать над возможными изменениями Node_tree_impl, code_converter
-* ///< Указывает, что элемент недоступен для использования
-*
-******************************************************************************/
+//*****************************************************************************
+// MIT License
+//
+// Copyright(c) 2022 Vladislav Kurmanenko (Bruvamasc)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+//
+// The above copyright noticeand this permission notice shall be included in 
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//*****************************************************************************
+
+
 
 #ifndef XMLB_DECORATOR_H
 #define XMLB_DECORATOR_H
 
+
+
 namespace XMLB { namespace detail {
 
 	/**************************************************************************
-	* @brief Структура, которая хранит в себе необходимые символы для
-	* форматирования вывода и ввода
+	* @brief Структура, которая хранит в себе необходимые символы для 
+	* синтаксического анализатора входных XML данных и для вывода готовой XML
+	* структуры
+	* 
+	* @ingroup secondary
+	* 
+	* @tparam CharT - тип символов
 	*
-	* @todo Возможно разрешить насследование
+	* @todo Возможно, убрать некоторые символы и разрешить наследование
 	**************************************************************************/
 	template<typename CharT>
 	struct Decorator final

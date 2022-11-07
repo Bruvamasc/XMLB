@@ -1,20 +1,35 @@
-	/******************************************************************************
-* @file
-* Данный файл объявлет основной строительный элемент(узел) XML документа
-*
-* @author Bruvamasc
-* @date   2022-08-25
-*
-* @todo ТАААТАТ
-* ///< Указывает, что элемент недоступен для использования
-*
-******************************************************************************/
+//*****************************************************************************
+// MIT License
+//
+// Copyright(c) 2022 Vladislav Kurmanenko (Bruvamasc)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+//
+// The above copyright noticeand this permission notice shall be included in 
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//*****************************************************************************
+
+
 
 #ifndef XMLB_DOCUMENT_H
 #define XMLB_DOCUMENT_H
 
 #include <stack>
 #include <memory>
+#include <stdexcept>
 
 #include "XMLB_Node.h"
 #include "XMLB_Utility.h"
@@ -26,18 +41,23 @@
 #include "XMLB/detail/traits/XMLB_Type_special_general_traits.h"
 #include "XMLB/detail/utilities/XMLB_sup_functions.h"
 
+
+
 namespace XMLB
 {
 
 	/**************************************************************************
-	* @brief XML документ, структура
+	* @brief XML документ с узлами
+	* 
+	* @ingroup general
 	*
-	* @details 
-	*
-	* @todo Нужно подумать, над кодировкой документа 
-	* (пока ещё до конца не понимаю нужна ли она вообще, так как документ то 
-	* считывается в уже заданном пользователем формате (char, char16_t и т.п.).
-	* Возможно, стоит приватно наследоваться от Node<CharT>
+	* @details XML документ, который хранит в себе версию и кодировку
+	* документа. Также хранит root узел(тег) с его всеми дочерними узлами
+	* 
+	* @tparam CharT - тип символов
+	* 
+	* @todo Нужно подумать, нужно ли вообще хранить кодировку. Так же, возможно
+	* стоит приватно наследоваться от Node<CharT>.
 	**************************************************************************/
 	template<typename CharT>
 	class Document final
@@ -56,14 +76,19 @@ namespace XMLB
 		using iterator = typename Node<symbol_type>::iterator;
 		using const_iterator = typename Node<symbol_type>::const_iterator;
 
-		// Конструкторы, деструкторы и т.п.
 
+
+		/// @name Конструкторы, деструктор
+		/// @{
+		/**********************************************************************
+		* @param version - версия документа
+		* @param encoding_type - кодировка документа
+		**********************************************************************/
 		Document(float version = 1.f, 
 			const string_type& encoding_type = 
 			detail::to_string<symbol_type>('U', 'T', 'F', '-', '8'));
 
 		Document(float version, string_type&& encoding_type);
-		//Document(float version, string_wrapper encoding_type);
 
 		Document(const Document& doc);
 		Document& operator=(const Document& doc);
@@ -72,51 +97,104 @@ namespace XMLB
 		Document& operator=(Document&& doc) noexcept;
 
 		~Document() = default;
+		/// @}
+
+
 
 		// Работа с XML корнем у другими узлами
-
+		/// @name Методы работы с корневым узлом
+		/// @{
 		/**********************************************************************
 		* @brief Заменить корневой XML узел
+		* 
+		* @param node - XML узел
 		**********************************************************************/
 		void root(const node_type& node);
 
 		/**********************************************************************
 		* @brief Заменить корневой XML узел
+		* 
+		* @param node - XML узел
 		**********************************************************************/
 		void root(node_type&& node);
 
 		/**********************************************************************
 		* @brief Заменить корневой XML узел
+		*
+		* @param node - XML узел
 		**********************************************************************/
 		void root(node_pointer node);
 
 		/**********************************************************************
-		* @brief Вернуть корневой XML узел
+		* @brief Получить корневой XML узел
+		* 
+		* @warning Если корневого узла нет, бросается исключение 
+		* std::out_of_range
+		* 
+		* @return корневой узел, если он есть
 		**********************************************************************/
 		node_type& root() &;
 
 		/**********************************************************************
-		* @brief Вернуть корневой XML узел
+		* @brief Получить корневой XML узел
+		*
+		* @warning Если корневого узла нет, бросается исключение
+		* std::out_of_range
+		*
+		* @return корневой узел, если он есть
 		**********************************************************************/
 		const node_type& root() const &;
+		/// @}
 
-		// Работа с версией документа
 
+
+		/// @name Методы для работы с версией документа
+		/// @{
+		/**********************************************************************
+		* @brief Изменить версию документа
+		*
+		* @param version - новая версия документа
+		**********************************************************************/
 		void set_version(float version) noexcept;
+
+		/**********************************************************************
+		* @brief Получить версию документа
+		*
+		* @return версию документа
+		**********************************************************************/
 		float get_version() const noexcept;
+		/// @}
 
-		// Работа с кодировкой документа
 
+
+		/// @name Методы для работы с кодировкой документа
+		/// @{
+		/**********************************************************************
+		* @brief Изменить кодировку документа
+		*
+		* @param encoding_type - новая кодировка документа
+		**********************************************************************/
 		void set_encoding_type(const string_type& encoding_type);
+
+		/**********************************************************************
+		* @brief Изменить кодировку документа
+		*
+		* @param encoding_type - новая кодировка документа
+		**********************************************************************/
 		void set_encoding_type(string_type&& encoding_type) noexcept;
-		string_wrapper get_encoding_type() const noexcept;	
 
-		// Очистка, удаление XML структуры
+		/**********************************************************************
+		* @brief Получить кодировку документа
+		*
+		* @return невладеющий объект-обертку строки с кодировкой документа
+		**********************************************************************/
+		string_wrapper get_encoding_type() const noexcept;
+		/// @}
 
-		void clear() noexcept;
 
-		// Блок с итераторами
 
+		/// @name Методы доступа итераторами
+		/// @{
 		iterator begin() noexcept;
 		iterator end() noexcept;
 
@@ -125,25 +203,24 @@ namespace XMLB
 
 		const_iterator cbegin() const noexcept;
 		const_iterator cend() const noexcept;
+		/// @}
 
-		// Функции поиска
 
+
+		/// @name Методы поиска
+		/// @{
 		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
-		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
+		* @brief Найти узел
 		*
 		* @details Перегрузка для работы с указателями на строки, например:
 		* const char*, const wchar_t*
 		*
-		* @param[in] tag_name - имя или имена тега, которое нужно найти
-		* @param[in] iter_start - итератор, с которого начать искать
+		* @tparam ContT - тип контейнера
+		* @param container - имя узла, который нужно найти
+		* @param offset - итератор, с которого начать искать
 		*
 		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
+		* возвращает итератор указывающий на end()
 		**********************************************************************/
 		template<typename ContT,
 			std::enable_if_t<std::is_same_v<ContT, symbol_type>&&
@@ -156,22 +233,22 @@ namespace XMLB
 				m_parent->begin()->find(container, offset);
 		}
 
+		//*********************************************************************
+
+
+
 		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
-		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
+		* @brief Найти узел(ы)
 		*
 		* @details Перегрузка для работы с контейнерами содержащие простые
 		* типы, например: std::string, std::vector<char>, std::string_view
 		*
-		* @param[in] tag_names - список имён тегов
-		* @param[in] iter_start - итератор, с которого начать искать
+		* @tparam ContT - тип контейнера
+		* @param container - список имён узлов, которые нужно найти
+		* @param offset - итератор, с которого начать искать
 		*
 		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
+		* возвращает итератор указывающий на end()
 		**********************************************************************/
 		template<typename ContT,
 			std::enable_if_t<
@@ -194,24 +271,24 @@ namespace XMLB
 				m_parent->begin()->find(container, offset);
 		}
 
+		//*********************************************************************
+
+
+
 		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
-		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
+		* @brief Найти узел(ы)
 		*
 		* @details Перегрузка для работы с контейнерами содержащие
 		* строко-подобные типы, например: std::vector<std::string>,
 		* std::vector<const char*>, std::initializer_list<const char*>,
 		* std::initializer_list<std::string>
 		*
-		* @param[in] tag_names - список имён тегов
-		* @param[in] iter_start - итератор, с которого начать искать
+		* @tparam ContT - тип контейнера
+		* @param container - список имён узлов, которые нужно найти
+		* @param offset - итератор, с которого начать искать
 		*
 		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
+		* возвращает итератор указывающий на end()
 		**********************************************************************/
 		template<typename ContT = std::initializer_list<string_wrapper>,
 			std::enable_if_t<
@@ -240,22 +317,23 @@ namespace XMLB
 				m_parent->begin()->find(container, offset);
 		}
 
+		//*********************************************************************
+
+
+
 		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
-		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
+		* @brief Найти узел
 		*
 		* @details Перегрузка для работы с указателями на строки, например:
 		* const char*, const wchar_t*
 		*
-		* @param[in] tag_name - имя или имена тега, которое нужно найти
-		* @param[in] iter_start - итератор, с которого начать искать
+		* @tparam ContT - тип контейнера
+		* @param container - имя узла, который нужно найти
+		* @param offset - итератор, с которого начать искать
 		*
-		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
+		* @return константный итератор на узел - если он был найден. 
+		* В противном случае возвращает константній итератор указывающий 
+		* на end()
 		**********************************************************************/
 		template<typename ContT,
 			std::enable_if_t<std::is_same_v<ContT, symbol_type>&&
@@ -268,22 +346,23 @@ namespace XMLB
 				m_parent->begin()->find(container, offset);
 		}
 
+		//*********************************************************************
+
+
+
 		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
-		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
+		* @brief Найти узел(ы)
 		*
 		* @details Перегрузка для работы с контейнерами содержащие простые
 		* типы, например: std::string, std::vector<char>, std::string_view
 		*
-		* @param[in] tag_names - список имён тегов
-		* @param[in] iter_start - итератор, с которого начать искать
+		* @tparam ContT - тип контейнера
+		* @param container - список имён узлов, которые нужно найти
+		* @param offset - итератор, с которого начать искать
 		*
-		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
+		* @return константный итератор на узел - если он был найден. 
+		* В противном случае возвращает константній итератор указывающий 
+		* на end()
 		**********************************************************************/
 		template<typename ContT,
 			std::enable_if_t<
@@ -306,24 +385,25 @@ namespace XMLB
 				m_parent->begin()->find(container, offset);
 		}
 
+		//*********************************************************************
+
+
+
 		/**********************************************************************
-		* @brief Данная фукция ищет узел следуя последовательности в списке
-		* переданных имён
-		*
-		* @todo Вариант с Variadic template и распаковки параметров подходит,
-		* но с ними не будет работать поиск с зарнее созданными контейнерами.
-		* Нужно подумать над этим.
+		* @brief Найти узел(ы)
 		*
 		* @details Перегрузка для работы с контейнерами содержащие
 		* строко-подобные типы, например: std::vector<std::string>,
 		* std::vector<const char*>, std::initializer_list<const char*>,
 		* std::initializer_list<std::string>
 		*
-		* @param[in] tag_names - список имён тегов
-		* @param[in] iter_start - итератор, с которого начать искать
+		* @tparam ContT - тип контейнера
+		* @param container - список имён узлов, которые нужно найти
+		* @param offset - итератор, с которого начать искать
 		*
-		* @return итератор на узел - если он был найден. В противном случае
-		* возвращает итератор указывающий равный end()
+		* @return константный итератор на узел - если он был найден. 
+		* В противном случае возвращает константній итератор указывающий 
+		* на end()
 		**********************************************************************/
 		template<typename ContT = std::initializer_list<string_wrapper>,
 			std::enable_if_t<
@@ -352,14 +432,41 @@ namespace XMLB
 				m_parent->begin()->find(container, offset);
 		}
 
-		// Вспомагательные функции
+		//*********************************************************************
+		/// @}
 
+
+
+		/// @name Вспомагательные методы
+		/// @{
+		/**********************************************************************
+		* @brief Удалить все узлы, включая root узел
+		**********************************************************************/
+		void clear() noexcept;
+
+		/**********************************************************************
+		* @brief Получить количество узлов, включая root узел
+		* 
+		* @return количество узлов
+		**********************************************************************/
 		size_type size() const noexcept;
 
+		/**********************************************************************
+		* @brief Проверить, пустой ли документа
+		* 
+		* @return true - если нет ниодного узла, включая root узла. В противном
+		* случае false
+		**********************************************************************/
 		bool is_empty() const noexcept;
 		operator bool() const noexcept;
 
-		void swap(Document&& doc) noexcept;
+		/**********************************************************************
+		* @brief Обменять данные
+		*
+		* @param doc - правый Document
+		**********************************************************************/
+		void swap(Document& doc) noexcept;
+		/// @}
 
 	private:
 		std::unique_ptr<node_type> m_parent;
@@ -371,9 +478,9 @@ namespace XMLB
 
 
 
-	/**************************************************************************
-	*							DOCUMENT IMPLEMENTATION
-	**************************************************************************/
+	//*************************************************************************
+	//							DOCUMENT IMPLEMENTATION
+	//*************************************************************************
 
 	template<typename CharT>
 	inline Document<CharT>::Document(float version,
@@ -397,18 +504,6 @@ namespace XMLB
 		m_version{ version }
 	{
 	}
-
-	//*************************************************************************
-
-	/*template<typename CharT>
-	inline Document<CharT>::Document(float version, string_wrapper encoding_type)
-		:m_parent{ std::make_unique<typename Document<CharT>::node_type>(
-			typename node_type::string_type{}) },
-		m_encoding_type{ encoding_type },
-		m_version{ version }
-	{
-
-	}*/
 
 	//*************************************************************************
 
@@ -503,6 +598,12 @@ namespace XMLB
 	template<typename CharT>
 	inline typename Document<CharT>::node_type& Document<CharT>::root() &
 	{
+		if (is_empty())
+		{
+			throw std::out_of_range{
+				"The document is empty! Can't get root node"};
+		}
+
 		return *m_parent->begin();
 	}
 
@@ -512,6 +613,12 @@ namespace XMLB
 	inline const typename Document<CharT>::node_type& Document<CharT>::root() 
 		const &
 	{
+		if (is_empty())
+		{
+			throw std::out_of_range{
+				"The document is empty! Can't get root node" };
+		}
+
 		return m_parent->begin();
 	}
 
@@ -556,17 +663,6 @@ namespace XMLB
 		Document<CharT>::get_encoding_type() const noexcept
 	{
 		return string_wrapper{ m_encoding_type };
-	}
-
-	//*************************************************************************
-
-	template<typename CharT>
-	inline void Document<CharT>::clear() noexcept
-	{
-		if (m_parent->child_size())
-		{
-			m_parent->erase_child(0);
-		}
 	}
 
 	//*************************************************************************
@@ -624,6 +720,17 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
+	inline void Document<CharT>::clear() noexcept
+	{
+		if (m_parent->child_size())
+		{
+			m_parent->erase_child(0);
+		}
+	}
+
+	//*************************************************************************
+
+	template<typename CharT>
 	inline typename Document<CharT>::size_type 
 		Document<CharT>::size() const noexcept
 	{
@@ -649,7 +756,7 @@ namespace XMLB
 	//*************************************************************************
 
 	template<typename CharT>
-	inline void Document<CharT>::swap(Document&& doc) noexcept
+	inline void Document<CharT>::swap(Document& doc) noexcept
 	{
 		using std::swap;
 
@@ -662,9 +769,71 @@ namespace XMLB
 
 
 
+	//*************************************************************************
+	//						SUPPORT FUNCTIONS FOR DOCUMENT
+	//*************************************************************************
+
 	/**************************************************************************
-	*						SUPPORT FUNCTIONS FOR DOCUMENT
+	* @brief Проверить на валидность XML узлы
+	* 
+	* @ingroup general
+	*
+	* @param first - начало XML последовательности
+	* @param last - конец XML последовательности
+	*
+	* @return диагностический итератор, который преобразуется в true, если была
+	* найдена ошибка и false если ошибок не было найдено
 	**************************************************************************/
+	template<typename IterT, typename IterU = IterT>
+	inline decltype(auto) is_correct(IterT first, IterU last)
+	{
+		using diagnostic_iterator =
+			detail::Diagnostic_iterator<decltype(last)>;
+
+		decltype(last) first_it = first;
+
+		diagnostic_iterator result;
+
+		for (; first_it != last; ++first_it)
+		{
+			if (!is_correct(*first_it))
+			{
+				result = diagnostic_iterator{ first_it, true };
+
+				break;
+			}
+		}
+
+		return result;
+	}
+
+	//*************************************************************************
+
+
+
+	/**************************************************************************
+	* @brief Проверить на валидность XML документ
+	* 
+	* @ingroup general
+	*
+	* @param document - XML документ
+	*
+	* @return диагностический итератор, который преобразуется в true, если была
+	* найдена ошибка и false если ошибок не было найдено
+	**************************************************************************/
+	template<typename DocT>
+	inline decltype(auto) is_correct(DocT&& document)
+	{
+		using diagnostic_iterator =
+			detail::Diagnostic_iterator<decltype(document.end())>;
+
+		diagnostic_iterator result =
+			is_correct(document.begin(), document.end());
+
+		return result;
+	}
+
+	//*************************************************************************
 
 	template<typename CharT>
 	inline bool operator==(const Document<CharT>& lhs,
@@ -692,6 +861,16 @@ namespace XMLB
 
 	//*************************************************************************
 
+
+
+	/**************************************************************************
+	* @brief Обменять данные двух Document
+	*
+	* @tparam CharT - тип символов
+	*
+	* @param lhs - первый Document
+	* @param rhs - второй Document
+	**************************************************************************/
 	template<typename CharT>
 	inline void swap(Document<CharT>& lhs, Document<CharT>& rhs) noexcept
 	{
@@ -706,9 +885,9 @@ namespace XMLB
 
 namespace XMLB { namespace detail {
 
-	/**************************************************************************
-	*				SUPPORT FUNCTIONS FOR SAVE AND LOAD FUNCTIONS
-	**************************************************************************/
+	//*************************************************************************
+	//				SUPPORT FUNCTIONS FOR SAVE AND LOAD FUNCTIONS
+	//*************************************************************************
 
 	template<typename CharT>
 	using default_decorator = Decorator<CharT>;
@@ -732,17 +911,17 @@ namespace XMLB { namespace detail {
 
 		ParserT parser{ default_functor_count };
 
-		parser.add_functor(Start_functor{});
-		parser.add_functor(Open_tag_functor{});
-		parser.add_functor(Close_tag_functor{});
-		parser.add_functor(Last_tag_functor{});
-		parser.add_functor(Single_tag_functor{});
-		parser.add_functor(Name_tag_functor{});
-		parser.add_functor(Value_tag_functor{});
-		parser.add_functor(Attribute_name_functor{});
-		parser.add_functor(Attribute_value_functor{});
-		parser.add_functor(Comment_functor{});
-		parser.add_functor(Document_info_functor{});
+		parser.add_functor(Start_state{}, Start_functor{});
+		parser.add_functor(Open_tag_state{}, Open_tag_functor{});
+		parser.add_functor(Close_tag_state{}, Close_tag_functor{});
+		parser.add_functor(Last_tag_state{}, Last_tag_functor{});
+		parser.add_functor(Single_tag_state{}, Single_tag_functor{});
+		parser.add_functor(Name_tag_state{}, Name_tag_functor{});
+		parser.add_functor(Value_tag_state{}, Value_tag_functor{});
+		parser.add_functor(Attribute_name_state{}, Attribute_name_functor{});
+		parser.add_functor(Attribute_value_state{}, Attribute_value_functor{});
+		parser.add_functor(Comment_state{}, Comment_functor{});
+		parser.add_functor(Document_info_state{}, Document_info_functor{});
 
 		return parser;
 	}
@@ -921,7 +1100,6 @@ namespace XMLB { namespace detail {
 		using tag_container_type =
 			typename std::decay_t<ContainerT>::value_type;
 		using symbol_type = symbol_type_t<tag_container_type>;
-		//using string_wrapper = typename Document<symbol_type>::string_wrapper;
 		using document_type = Document<symbol_type>;
 		using document_pointer = typename Document<symbol_type>::Ptr;
 
@@ -931,8 +1109,8 @@ namespace XMLB { namespace detail {
 
 		if (doc_info.size())
 		{
-			const unsigned int only_doc_version = 1;
-			const unsigned int doc_version_and_encoding = 2;
+			static constexpr unsigned int only_doc_version = 1;
+			static constexpr unsigned int doc_version_and_encoding = 2;
 
 			auto&& source_doc_info = doc_info.top();
 
@@ -954,8 +1132,10 @@ namespace XMLB { namespace detail {
 				auto&& doc_encoding =
 					*(++source_doc_info.attribute_values.begin());
 
+				//Вот тут нужно убрать string_type. Нужно выбрать лучший
+				//лучший вариант решения
 				result = std::move(std::make_unique<document_type>(
-					doc_version, string_type(doc_encoding)));
+					doc_version, string_type(std::move(doc_encoding))));
 			}
 		}
 
@@ -974,22 +1154,36 @@ namespace XMLB { namespace detail {
 namespace XMLB
 {
 
-	/**************************************************************************
-	*						SAVE AND LOAD FUNCTIONS
-	**************************************************************************/
+	//*************************************************************************
+	//						SAVE AND LOAD FUNCTIONS
+	//*************************************************************************
 
+	/// @name Функции сохранения
+	/// @{
 	/**************************************************************************
-	* @brief Скопировать данные из последовательности XML узлов в буффер
+	* @brief Скопировать данные из последовательности XML узлов в буфер
+	* 
+	* @ingroup general
+	* 
+	* @details Скопировать и сохранить данные в буфер. Данная функция не
+	* проверяет последовательность на корректность!
 	*
+	* @internal
 	* @details Данная функция для случаев, когда IterT - итератор с любой
 	* категорией или указатель и value_type итератора или указателя IterT -
-	* простой символьный тип
-	*
-	* @param[in] first - начальный итератора на XML узел
-	* @param[in] last - конечный итератор на XML узел
-	* @param[in] out - итератор, в который будут заносится данные
-	*
-	* @return true - в случае успешного копирования. В противном случае - false
+	* простой символьный тип. Данная функция не проверяет корректность XML
+	* узлов
+	* @endinternal
+	* 
+	* @tparam CharT - тип символов
+	* @tparam IterT - тип выходного(буфера) итератора
+	* @tparam DecorT - тип декоратора
+	* 
+	* @param first - начальный итератора на XML узел
+	* @param last - конечный итератор на XML узел
+	* @param out - итератор, в который будут заноситься данные
+	* 
+	* @todo Нужно оптимизировать данную функцию
 	**************************************************************************/
 	template<typename CharT, typename IterT,
 		typename DecorT = detail::default_decorator<CharT>,
@@ -1001,16 +1195,14 @@ namespace XMLB
 		detail::is_input_derived_iterator_or_pointer_to_symbol_v<IterT, CharT>,
 
 		std::nullptr_t> = nullptr>
-	inline bool save_to(detail::Node_const_iterator<Node<CharT>> first,
+	inline void save_to(detail::Node_const_iterator<Node<CharT>> first,
 		detail::Node_const_iterator<Node<CharT>> last,
 		IterT out,
 		const DecorT& decorator = DecorT{})
 	{
-		bool result = true;
-
 		if (first == last)
 		{
-			return result;
+			return;
 		}
 
 		using symbol_type = CharT;
@@ -1018,18 +1210,16 @@ namespace XMLB
 		using string_wrapper = typename Node<symbol_type>::string_wrapper;
 		using const_iterator = typename Node<symbol_type>::const_iterator;
 
-		const auto& kFill = decorator.fill_symbol;
-		const auto& kSpace = decorator.white_space_symbol;
-		const auto& kOpen_tag = decorator.open_tag_symbol;
-		const auto& kClose_tag = decorator.close_tag_symbol;
-		const auto& kSingle_tag = decorator.single_tag_symbol;
-		const auto& kLast_tag = decorator.last_tag_symbol;
-		const auto& kOpen_attr = decorator.open_attribute_symbol;
-		const auto& kClose_attr = decorator.close_attribute_symbol;
-		const auto& kEqual_attr = decorator.equal_attribute_symbol;
-		const auto& kLine_break = decorator.line_break_symbol;
-		const auto& kTab = decorator.tab_symbol;
-		const auto& kCarriage = decorator.carriage_symbol;
+		const auto kFill = decorator.fill_symbol;
+		const auto kSpace = decorator.white_space_symbol;
+		const auto kOpen_tag = decorator.open_tag_symbol;
+		const auto kClose_tag = decorator.close_tag_symbol;
+		const auto kSingle_tag = decorator.single_tag_symbol;
+		const auto kLast_tag = decorator.last_tag_symbol;
+		const auto kOpen_attr = decorator.open_attribute_symbol;
+		const auto kClose_attr = decorator.close_attribute_symbol;
+		const auto kEqual_attr = decorator.equal_attribute_symbol;
+		const auto kLine_break = decorator.line_break_symbol;
 
 		//Контейнер итераторова, чтобы правильно закрывать теги с потомками
 		std::stack<const_iterator> node_groups;
@@ -1083,12 +1273,6 @@ namespace XMLB
 					at_it != at_end;
 					++at_it)
 				{
-					if (!at_it->name.size())
-					{
-						result = false;
-						break;
-					}
-
 					*out = kSpace; ++out;
 
 					detail::copy_symbol_from_container(
@@ -1100,12 +1284,6 @@ namespace XMLB
 						string_wrapper{ at_it->value }, out);
 					*out = kClose_attr; ++out;
 				}
-			}
-
-			if (!result || !first->get_name().size())
-			{
-				result = false;
-				break;
 			}
 
 			//Если у XML тега нет дочерних узлов и есть значение, то
@@ -1142,7 +1320,7 @@ namespace XMLB
 		}
 
 		//Если остались ещё незакрытые теги, то заносим в файл их закрытие
-		while (result && !node_groups.empty())
+		while (!node_groups.empty())
 		{
 			//Записываем нужное количество табов для тега
 			detail::copy_symbol_n(kFill,
@@ -1157,10 +1335,6 @@ namespace XMLB
 
 			node_groups.pop();
 		}
-
-		//result = true;
-
-		return result;
 	}
 
 	//*************************************************************************
@@ -1168,16 +1342,28 @@ namespace XMLB
 
 
 	/**************************************************************************
-	* @brief Скопировать данные из XML документа в какой-то буффер
+	* @brief Скопировать данные из XML документа в буфер
+	* 
+	* @ingroup general
+	* 
+	* @details Скопировать и сохранить данные в буфер. Данная функция не
+	* проверяет документ на корректность!
 	*
+	* @internal
 	* @details Данная функция для случаев, когда IterT - итератор с любой
 	* категорией или указатель и value_type итератора или указателя IterT -
-	* простой символьный тип
+	* простой символьный тип. Данная функция не проверяет корректность XML
+	* документа
+	* @endinternal
+	* 
+	* @tparam CharT - тип символов
+	* @tparam IterT - тип выходного(буфера) итератора
+	* @tparam DecorT - тип декоратора
 	*
-	* @param[in] document - XML Документа
-	* @param[in] out - итератор, в который будут заносится данные
-	*
-	* @return true - в случае успешного копирования. В противном случае - false
+	* @param document - XML Документа
+	* @param out - итератор, в который будут заноситься данные
+	* 
+	* @todo Нужно оптимизировать данную функцию
 	**************************************************************************/
 	template<typename CharT, typename IterT,
 		typename DecorT = detail::default_decorator<CharT>,
@@ -1189,7 +1375,7 @@ namespace XMLB
 		detail::is_input_derived_iterator_or_pointer_to_symbol_v<IterT, CharT>,
 
 		std::nullptr_t> = nullptr>
-	inline bool save_to(const Document<CharT>& document, IterT out,
+	inline void save_to(const Document<CharT>& document, IterT out,
 		const DecorT& decorator = DecorT{})
 	{
 		using std::begin;
@@ -1199,17 +1385,15 @@ namespace XMLB
 		using string_type = typename Node<symbol_type>::string_type;
 		using string_wrapper = typename Node<symbol_type>::string_wrapper;
 
-		bool result = true;
-
-		const auto& kSpace = decorator.white_space_symbol;
-		const auto& kOpen_tag = decorator.open_tag_symbol;
-		const auto& kClose_tag = decorator.close_tag_symbol;
-		const auto& kOpen_attr = decorator.open_attribute_symbol;
-		const auto& kClose_attr = decorator.close_attribute_symbol;
-		const auto& kEqual_attr = decorator.equal_attribute_symbol;
-		const auto& kDoc_info = decorator.doc_info_symbol;
-		const auto& kDoc_last_info = decorator.doc_info_last_symbol;
-		const auto& kLine_break = decorator.line_break_symbol;
+		const auto kSpace = decorator.white_space_symbol;
+		const auto kOpen_tag = decorator.open_tag_symbol;
+		const auto kClose_tag = decorator.close_tag_symbol;
+		const auto kOpen_attr = decorator.open_attribute_symbol;
+		const auto kClose_attr = decorator.close_attribute_symbol;
+		const auto kEqual_attr = decorator.equal_attribute_symbol;
+		const auto kLine_break = decorator.line_break_symbol;
+		const auto kDoc_info = decorator.doc_info_symbol;
+		const auto kDoc_last_info = decorator.doc_info_last_symbol;
 
 		*out = kOpen_tag; ++out;
 		*out = kDoc_info; ++out;
@@ -1218,7 +1402,8 @@ namespace XMLB
 
 		*out = kSpace; ++out;
 		detail::copy_symbol_from_container(
-			detail::to_string<symbol_type>('v', 'e', 'r', 's', 'i', 'o', 'n'), out);
+			detail::to_string<symbol_type>('v', 'e', 'r', 's', 'i', 'o', 'n'), 
+			out);
 		*out = kEqual_attr; ++out;
 		*out = kOpen_attr; ++out;
 		detail::copy_symbol_from_container(
@@ -1238,9 +1423,7 @@ namespace XMLB
 		*out = kClose_tag; ++out;
 		*out = kLine_break; ++out;
 
-		result = save_to(begin(document), end(document), out, decorator);
-
-		return result;
+		save_to(begin(document), end(document), out, decorator);
 	}
 
 	//*************************************************************************
@@ -1248,17 +1431,33 @@ namespace XMLB
 
 
 	/**************************************************************************
-	* @brief Скопировать данные из последовательности XML узлов в буффер
+	* @overload void save_to(detail::Node_const_iterator<Node<CharT>> first,
+	* detail::Node_const_iterator<Node<CharT>> last, IterT out,
+	* const DecorT& decorator = DecorT{})
+	* 
+	* @brief Скопировать данные из последовательности XML узлов в буфер
+	* 
+	* @ingroup general
+	* 
+	* @details Скопировать и сохранить данные в буфер. Данная функция не
+	* проверяет последовательность на корректность!
 	*
+	* @internal
 	* @details Данная функция для случаев, когда IterT - итератор с любой
 	* категорией или указатель и value_type итератора или указателя IterT -
-	* строко-подобный контейнер
+	* строко-подобный контейнер. Данная функция не проверяет корректность XML
+	* документа
+	* @endinternal
+	* 
+	* @tparam CharT - тип символов
+	* @tparam IterT - тип выходного(буфера) итератора
+	* @tparam DecorT - тип декоратора
 	*
-	* @param[in] first - начальный итератора на XML узел
-	* @param[in] last - конечный итератор на XML узел
-	* @param[in] out - итератор, в который будут заносится данные
-	*
-	* @return true - в случае успешного копирования. В противном случае - false
+	* @param first - начальный итератора на XML узел
+	* @param last - конечный итератор на XML узел
+	* @param out - итератор, в который будут заноситься данные
+	* 
+	* @todo Нужно оптимизировать данную функцию
 	**************************************************************************/
 	template<typename CharT, typename IterT,
 		typename DecorT = detail::default_decorator<CharT>,
@@ -1274,31 +1473,32 @@ namespace XMLB
 		IterT, typename Document<CharT>::string_type>,
 
 		std::nullptr_t> = nullptr>
-	inline bool save_to(detail::Node_const_iterator<Node<CharT>> first,
+	inline void save_to(detail::Node_const_iterator<Node<CharT>> first,
 		detail::Node_const_iterator<Node<CharT>> last,
 		IterT out,
 		const DecorT& decorator = DecorT{})
 	{
-		bool result = true;
-
 		using symbol_type = CharT;
 		using string_type = typename Node<symbol_type>::string_type;
 		using string_wrapper = typename Node<symbol_type>::string_wrapper;
 		using const_iterator = typename Node<symbol_type>::const_iterator;
 		using size_type = typename Node<symbol_type>::string_type::size_type;
 
-		auto&& kFill = decorator.fill_symbol;
-		auto&& kSpace = decorator.white_space_symbol;
-		auto&& kOpen_tag = decorator.open_tag_symbol;
-		auto&& kClose_tag = decorator.close_tag_symbol;
-		auto&& kSingle_tag = decorator.single_tag_symbol;
-		auto&& kLast_tag = decorator.last_tag_symbol;
-		auto&& kOpen_attr = decorator.open_attribute_symbol;
-		auto&& kClose_attr = decorator.close_attribute_symbol;
-		auto&& kEqual_attr = decorator.equal_attribute_symbol;
-		auto&& kLine_break = decorator.line_break_symbol;
-		auto&& kTab = decorator.tab_symbol;
-		auto&& kCarriage = decorator.carriage_symbol;
+		if (first == last)
+		{
+			return;
+		}
+
+		const auto kFill = decorator.fill_symbol;
+		const auto kSpace = decorator.white_space_symbol;
+		const auto kOpen_tag = decorator.open_tag_symbol;
+		const auto kClose_tag = decorator.close_tag_symbol;
+		const auto kSingle_tag = decorator.single_tag_symbol;
+		const auto kLast_tag = decorator.last_tag_symbol;
+		const auto kOpen_attr = decorator.open_attribute_symbol;
+		const auto kClose_attr = decorator.close_attribute_symbol;
+		const auto kEqual_attr = decorator.equal_attribute_symbol;
+		const auto kLine_break = decorator.line_break_symbol;
 
 		//Контейнер итераторова, чтобы правильно закрывать теги с потомками
 		std::stack<const_iterator> node_groups;
@@ -1364,22 +1564,10 @@ namespace XMLB
 					at_it != at_end;
 					++at_it)
 				{
-					if (!at_it->name.size())
-					{
-						result = false;
-						break;
-					}
-
 					additional_symbol_count += 4;
 					additional_symbol_count += at_it->name.size();
 					additional_symbol_count += at_it->value.size();
 				}
-			}
-
-			if (!result || !first->get_name().size())
-			{
-				result = false;
-				break;
 			}
 
 			//Продолжаем суммировать необходимое количество символов
@@ -1400,7 +1588,8 @@ namespace XMLB
 
 			string_type output_string{};
 
-			output_string.reserve(first.get_offset() + additional_symbol_count + first->get_name().size());
+			output_string.reserve(first.get_offset() + 
+				additional_symbol_count + first->get_name().size());
 
 
 
@@ -1468,7 +1657,7 @@ namespace XMLB
 
 
 		//Если остались ещё незакрытые теги, то заносим в файл их закрытие
-		while (result && !node_groups.empty())
+		while (!node_groups.empty())
 		{
 			//Количество дополнительных символов в выходной строке
 			size_type additional_symbol_count = 4;
@@ -1496,12 +1685,6 @@ namespace XMLB
 
 			node_groups.pop();
 		}
-
-
-
-		//result = true;
-
-		return result;
 	}
 
 	//*************************************************************************
@@ -1509,16 +1692,31 @@ namespace XMLB
 
 
 	/**************************************************************************
-	* @brief Скопировать данные из XML документа в какой-то буффер
+	* @overload void save_to(const Document<CharT>& document, IterT out,
+	* const DecorT& decorator = DecorT{})
+	* 
+	* @brief Скопировать данные из XML документа в буфер
+	* 
+	* @ingroup general
+	* 
+	* @details Скопировать и сохранить данные в буфер. Данная функция не
+	* проверяет документ на корректность!
 	*
+	* @internal
 	* @details Данная функция для случаев, когда IterT - итератор с любой
 	* категорией или указатель и value_type итератора или указателя IterT -
-	* строко-подобный контейнер
+	* строко-подобный контейнер. Данная функция не проверяет корректность XML
+	* документа
+	* @endinternal
+	* 
+	* @tparam CharT - тип символов
+	* @tparam IterT - тип выходного(буфера) итератора
+	* @tparam DecorT - тип декоратора
 	*
-	* @param[in] document - XML Документа
-	* @param[in] out - итератор, в который будут заносится данные
-	*
-	* @return true - в случае успешного копирования. В противном случае - false
+	* @param document - XML Документа
+	* @param out - итератор, в который будут заноситься данные
+	* 
+	* @todo Нужно оптимизировать данную функцию
 	**************************************************************************/
 	template<typename CharT, typename IterT,
 		typename DecorT = detail::default_decorator<CharT>,
@@ -1534,7 +1732,7 @@ namespace XMLB
 		IterT, typename Document<CharT>::string_type>,
 
 		std::nullptr_t> = nullptr>
-	inline bool save_to(const Document<CharT>& document, IterT out,
+	inline void save_to(const Document<CharT>& document, IterT out,
 		const DecorT& decorator = DecorT{})
 	{
 		using std::begin;
@@ -1545,30 +1743,32 @@ namespace XMLB
 		using string_wrapper = typename Node<symbol_type>::string_wrapper;
 		using size_type = typename Node<symbol_type>::string_type::size_type;
 
-		bool result = false;
-
-		auto&& kSpace = decorator.white_space_symbol;
-		auto&& kOpen_tag = decorator.open_tag_symbol;
-		auto&& kClose_tag = decorator.close_tag_symbol;
-		auto&& kOpen_attr = decorator.open_attribute_symbol;
-		auto&& kClose_attr = decorator.close_attribute_symbol;
-		auto&& kEqual_attr = decorator.equal_attribute_symbol;
-		auto&& kDoc_info = decorator.doc_info_symbol;
-		auto&& kDoc_last_info = decorator.doc_info_last_symbol;
-		auto&& kLine_break = decorator.line_break_symbol;
+		const auto kSpace = decorator.white_space_symbol;
+		const auto kOpen_tag = decorator.open_tag_symbol;
+		const auto kClose_tag = decorator.close_tag_symbol;
+		const auto kOpen_attr = decorator.open_attribute_symbol;
+		const auto kClose_attr = decorator.close_attribute_symbol;
+		const auto kEqual_attr = decorator.equal_attribute_symbol;
+		const auto kLine_break = decorator.line_break_symbol;
+		const auto kDoc_info = decorator.doc_info_symbol;
+		const auto kDoc_last_info = decorator.doc_info_last_symbol;
 
 		size_type additional_symbol_count = 13;
 
 		string_type kXml = detail::to_string<symbol_type>('x', 'm', 'l');
-		string_type kVersion = detail::to_string<symbol_type>('v', 'e', 'r', 's', 'i', 'o', 'n');
+		string_type kVersion = 
+			detail::to_string<symbol_type>('v', 'e', 'r', 's', 'i', 'o', 'n');
 		string_type kEncoding = detail::to_string<symbol_type>(
 			'e', 'n', 'c', 'o', 'd', 'i', 'n', 'g');
-		string_type doc_version = cut_doc_version<symbol_type>(document.get_version());
+		string_type doc_version = cut_doc_version<symbol_type>(
+			document.get_version());
 
 		string_type output_string{};
 
 		//Резервируем необходимый размер для выходноый строки
-		output_string.reserve(additional_symbol_count + kXml.size() + kVersion.size() + kEncoding.size() + doc_version.size() + document.get_encoding_type().size());
+		output_string.reserve(additional_symbol_count + kXml.size() + 
+			kVersion.size() + kEncoding.size() + doc_version.size() + 
+			document.get_encoding_type().size());
 
 		output_string.push_back(kOpen_tag);
 		output_string.push_back(kDoc_info);
@@ -1595,29 +1795,42 @@ namespace XMLB
 		*out = std::move(output_string);
 		++out;
 
-		result = save_to(begin(document), end(document), out, decorator);
-
-		return result;
+		save_to(begin(document), end(document), out, decorator);
 	}
 
 	//*************************************************************************
+	/// @}
 
 
 
+	/// @name Функции загрузки
+	/// @{
 	/**************************************************************************
-	* @brief Прочитать и пропарсить данные из последовательности [first, last)
+	* @brief Прочитать и выполнить синтаксический анализ XML даннх из 
+	* последовательности [first, last)
+	* 
+	* @ingroup general
 	*
+	* @internal
 	* @details Данная функция для случаев, когда IterT - итератор с категорией
 	* равной input_iterator и value_type итератора IterT - простой символьный
-	* тип
+	* тип.
+	* @endinternal
 	*
-	* @param[in] first - начало последовательности
-	* @param[in] last - конец последовательности
-	* @param[in] decorator - декоратор (имеет значение по умолчанию)
-	* @param[in] parser - парсер (имеет значение по умолчанию)
+	* @tparam IterT - тип итераторов входной последовательности
+	* @tparam DecorT - тип декоратора
+	* @tparam ParserT - тип парсера(синтаксического анализатора)
+	* @tparam CharT - тип символов
+	* 
+	* @param first - начало последовательности
+	* @param last - конец последовательности
+	* @param decorator - декоратор
+	* @param parser - парсер(синтаксический анализатор)
 	*
 	* @return в случае успешного завершения функции - документ с XML узлами. В
 	* противном случае, документ со значением nullptr
+	* 
+	* @todo Нужно оптимизировать данную функцию
 	**************************************************************************/
 	template<typename IterT,
 		typename DecorT =
@@ -1629,11 +1842,16 @@ namespace XMLB
 		DecorT,
 		detail::default_data_controller<detail::symbol_type_t<DecorT>>>,
 
+		typename CharT = detail::symbol_type_t<DecorT>,
+
 		std::enable_if_t<detail::is_input_iterator_and_char_v<
-		IterT, DecorT, std::decay_t<ParserT>>,
+		IterT, DecorT, std::decay_t<ParserT>> &&
+		std::is_same_v<detail::symbol_type_t<DecorT>, CharT>,
 
 		std::nullptr_t> = nullptr>
-	inline decltype(auto) load_from(IterT first, IterT last,
+	[[nodiscard]] inline typename Document<CharT>::Ptr load_from(
+		IterT first, 
+		IterT last,
 		const DecorT& decorator = DecorT{},
 		ParserT&& parser = detail::create_default_parser<ParserT>())
 	{
@@ -1664,19 +1882,35 @@ namespace XMLB
 
 
 	/**************************************************************************
-	* @brief Прочитать и пропарсить данные из последовательности [first, last)
+	* @overload Document<CharT>::Ptr load_from(IterT first, IterT last, 
+	* const DecorT& decorator = DecorT{}, 
+	* ParserT&& parser = detail::create_default_parser<ParserT>())
+	* 
+	* @brief Прочитать и выполнить синтаксический анализ XML даннх из 
+	* последовательности [first, last)
+	* 
+	* @ingroup general
 	*
+	* @internal
 	* @details Данная функция для случаев, когда IterT - итератор с категорией
 	* равной input_iterator и value_type итератора IterT - контейнер, у
 	* которого есть итераторы, и методы begin(), end().
+	* @endinternal
 	*
-	* @param[in] first - начало последовательности
-	* @param[in] last - конец последовательности
-	* @param[in] decorator - декоратор (имеет значение по умолчанию)
-	* @param[in] parser - парсер (имеет значение по умолчанию)
+	* @tparam IterT - тип итераторов входной последовательности
+	* @tparam DecorT - тип декоратора
+	* @tparam ParserT - тип парсера(синтаксического анализатора)
+	* @tparam CharT - тип символов
+	* 
+	* @param first - начало последовательности
+	* @param last - конец последовательности
+	* @param decorator - декоратор
+	* @param parser - парсер(синтаксический анализатор)
 	*
 	* @return в случае успешного завершения функции - документ с XML узлами. В
 	* противном случае, документ со значением nullptr
+	* 
+	* @todo Нужно оптимизировать данную функцию
 	**************************************************************************/
 	template<typename IterT,
 
@@ -1689,11 +1923,16 @@ namespace XMLB
 		DecorT,
 		detail::default_data_controller<detail::symbol_type_t<DecorT>>>,
 
+		typename CharT = detail::symbol_type_t<DecorT>,
+
 		std::enable_if_t<detail::is_input_iterator_and_container_v<
-		IterT, DecorT, std::decay_t<ParserT>>,
+		IterT, DecorT, std::decay_t<ParserT>> &&
+		std::is_same_v<detail::symbol_type_t<DecorT>, CharT>,
 
 		std::nullptr_t> = nullptr>
-	inline decltype(auto) load_from(IterT first, IterT last,
+	[[nodiscard]] inline typename Document<CharT>::Ptr load_from(
+		IterT first, 
+		IterT last,
 		const DecorT& decorator = DecorT{},
 		ParserT&& parser = detail::create_default_parser<ParserT>())
 	{
@@ -1725,19 +1964,35 @@ namespace XMLB
 
 
 	/**************************************************************************
-	* @brief Прочитать и пропарсить данные из последовательности [first, last)
+	* @overload Document<CharT>::Ptr load_from(IterT first, IterT last, 
+	* const DecorT& decorator = DecorT{}, 
+	* ParserT&& parser = detail::create_default_parser<ParserT>())
+	* 
+	* @brief Прочитать и выполнить синтаксический анализ XML даннх из 
+	* последовательности [first, last)
+	* 
+	* @ingroup general
 	*
+	* @internal
 	* @details Данная функция для случаев, когда IterT - итератор с категорией
 	* равной или выше forward_iterator, или указатель и value_type итератора
 	* IterT - простой символьный тип
-	*
-	* @param[in] first - начало последовательности
-	* @param[in] last - конец последовательности
-	* @param[in] decorator - декоратор (имеет значение по умолчанию)
-	* @param[in] parser - парсер (имеет значение по умолчанию)
+	* @endinternal
+	* 
+	* @tparam IterT - тип итераторов входной последовательности
+	* @tparam DecorT - тип декоратора
+	* @tparam ParserT - тип парсера(синтаксического анализатора)
+	* @tparam CharT - тип символов
+	* 
+	* @param first - начало последовательности
+	* @param last - конец последовательности
+	* @param decorator - декоратор
+	* @param parser - парсер(синтаксический анализатор)
 	*
 	* @return в случае успешного завершения функции - документ с XML узлами. В
 	* противном случае, документ со значением nullptr
+	* 
+	* @todo Нужно оптимизировать данную функцию
 	**************************************************************************/
 	template<typename IterT,
 
@@ -1750,13 +2005,18 @@ namespace XMLB
 		DecorT,
 		detail::default_data_controller<const detail::symbol_type_t<DecorT>*>>,
 
+		typename CharT = detail::symbol_type_t<DecorT>,
+
 		std::enable_if_t<detail::is_forward_iterator_or_pointer_and_char_v<
-		IterT, DecorT, std::decay_t<ParserT>>,
+		IterT, DecorT, std::decay_t<ParserT>> &&
+		std::is_same_v<detail::symbol_type_t<DecorT>, CharT>,
 
 		std::nullptr_t> = nullptr>
-	inline decltype(auto) load_from(IterT first, IterT last,
-			const DecorT& decorator = DecorT{},
-			ParserT&& parser = detail::create_default_parser<ParserT>())
+	[[nodiscard]] inline typename Document<CharT>::Ptr load_from(
+		IterT first, 
+		IterT last,
+		const DecorT & decorator = DecorT{},
+		ParserT&& parser = detail::create_default_parser<ParserT>())
 	{
 		using symbol_type = detail::symbol_type_t<DecorT>;
 		using document_type = Document<symbol_type>;
@@ -1785,19 +2045,35 @@ namespace XMLB
 
 
 	/**************************************************************************
-	* @brief Прочитать и пропарсить данные из последовательности [first, last)
+	* @overload Document<CharT>::Ptr load_from(IterT first, IterT last, 
+	* const DecorT& decorator = DecorT{}, 
+	* ParserT&& parser = detail::create_default_parser<ParserT>())
+	* 
+	* @brief Прочитать и выполнить синтаксический анализ XML даннх из 
+	* последовательности [first, last)
+	* 
+	* @ingroup general
 	*
+	* @internal
 	* @details Данная функция для случаев, когда IterT - итератор с категорией
 	* равной или выше forward_iterator, или указатель и value_type итератора
 	* IterT - контейнер, у которого есть итераторы, и методы begin(), end().
-	*
-	* @param[in] first - начало последовательности
-	* @param[in] last - конец последовательности
-	* @param[in] decorator - декоратор (имеет значение по умолчанию)
-	* @param[in] parser - парсер (имеет значение по умолчанию)
+	* @endinternal
+	* 
+	* @tparam IterT - тип итераторов входной последовательности
+	* @tparam DecorT - тип декоратора
+	* @tparam ParserT - тип парсера(синтаксического анализатора)
+	* @tparam CharT - тип символов
+	* 
+	* @param first - начало последовательности
+	* @param last - конец последовательности
+	* @param decorator - декоратор
+	* @param parser - парсер(синтаксический анализатор)
 	*
 	* @return в случае успешного завершения функции - документ с XML узлами. В
 	* противном случае, документ со значением nullptr
+	* 
+	* @todo Нужно оптимизировать данную функцию
 	**************************************************************************/
 	template<typename IterT,
 
@@ -1810,14 +2086,19 @@ namespace XMLB
 		DecorT,
 		detail::default_data_controller<const detail::symbol_type_t<DecorT>*>>,
 
+		typename CharT = detail::symbol_type_t<DecorT>,
+
 		std::enable_if_t<
 		detail::is_forward_iterator_or_pointer_and_container_v<
-		IterT, DecorT, std::decay_t<ParserT>>,
+		IterT, DecorT, std::decay_t<ParserT>> &&
+		std::is_same_v<detail::symbol_type_t<DecorT>, CharT>,
 
 		std::nullptr_t> = nullptr>
-	inline decltype(auto) load_from(IterT first, IterT last,
-			const DecorT& decorator = DecorT{},
-			ParserT&& parser = detail::create_default_parser<ParserT>())
+	[[nodiscard]] inline typename Document<CharT>::Ptr load_from(
+		IterT first, 
+		IterT last,
+		const DecorT & decorator = DecorT{},
+		ParserT&& parser = detail::create_default_parser<ParserT>())
 	{
 		using symbol_type = detail::symbol_type_t<DecorT>;
 		using document_type = Document<symbol_type>;
@@ -1843,6 +2124,7 @@ namespace XMLB
 	}
 
 	//*************************************************************************
+	/// @}
 
 } // namespace XMLB
 

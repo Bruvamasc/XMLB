@@ -1,12 +1,28 @@
-/******************************************************************************
-* @file
-* Данный файл объявляет и определяет стандартные классы-функторы для класса 
-* Парсера XML документа
-*
-* @author Bruvamasc
-* @date   2022-08-25
-*
-******************************************************************************/
+//*****************************************************************************
+// MIT License
+//
+// Copyright(c) 2022 Vladislav Kurmanenko (Bruvamasc)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+//
+// The above copyright noticeand this permission notice shall be included in 
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//*****************************************************************************
+
+
 
 #ifndef XMLB_PARSER_FUNCTORS_H
 #define XMLB_PARSER_FUNCTORS_H
@@ -16,21 +32,29 @@
 #include "XMLB/detail/parser/XMLB_Parser_states.h"
 #include "XMLB/detail/utilities/XMLB_sup_functions.h"
 
+
+
 namespace XMLB { namespace detail {
 
 	/**************************************************************************
 	* @brief Функтор для символа открытия XML тега
+	* 
+	* @ingroup secondary
 	**************************************************************************/
 	struct Open_tag_functor final
 	{
 		/**********************************************************************
-		* @brief Функция функтора для парсинга
+		* @tparam CharT - тип входящих символов символов
+		* @tparam DecorT - тип декоратора
+		* @tparam DataT - тип контроллера данных
 		*
-		* @param[in] token - символ или ссылка(укзаатель) на символ
-		* @param[in] data - контроллер данных
-		* @param[in] decorator - объект декоратор с необходимыми символами
+		* @param token - символ
+		* @param data - контроллер данных
+		* @param decorator - декоратор
+		* 
+		* @return состояние парсера в зависимости от текущего символа
 		*
-		* @return новое состояние парсера в зависимости от текущего символа
+		* @todo Нужно подумать над оптимизацией
 		**********************************************************************/
 		template<typename CharT, typename DecorT, typename DataT>
 		Base_state operator()(CharT&& token, DataT& data,
@@ -70,18 +94,24 @@ namespace XMLB { namespace detail {
 
 
 	/**************************************************************************
-	* @brief Функтор для закрытия закрытия XML тега
+	* @brief Функтор для символа закрытия XML тега
+	* 
+	* @ingroup secondary
 	**************************************************************************/
 	struct Close_tag_functor final
 	{
 		/**********************************************************************
-		* @brief Функция функтора для парсинга
+		* @tparam CharT - тип входящих символов символов
+		* @tparam DecorT - тип декоратора
+		* @tparam DataT - тип контроллера данных
 		*
-		* @param[in] token - символ или ссылка(укзаатель) на символ
-		* @param[in] data - контроллер данных
-		* @param[in] decorator - объект декоратор с необходимыми символами
+		* @param token - символ
+		* @param data - контроллер данных
+		* @param decorator - декоратор
 		*
-		* @return новое состояние парсера в зависимости от текущего символа
+		* @return состояние парсера в зависимости от текущего символа
+		*
+		* @todo Нужно подумать над оптимизацией
 		**********************************************************************/
 		template<typename CharT, typename DecorT, typename DataT>
 		Base_state operator()(CharT&& token, DataT& data,
@@ -112,18 +142,24 @@ namespace XMLB { namespace detail {
 
 
 	/**************************************************************************
-	* @brief Функтор для обработки закрывающего XML тега
+	* @brief Функтор для символа обозначающего последний из пары XML тег
+	* 
+	* @ingroup secondary
 	**************************************************************************/
 	struct Last_tag_functor final
 	{
 		/**********************************************************************
-		* @brief Функция функтора для парсинга
+		* @tparam CharT - тип входящих символов символов
+		* @tparam DecorT - тип декоратора
+		* @tparam DataT - тип контроллера данных
 		*
-		* @param[in] token - символ или ссылка(укзаатель) на символ
-		* @param[in] data - контроллер данных
-		* @param[in] decorator - объект декоратор с необходимыми символами
+		* @param token - символ
+		* @param data - контроллер данных
+		* @param decorator - декоратор
 		*
-		* @return новое состояние парсера в зависимости от текущего символа
+		* @return состояние парсера в зависимости от текущего символа
+		*
+		* @todo Нужно подумать над оптимизацией
 		**********************************************************************/
 		template<typename CharT, typename DecorT, typename DataT>
 		Base_state operator()(CharT&& token, DataT& data,
@@ -139,27 +175,19 @@ namespace XMLB { namespace detail {
 			}
 			else if (token == decorator.close_tag_symbol)
 			{
-				if (data.is_correct_tag_name())
+				if (data.is_correct_tag_name() &&
+					data.is_correct_tag_attributes())
 				{
-					if (data.is_correct_tag_attributes())
-					{
-						data.add_tag_as_child();
-					}
-					else
-					{
-						return Error_state{};
-					}
+					data.add_tag_as_child();
+				}
+				else if (data.is_tag_name_equal_parent_name() &&
+					data.is_correct_tag_attributes())
+				{
+					data.pop_to_parent();
 				}
 				else
 				{
-					if (data.is_tag_name_equal_parent_name())
-					{
-						data.pop_to_parent();
-					}
-					else
-					{
-						return Error_state{};
-					}
+					return Error_state{};
 				}
 
 				data.clear_all_buffers();
@@ -176,34 +204,34 @@ namespace XMLB { namespace detail {
 
 
 	/**************************************************************************
-	* @brief Функтор для обработки одиночного XML тега
+	* @brief Функтор для символа одиночного XML тега
+	* 
+	* @ingroup secondary
 	**************************************************************************/
 	struct Single_tag_functor final
 	{
 		/**********************************************************************
-		* @brief Функция функтора для парсинга
+		* @tparam CharT - тип входящих символов символов
+		* @tparam DecorT - тип декоратора
+		* @tparam DataT - тип контроллера данных
 		*
-		* @param[in] token - символ или ссылка(укзаатель) на символ
-		* @param[in] data - контроллер данных
-		* @param[in] decorator - объект декоратор с необходимыми символами
+		* @param token - символ
+		* @param data - контроллер данных
+		* @param decorator - декоратор
 		*
-		* @return новое состояние парсера в зависимости от текущего символа
+		* @return состояние парсера в зависимости от текущего символа
+		*
+		* @todo Нужно подумать над оптимизацией
 		**********************************************************************/
 		template<typename CharT, typename DecorT, typename DataT>
 		Base_state operator()(CharT&& token, DataT& data,
 			const DecorT& decorator) const
 		{
-			if (token == decorator.close_tag_symbol)
+			if (token == decorator.close_tag_symbol &&
+				data.is_correct_tag_name() &&
+				data.is_correct_tag_attributes())
 			{
-				if (data.is_correct_tag_name() &&
-					data.is_correct_tag_attributes())
-				{
-					data.add_tag_as_child();
-				}
-				else
-				{
-					return Error_state{};
-				}
+				data.add_tag_as_child();
 
 				data.clear_all_buffers();
 
@@ -222,38 +250,31 @@ namespace XMLB { namespace detail {
 
 	/**************************************************************************
 	* @brief Функтор для обработки имени XML тега
+	* 
+	* @ingroup secondary
 	**************************************************************************/
 	struct Name_tag_functor final
 	{
 		/**********************************************************************
-		* @brief Функция функтора для парсинга
+		* @tparam CharT - тип входящих символов символов
+		* @tparam DecorT - тип декоратора
+		* @tparam DataT - тип контроллера данных
 		*
-		* @param[in] token - символ или ссылка(укзаатель) на символ
-		* @param[in] data - контроллер данных
-		* @param[in] decorator - объект декоратор с необходимыми символами
+		* @param token - символ
+		* @param data - контроллер данных
+		* @param decorator - декоратор
 		*
-		* @return новое состояние парсера в зависимости от текущего символа
+		* @return состояние парсера в зависимости от текущего символа
+		*
+		* @todo Нужно подумать над оптимизацией
 		**********************************************************************/
 		template<typename CharT, typename DecorT, typename DataT>
 		Base_state operator()(CharT&& token, DataT& data,
 			const DecorT& decorator) const
 		{
-			if (token != decorator.white_space_symbol &&
-				token != decorator.line_break_symbol &&
-				token != decorator.carriage_symbol &&
-				token != decorator.tab_symbol &&
-				token != decorator.close_tag_symbol &&
-				token != decorator.single_tag_symbol)
-			{
-				data.push_to_tag_name(std::forward<CharT>(token));
-			}
-			else if (token == decorator.white_space_symbol)
+			if (token == decorator.white_space_symbol)
 			{
 				return Attribute_name_state{};
-			}
-			else if (token == decorator.tab_symbol)
-			{
-				return Error_state{};
 			}
 			else if (token == decorator.close_tag_symbol)
 			{
@@ -263,8 +284,20 @@ namespace XMLB { namespace detail {
 			{
 				return Single_tag_state{};
 			}
+			else if (token == decorator.line_break_symbol ||
+				token == decorator.fill_symbol ||
+				token == decorator.tab_symbol ||
+				token == decorator.open_tag_symbol ||
+				token == decorator.carriage_symbol)
+			{
+				return Error_state{};
+			}
+			else
+			{
+				data.push_to_tag_name(std::forward<CharT>(token));
 
-			return Name_tag_state{};
+				return Name_tag_state{};
+			}
 		}
 	};
 
@@ -274,64 +307,70 @@ namespace XMLB { namespace detail {
 
 	/**************************************************************************
 	* @brief Функтор для обработки значения XML тега
+	* 
+	* @ingroup secondary
 	**************************************************************************/
 	struct Value_tag_functor final
 	{
 		/**********************************************************************
-		* @brief Функция функтора для парсинга
+		* @tparam CharT - тип входящих символов символов
+		* @tparam DecorT - тип декоратора
+		* @tparam DataT - тип контроллера данных
 		*
-		* @param[in] token - символ или ссылка(укзаатель) на символ
-		* @param[in] data - контроллер данных
-		* @param[in] decorator - объект декоратор с необходимыми символами
+		* @param token - символ
+		* @param data - контроллер данных
+		* @param decorator - декоратор
 		*
-		* @return новое состояние парсера в зависимости от текущего символа
+		* @return состояние парсера в зависимости от текущего символа
+		*
+		* @todo Нужно подумать над оптимизацией
 		**********************************************************************/
 		template<typename CharT, typename DecorT, typename DataT>
 		Base_state operator()(CharT&& token, DataT& data,
 			const DecorT& decorator) const
 		{
-			if (token == decorator.open_tag_symbol)
+			if (token != decorator.white_space_symbol &&
+				token != decorator.line_break_symbol &&
+				token != decorator.tab_symbol &&
+				token != decorator.fill_symbol &&
+				token != decorator.open_tag_symbol &&
+				token != decorator.carriage_symbol)
 			{
-				auto&& tag_value = data.get_tag_value();
-
-				if (tag_value.size() &&
-					tag_value.back() == decorator.white_space_symbol)
-				{
-					data.pop_from_tag_value();
-				}
-
-				return Open_tag_state{};
+				data.push_to_tag_value(std::forward<CharT>(token));
 			}
-			///@todo нужно подумать, как более лучше тут сделать контроль, чтобы
-			///не добавлялись лишние символы
 			else if (token == decorator.white_space_symbol)
 			{
 				auto&& tag_value = data.get_tag_value();
 
 				if (tag_value.size() &&
-					tag_value.back() != decorator.white_space_symbol)
+					tag_value[0] != decorator.white_space_symbol)
 				{
 					data.push_to_tag_value(std::forward<CharT>(token));
+				}
+			}
+			else if (token == decorator.open_tag_symbol)
+			{
+				auto&& tag_value = data.get_tag_value();
 
-					tag_value = data.get_tag_value();
+				if (tag_value.size())
+				{
+					auto found_last_symbol = tag_value.find_last_not_of(
+						decorator.white_space_symbol);
 
-					if (tag_value.back() == decorator.line_break_symbol ||
-						tag_value.back() == decorator.tab_symbol ||
-						tag_value.back() == decorator.carriage_symbol ||
-						tag_value.back() == decorator.fill_symbol)
+					if (found_last_symbol != tag_value.npos)
 					{
-						data.pop_from_tag_value();
+						auto size = tag_value.size();
+
+						while (found_last_symbol < size - 1)
+						{
+							data.pop_from_tag_value();
+
+							++found_last_symbol;
+						}
 					}
 				}
 
-				
-			}
-			else if (token != decorator.line_break_symbol &&
-				token != decorator.tab_symbol &&
-				token != decorator.carriage_symbol &&
-				token != decorator.fill_symbol)
-			{
-				data.push_to_tag_value(std::forward<CharT>(token));
+				return Open_tag_state{};
 			}
 
 			return Value_tag_state{};
@@ -343,33 +382,30 @@ namespace XMLB { namespace detail {
 
 
 	/**************************************************************************
-	* @brief Функтор для обработки имени аттрибута XML тега
+	* @brief Функтор для обработки имени атрибута XML тега
+	* 
+	* @ingroup secondary
 	**************************************************************************/
 	struct Attribute_name_functor final
 	{
 		/**********************************************************************
-		* @brief Функция функтора для парсинга
+		* @tparam CharT - тип входящих символов символов
+		* @tparam DecorT - тип декоратора
+		* @tparam DataT - тип контроллера данных
 		*
-		* @param[in] token - символ или ссылка(укзаатель) на символ
-		* @param[in] data - контроллер данных
-		* @param[in] decorator - объект декоратор с необходимыми символами
+		* @param token - символ
+		* @param data - контроллер данных
+		* @param decorator - декоратор
 		*
-		* @return новое состояние парсера в зависимости от текущего символа
+		* @return состояние парсера в зависимости от текущего символа
+		*
+		* @todo Нужно подумать над оптимизацией
 		**********************************************************************/
 		template<typename CharT, typename DecorT, typename DataT>
 		Base_state operator()(CharT&& token, DataT& data,
 			const DecorT& decorator) const
 		{
-			if (token != decorator.white_space_symbol &&
-				token != decorator.open_attribute_symbol &&
-				token != decorator.close_tag_symbol &&
-				token != decorator.single_tag_symbol &&
-				token != decorator.equal_attribute_symbol &&
-				token != decorator.doc_info_last_symbol)
-			{
-				data.push_to_attribute_name(std::forward<CharT>(token));
-			}
-			else if (token == decorator.open_attribute_symbol)
+			if (token == decorator.open_attribute_symbol)
 			{
 				return Attribute_value_state{};
 			}
@@ -385,6 +421,11 @@ namespace XMLB { namespace detail {
 			{
 				return Document_info_state{};
 			}
+			else if (token != decorator.white_space_symbol &&
+				token != decorator.equal_attribute_symbol)
+			{
+				data.push_to_attribute_name(std::forward<CharT>(token));
+			}
 
 			return Attribute_name_state{};
 		}
@@ -395,30 +436,30 @@ namespace XMLB { namespace detail {
 
 
 	/**************************************************************************
-	* @brief Функтор для обработки значения аттрибута XML тега
+	* @brief Функтор для обработки значения атрибута XML тега
+	* 
+	* @ingroup secondary
 	**************************************************************************/
 	struct Attribute_value_functor final
 	{
 		/**********************************************************************
-		* @brief Функция функтора для парсинга
+		* @tparam CharT - тип входящих символов символов
+		* @tparam DecorT - тип декоратора
+		* @tparam DataT - тип контроллера данных
 		*
-		* @param[in] token - символ или ссылка(укзаатель) на символ
-		* @param[in] data - контроллер данных
-		* @param[in] decorator - объект декоратор с необходимыми символами
+		* @param token - символ
+		* @param data - контроллер данных
+		* @param decorator - декоратор
 		*
-		* @return новое состояние парсера в зависимости от текущего символа
+		* @return состояние парсера в зависимости от текущего символа
+		*
+		* @todo Нужно подумать над оптимизацией
 		**********************************************************************/
 		template<typename CharT, typename DecorT, typename DataT>
 		Base_state operator()(CharT&& token, DataT& data,
 			const DecorT& decorator) const
 		{
-			if (token != decorator.close_attribute_symbol &&
-				token != decorator.close_tag_symbol &&
-				token != decorator.line_break_symbol)
-			{
-				data.push_to_attribute_value(std::forward<CharT>(token));
-			}
-			else if (token == decorator.close_attribute_symbol)
+			if (token == decorator.close_attribute_symbol)
 			{
 				data.add_attribute();
 
@@ -436,8 +477,19 @@ namespace XMLB { namespace detail {
 
 				return Close_tag_state{};
 			}
+			else if (token == decorator.line_break_symbol ||
+				token == decorator.tab_symbol ||
+				token == decorator.fill_symbol ||
+				token == decorator.carriage_symbol)
+			{
+				return Error_state{};
+			}
+			else
+			{
+				data.push_to_attribute_value(std::forward<CharT>(token));
 
-			return Attribute_value_state{};
+				return Attribute_value_state{};
+			}
 		}
 	};
 
@@ -447,17 +499,23 @@ namespace XMLB { namespace detail {
 
 	/**************************************************************************
 	* @brief Функтор для символа начала XML комментария
+	* 
+	* @ingroup secondary
 	**************************************************************************/
 	struct Comment_functor final
 	{
 		/**********************************************************************
-		* @brief Функция функтора для парсинга
+		* @tparam CharT - тип входящих символов символов
+		* @tparam DecorT - тип декоратора
+		* @tparam DataT - тип контроллера данных
 		*
-		* @param[in] token - символ или ссылка(укзаатель) на символ
-		* @param[in] data - контроллер данных
-		* @param[in] decorator - объект декоратор с необходимыми символами
+		* @param token - символ
+		* @param data - контроллер данных
+		* @param decorator - декоратор
 		*
-		* @return новое состояние парсера в зависимости от текущего символа
+		* @return состояние парсера в зависимости от текущего символа
+		*
+		* @todo Нужно подумать над оптимизацией
 		**********************************************************************/
 		template<typename CharT, typename DecorT, typename DataT>
 		Base_state operator()(CharT&& token, DataT&& data,
@@ -500,18 +558,24 @@ namespace XMLB { namespace detail {
 
 
 	/**************************************************************************
-	* @brief Функтор для начала парсинга XML документа
+	* @brief Функтор отвечающий за начало синтаксического анализа XML документа
+	* 
+	* @ingroup secondary
 	**************************************************************************/
 	struct Start_functor final
 	{
 		/**********************************************************************
-		* @brief Функция функтора для парсинга
+		* @tparam CharT - тип входящих символов символов
+		* @tparam DecorT - тип декоратора
+		* @tparam DataT - тип контроллера данных
 		*
-		* @param[in] token - символ или ссылка(укзаатель) на символ
-		* @param[in] data - контроллер данных
-		* @param[in] decorator - объект декоратор с необходимыми символами
+		* @param token - символ
+		* @param data - контроллер данных
+		* @param decorator - декоратор
 		*
-		* @return новое состояние парсера в зависимости от текущего символа
+		* @return состояние парсера в зависимости от текущего символа
+		*
+		* @todo Нужно подумать над оптимизацией
 		**********************************************************************/
 		template<typename CharT, typename DecorT, typename DataT>
 		Base_state operator()(CharT&& token, DataT&& data,
@@ -532,17 +596,23 @@ namespace XMLB { namespace detail {
 
 	/**************************************************************************
 	* @brief Функтор для символа начала информации о XML документе
+	* 
+	* @ingroup secondary
 	**************************************************************************/
 	struct Document_info_functor final
 	{
 		/**********************************************************************
-		* @brief Функция функтора для парсинга
+		* @tparam CharT - тип входящих символов символов
+		* @tparam DecorT - тип декоратора
+		* @tparam DataT - тип контроллера данных
 		*
-		* @param[in] token - символ или ссылка(укзаатель) на символ
-		* @param[in] data - контроллер данных
-		* @param[in] decorator - объект декоратор с необходимыми символами
+		* @param token - символ
+		* @param data - контроллер данных
+		* @param decorator - декоратор
 		*
-		* @return новое состояние парсера в зависимости от текущего символа
+		* @return состояние парсера в зависимости от текущего символа
+		*
+		* @todo Нужно подумать над оптимизацией и убрать constexpr
 		**********************************************************************/
 		template<typename CharT, typename DecorT, typename DataT>
 		Base_state operator()(CharT&& token, DataT&& data,
@@ -587,7 +657,7 @@ namespace XMLB { namespace detail {
 						kDoc_version = string_wrapper{ "version" };
 						kDoc_encode = string_wrapper{ "encoding" };
 					}
-					
+
 					auto&& tag_name = data.get_tag_name();
 					auto&& tag_value = data.get_tag_value();
 

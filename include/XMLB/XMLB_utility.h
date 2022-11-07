@@ -1,16 +1,28 @@
-/******************************************************************************
-* @file
-* Данный файл объявлет основной строительный элемент(узел) XML документа.
-* На текущий момент, является завершенным без дебаг функций
-*
-* @author Bruvamasc
-* @date   2022-09-17
-*
-* @todo Нужно подумать, как добавить режим дебага. Также нужно подумать, над
-* кодировками - возможно, как-то их переделать
-* ///< Указывает, что элемент недоступен для использования
-*
-******************************************************************************/
+//*****************************************************************************
+// MIT License
+//
+// Copyright(c) 2022 Vladislav Kurmanenko (Bruvamasc)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+//
+// The above copyright noticeand this permission notice shall be included in 
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//*****************************************************************************
+
+
 
 #ifndef XMLB_UTILITY_H
 #define XMLB_UTILITY_H
@@ -18,33 +30,28 @@
 #include <string>
 #include <string_view>
 
-///@todo Нужно подумать, как убрать forward declaration или же создать файлі
-///с ними
-namespace XMLB
-{
-	template<typename CharT>
-	class Document;
+#include "XMLB/detail/XMLB_fwd.h"
 
-	template<typename T>
-	class Node_const_iterator;
 
-	template<typename CharT>
-	class Node;
-}
 
 namespace XMLB
 {
 	/**************************************************************************
-	* @brief Данная функция конвертирует строку в float
+	* @brief Конвертировать строку в float
+	* 
+	* @ingroup general
 	*
-	* @todo Нужно переписать данную функцию, так как она пока-что как
-	* временное решение. Нужно добавить hex, oct и binary
+	* @tparam CharT - тип символов
+	* @param str - строка, которую нужно конвертировать
 	*
 	* @return 0.0 - если не удасться конвертировать строку. В противном случае
 	* конвертированное число, которое тоже может быть равно 0.0
+	* 
+	* @todo Нужно переписать данную функцию, так как она пока-что как
+	* временное решение. Нужно добавить hex, oct и binary
 	**************************************************************************/
 	template<typename CharT>
-	inline float to_float(std::basic_string_view<CharT> value)
+	inline float to_float(std::basic_string_view<CharT> str)
 	{
 		using symbol_type = CharT;
 		using size_type =
@@ -52,7 +59,7 @@ namespace XMLB
 
 		float result = 0.f;
 
-		if (value.size())
+		if (str.size())
 		{
 			const unsigned int base = 10;
 			const unsigned int start_ascii_for_dec = 48;
@@ -60,8 +67,8 @@ namespace XMLB
 			const symbol_type dot_symbol = '.';
 			const symbol_type minus_symbol = '-';
 
-			auto found_minus = value.find_first_of(minus_symbol);
-			auto found_dot = value.find_first_of(dot_symbol);
+			auto found_minus = str.find_first_of(minus_symbol);
+			auto found_dot = str.find_first_of(dot_symbol);
 
 			size_type head_count = 0;
 			size_type tail_count = 0;
@@ -69,11 +76,11 @@ namespace XMLB
 			if (found_dot != std::basic_string_view<CharT>::npos)
 			{
 				head_count = found_dot;
-				tail_count = value.size() - dot_count - head_count;
+				tail_count = str.size() - dot_count - head_count;
 			}
 			else
 			{
-				head_count = value.size();
+				head_count = str.size();
 			}
 
 			if (found_minus != std::basic_string_view<CharT>::npos)
@@ -89,7 +96,7 @@ namespace XMLB
 
 			while (head_count)
 			{
-				float digit = static_cast<float>(value[digit_position] -
+				float digit = static_cast<float>(str[digit_position] -
 					start_ascii_for_dec);
 
 				head += digit * start_base;
@@ -104,7 +111,7 @@ namespace XMLB
 
 			while (tail_count)
 			{
-				float digit = static_cast<float>(value[digit_position] -
+				float digit = static_cast<float>(str[digit_position] -
 					start_ascii_for_dec);
 
 				tail += digit > 0 ? digit / start_base : 0.f;
@@ -130,12 +137,18 @@ namespace XMLB
 
 
 	/**************************************************************************
-	* @brief Данная функция конвертирует float число в строку
+	* @brief Конвертировать float в строку
+	* 
+	* @ingroup general
 	*
+	* @tparam CharT - тип сиволов
+	* @param value - число, которое нужно конвертировать
+	* @param base - основание числа
+	* 
+	* @return строку содержащую переданное число
+	* 
 	* @todo Нужно переписать данную функцию, так как она пока-что как
 	* временное решение. Нужно добавить hex, oct и binary
-	* 
-	* @return строку с числом
 	**************************************************************************/
 	template<typename CharT>
 	inline std::basic_string<CharT> to_string(float value, int base = 10)
@@ -249,13 +262,18 @@ namespace XMLB
 
 
 	/**************************************************************************
-	* @brief Данная функция преобразует версию XML документа в строку с 
-	* точностью до последнего значащей цыфры в дробной части
+	* @brief Обрезать версию XML документа в строку с точностью до последней 
+	* значащей цыфры в дробной части
+	* 
+	* @ingroup general
 	*
-	* @todo Нужно переписать данную функцию, так как она пока-что как
-	* временное решение.
+	* @tparam CharT - тип символов
+	* @param verstion - версия XML документа
 	*
 	* @return строку с обрезанной версией XML документа
+	* 
+	* @todo Нужно переписать данную функцию, так как она пока-что как
+	* временное решение.
 	**************************************************************************/
 	template<typename CharT>
 	inline std::basic_string<CharT> cut_doc_version(float version)
@@ -299,16 +317,22 @@ namespace XMLB
 
 
 	/**************************************************************************
-	* @brief Данная функция считает суммарное количество символов, необходимое
-	* для хранения готового XML документа
+	* @brief Получить суммарное количество символов, необходимое для хранения 
+	* готового XML документа
+	* 
+	* @ingroup general
 	*
+	* @tparam CharT - тип символов
 	* @param document - XML документ
-	* @param fill_status - false - если не учитівать заполняющие символы(табы)
+	* @param fill_status - false - если не учитывать заполняющие символы(табы)
 	* @param line_break_status - false - если не учитывать перевод на новую
 	* строку
 	*
 	* @return количество необходимых символов для хранения готового XML
 	* документа
+	* 
+	* @todo Нужно переписать данную функцию, так как она пока-что как
+	* временное решение.
 	**************************************************************************/
 	template<typename CharT>
 	inline std::size_t symbols_count(
@@ -318,19 +342,19 @@ namespace XMLB
 		using symbol_type = CharT;
 		std::size_t result = 0;
 
-		const auto kSpace = 1;
-		const auto kOpen_tag = 1;
-		const auto kClose_tag = 1;
-		const auto kOpen_attr = 1;
-		const auto kClose_attr = 1;
-		const auto kEqual_attr = 1;
-		const auto kDoc_info = 1;
-		const auto kDoc_last_info = 1;
-		const auto kLine_break = line_break_status ? 1 : 0;
+		constexpr auto kSpace = 1;
+		constexpr auto kOpen_tag = 1;
+		constexpr auto kClose_tag = 1;
+		constexpr auto kOpen_attr = 1;
+		constexpr auto kClose_attr = 1;
+		constexpr auto kEqual_attr = 1;
+		constexpr auto kDoc_info = 1;
+		constexpr auto kDoc_last_info = 1;
+		constexpr auto kLine_break = line_break_status ? 1 : 0;
 
-		const auto kXml = 3;
-		const auto kVersion = 7;
-		const auto kEncoding = 8;
+		constexpr auto kXml = 3;
+		constexpr auto kVersion = 7;
+		constexpr auto kEncoding = 8;
 
 		result += kOpen_tag;
 		result += kDoc_info;
@@ -365,17 +389,23 @@ namespace XMLB
 
 
 	/**************************************************************************
-	* @brief Данная функция считает суммарное количество символов, необходимое
-	* для хранения последовательности XML узлов
+	* @brief Получить суммарное количество символов, необходимое для хранения 
+	* готового XML документа
+	* 
+	* @ingroup general
 	*
+	* @tparam CharT - тип символов
 	* @param first - итератор на начало XML последовательности
 	* @param last - итератор на конец XML последовательности
-	* @param fill_status - false - если не учитівать заполняющие символы(табы)
+	* @param fill_status - false - если не учитывать заполняющие символы(табы)
 	* @param line_break_status - false - если не учитывать перевод на новую
 	* строку
 	*
 	* @return количество необходимых символов для хранения готового XML
 	* документа
+	* 
+	* @todo Нужно переписать данную функцию, так как она пока-что как
+	* временное решение.
 	**************************************************************************/
 	template<typename CharT>
 	inline std::size_t symbols_count(
@@ -393,18 +423,18 @@ namespace XMLB
 			return result;
 		}
 
-		const auto kFill = fill_status ? 1 : 0;
-		const auto kSpace = 1;
-		const auto kOpen_tag = 1;
-		const auto kClose_tag = 1;
-		const auto kSingle_tag = 1;
-		const auto kLast_tag = 1;
-		const auto kOpen_attr = 1;
-		const auto kClose_attr = 1;
-		const auto kEqual_attr = 1;
-		const auto kLine_break = line_break_status ? 1 : 0;
-		const auto kTab = 1;
-		const auto kCarriage = 1;
+		constexpr auto kFill = fill_status ? 1 : 0;
+		constexpr auto kSpace = 1;
+		constexpr auto kOpen_tag = 1;
+		constexpr auto kClose_tag = 1;
+		constexpr auto kSingle_tag = 1;
+		constexpr auto kLast_tag = 1;
+		constexpr auto kOpen_attr = 1;
+		constexpr auto kClose_attr = 1;
+		constexpr auto kEqual_attr = 1;
+		constexpr auto kLine_break = line_break_status ? 1 : 0;
+		constexpr auto kTab = 1;
+		constexpr auto kCarriage = 1;
 
 		//Контейнер итераторова, чтобы правильно закрывать теги с потомками
 		std::stack<const_iterator> node_groups;
@@ -520,16 +550,22 @@ namespace XMLB
 
 
 	/**************************************************************************
-	* @brief Данная функция считает суммарное количество символов, необходимое
-	* для хранения последовательности XML узлов
+	* @brief Получить суммарное количество символов, необходимое для хранения
+	* готового XML документа
+	* 
+	* @ingroup general
 	*
+	* @tparam CharT - тип символов
 	* @param node - XML узел
-	* @param fill_status - false - если не учитівать заполняющие символы(табы)
+	* @param fill_status - false - если не учитывать заполняющие символы(табы)
 	* @param line_break_status - false - если не учитывать перевод на новую
 	* строку
 	*
 	* @return количество необходимых символов для хранения готового XML
 	* документа
+	* 
+	* @todo Нужно переписать данную функцию, так как она пока-что как
+	* временное решение.
 	**************************************************************************/
 	template<typename CharT>
 	inline std::size_t symbols_count(const Node<CharT>& node,
@@ -540,18 +576,18 @@ namespace XMLB
 
 		std::size_t result = 0;
 
-		const auto kFill = fill_status ? 1 : 0;
-		const auto kSpace = 1;
-		const auto kOpen_tag = 1;
-		const auto kClose_tag = 1;
-		const auto kSingle_tag = 1;
-		const auto kLast_tag = 1;
-		const auto kOpen_attr = 1;
-		const auto kClose_attr = 1;
-		const auto kEqual_attr = 1;
-		const auto kLine_break = line_break_status ? 1 : 0;
-		const auto kTab = 1;
-		const auto kCarriage = 1;
+		constexpr auto kFill = fill_status ? 1 : 0;
+		constexpr auto kSpace = 1;
+		constexpr auto kOpen_tag = 1;
+		constexpr auto kClose_tag = 1;
+		constexpr auto kSingle_tag = 1;
+		constexpr auto kLast_tag = 1;
+		constexpr auto kOpen_attr = 1;
+		constexpr auto kClose_attr = 1;
+		constexpr auto kEqual_attr = 1;
+		constexpr auto kLine_break = line_break_status ? 1 : 0;
+		constexpr auto kTab = 1;
+		constexpr auto kCarriage = 1;
 
 		result += kOpen_tag;
 		result += node.get_name().size();
@@ -617,6 +653,8 @@ namespace XMLB
 
 		return result;
 	}
+
+	//*************************************************************************
 
 } // namespace XMLB
 

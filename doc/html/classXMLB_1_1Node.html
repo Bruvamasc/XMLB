@@ -1,0 +1,1478 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.5"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>XMLB: Шаблон класса XMLB::Node&lt; CharT &gt;</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">XMLB<span id="projectnumber">&#160;0.1</span>
+   </div>
+   <div id="projectbrief">simple and fast XML parser</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.9.5 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>XMLB</b></li><li class="navelem"><a class="el" href="classXMLB_1_1Node.html">Node</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="classXMLB_1_1Node-members.html">Полный список членов класса</a>  </div>
+  <div class="headertitle"><div class="title">Шаблон класса XMLB::Node&lt; CharT &gt;<div class="ingroups"><a class="el" href="group__general.html">Основные классы и функции</a></div></div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>XML узел  
+ <a href="classXMLB_1_1Node.html#details">Подробнее...</a></p>
+
+<p><code>#include &lt;<a class="el" href="XMLB__Node_8h_source.html">XMLB_Node.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Конструкторы, деструктор</div></td></tr>
+<tr class="memitem:a32506ee02ca49eab14c65b79016b019f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a32506ee02ca49eab14c65b79016b019f">Node</a> (const string_type &amp;name, const string_type &amp;value=string_type{})</td></tr>
+<tr class="separator:a32506ee02ca49eab14c65b79016b019f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7efc0b20e041cc1e4ae234fa9dbf33d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#aa7efc0b20e041cc1e4ae234fa9dbf33d">Node</a> (string_type &amp;&amp;name, string_type &amp;&amp;value=string_type{}) noexcept</td></tr>
+<tr class="separator:aa7efc0b20e041cc1e4ae234fa9dbf33d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e5b96f0bb77f61c81ca2ce102b491e0"><td class="memItemLeft" align="right" valign="top"><a id="a0e5b96f0bb77f61c81ca2ce102b491e0" name="a0e5b96f0bb77f61c81ca2ce102b491e0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Node</b> (const <a class="el" href="classXMLB_1_1Node.html">Node</a> &amp;node)</td></tr>
+<tr class="separator:a0e5b96f0bb77f61c81ca2ce102b491e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26a5a0525fe3c06ccbefa5a8bffa0ea8"><td class="memItemLeft" align="right" valign="top"><a id="a26a5a0525fe3c06ccbefa5a8bffa0ea8" name="a26a5a0525fe3c06ccbefa5a8bffa0ea8"></a>
+<a class="el" href="classXMLB_1_1Node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classXMLB_1_1Node.html">Node</a> &amp;node)</td></tr>
+<tr class="separator:a26a5a0525fe3c06ccbefa5a8bffa0ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09dcb2d9c98b00aa783706b92ebcd42b"><td class="memItemLeft" align="right" valign="top"><a id="a09dcb2d9c98b00aa783706b92ebcd42b" name="a09dcb2d9c98b00aa783706b92ebcd42b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Node</b> (<a class="el" href="classXMLB_1_1Node.html">Node</a> &amp;&amp;node) noexcept</td></tr>
+<tr class="separator:a09dcb2d9c98b00aa783706b92ebcd42b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86150058fbb2d74696e1c55e3115616b"><td class="memItemLeft" align="right" valign="top"><a id="a86150058fbb2d74696e1c55e3115616b" name="a86150058fbb2d74696e1c55e3115616b"></a>
+<a class="el" href="classXMLB_1_1Node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classXMLB_1_1Node.html">Node</a> &amp;&amp;node) noexcept</td></tr>
+<tr class="separator:a86150058fbb2d74696e1c55e3115616b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45685712e351579c02be883badf0dd7d"><td class="memItemLeft" align="right" valign="top"><a id="a45685712e351579c02be883badf0dd7d" name="a45685712e351579c02be883badf0dd7d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~Node</b> ()=default</td></tr>
+<tr class="separator:a45685712e351579c02be883badf0dd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Методы для работы с именем узла</div></td></tr>
+<tr class="memitem:a97b9264a483729f78c47019cc31d81f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a97b9264a483729f78c47019cc31d81f9">set_name</a> (const string_type &amp;name)</td></tr>
+<tr class="memdesc:a97b9264a483729f78c47019cc31d81f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Изменить имя узла  <a href="classXMLB_1_1Node.html#a97b9264a483729f78c47019cc31d81f9">Подробнее...</a><br /></td></tr>
+<tr class="separator:a97b9264a483729f78c47019cc31d81f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a40274ff4adb7e3b6f88ee3ff1ce615"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a0a40274ff4adb7e3b6f88ee3ff1ce615">set_name</a> (string_type &amp;&amp;name) noexcept</td></tr>
+<tr class="memdesc:a0a40274ff4adb7e3b6f88ee3ff1ce615"><td class="mdescLeft">&#160;</td><td class="mdescRight">Изменить имя узла  <a href="classXMLB_1_1Node.html#a0a40274ff4adb7e3b6f88ee3ff1ce615">Подробнее...</a><br /></td></tr>
+<tr class="separator:a0a40274ff4adb7e3b6f88ee3ff1ce615"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09fa00ef88a315ec6e236e2a829176d2"><td class="memItemLeft" align="right" valign="top">string_wrapper&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a09fa00ef88a315ec6e236e2a829176d2">get_name</a> () const &amp;noexcept</td></tr>
+<tr class="memdesc:a09fa00ef88a315ec6e236e2a829176d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получить имя узла  <a href="classXMLB_1_1Node.html#a09fa00ef88a315ec6e236e2a829176d2">Подробнее...</a><br /></td></tr>
+<tr class="separator:a09fa00ef88a315ec6e236e2a829176d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Методы для работы со значением узла</div></td></tr>
+<tr class="memitem:a6a26771b5b147f45d37b3ac59548ad06"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a6a26771b5b147f45d37b3ac59548ad06">set_value</a> (const string_type &amp;value)</td></tr>
+<tr class="memdesc:a6a26771b5b147f45d37b3ac59548ad06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Изменить значение узла  <a href="classXMLB_1_1Node.html#a6a26771b5b147f45d37b3ac59548ad06">Подробнее...</a><br /></td></tr>
+<tr class="separator:a6a26771b5b147f45d37b3ac59548ad06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4092514ff0ba2f8ba172f7f6cbfdc28a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a4092514ff0ba2f8ba172f7f6cbfdc28a">set_value</a> (string_type &amp;&amp;value) noexcept</td></tr>
+<tr class="memdesc:a4092514ff0ba2f8ba172f7f6cbfdc28a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Изменить значение узла  <a href="classXMLB_1_1Node.html#a4092514ff0ba2f8ba172f7f6cbfdc28a">Подробнее...</a><br /></td></tr>
+<tr class="separator:a4092514ff0ba2f8ba172f7f6cbfdc28a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d4a447088a57a1507806e0863278fb6"><td class="memItemLeft" align="right" valign="top">string_wrapper&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a2d4a447088a57a1507806e0863278fb6">get_value</a> () const &amp;noexcept</td></tr>
+<tr class="memdesc:a2d4a447088a57a1507806e0863278fb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получить значение узла  <a href="classXMLB_1_1Node.html#a2d4a447088a57a1507806e0863278fb6">Подробнее...</a><br /></td></tr>
+<tr class="separator:a2d4a447088a57a1507806e0863278fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Методы для работы с атрибутами узла</div></td></tr>
+<tr class="memitem:af8e3bf4bc294dfc5cf7fd4486e5768f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1Node.html">node_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#af8e3bf4bc294dfc5cf7fd4486e5768f6">add_attribute</a> (const <a class="el" href="structXMLB_1_1Node__attribute.html">attribute_type</a> &amp;attribute) &amp;</td></tr>
+<tr class="memdesc:af8e3bf4bc294dfc5cf7fd4486e5768f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Добавить атрибут  <a href="classXMLB_1_1Node.html#af8e3bf4bc294dfc5cf7fd4486e5768f6">Подробнее...</a><br /></td></tr>
+<tr class="separator:af8e3bf4bc294dfc5cf7fd4486e5768f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a342e6e36dd9eed5ea4cfea7324b718b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1Node.html">node_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a342e6e36dd9eed5ea4cfea7324b718b9">add_attribute</a> (<a class="el" href="structXMLB_1_1Node__attribute.html">attribute_type</a> &amp;&amp;attribute) &amp;</td></tr>
+<tr class="memdesc:a342e6e36dd9eed5ea4cfea7324b718b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Добавить атрибут  <a href="classXMLB_1_1Node.html#a342e6e36dd9eed5ea4cfea7324b718b9">Подробнее...</a><br /></td></tr>
+<tr class="separator:a342e6e36dd9eed5ea4cfea7324b718b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a346e9d9fea2f85602e62514af37dd1c5"><td class="memItemLeft" align="right" valign="top">attr_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a346e9d9fea2f85602e62514af37dd1c5">erase_attribute</a> (std::size_t index)</td></tr>
+<tr class="memdesc:a346e9d9fea2f85602e62514af37dd1c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить атрибут  <a href="classXMLB_1_1Node.html#a346e9d9fea2f85602e62514af37dd1c5">Подробнее...</a><br /></td></tr>
+<tr class="separator:a346e9d9fea2f85602e62514af37dd1c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3eb3e79076836ddf41e4d4f09be12cd7"><td class="memItemLeft" align="right" valign="top">attr_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a3eb3e79076836ddf41e4d4f09be12cd7">erase_attribute</a> (attr_const_iterator attribute)</td></tr>
+<tr class="memdesc:a3eb3e79076836ddf41e4d4f09be12cd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить атрибут  <a href="classXMLB_1_1Node.html#a3eb3e79076836ddf41e4d4f09be12cd7">Подробнее...</a><br /></td></tr>
+<tr class="separator:a3eb3e79076836ddf41e4d4f09be12cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc5ad78cdd9059c938f7823ecfe87935"><td class="memItemLeft" align="right" valign="top">attr_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#abc5ad78cdd9059c938f7823ecfe87935">erase_attribute</a> (attr_const_iterator attribute_fisrt, attr_const_iterator attribute_last)</td></tr>
+<tr class="memdesc:abc5ad78cdd9059c938f7823ecfe87935"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить атрибуты  <a href="classXMLB_1_1Node.html#abc5ad78cdd9059c938f7823ecfe87935">Подробнее...</a><br /></td></tr>
+<tr class="separator:abc5ad78cdd9059c938f7823ecfe87935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2379160bebe670e79aa323c18cb8deda"><td class="memItemLeft" align="right" valign="top">size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a2379160bebe670e79aa323c18cb8deda">attr_size</a> () const noexcept</td></tr>
+<tr class="memdesc:a2379160bebe670e79aa323c18cb8deda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получить количество атрибутов  <a href="classXMLB_1_1Node.html#a2379160bebe670e79aa323c18cb8deda">Подробнее...</a><br /></td></tr>
+<tr class="separator:a2379160bebe670e79aa323c18cb8deda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae3985550316b3eb19a12255cb32191a"><td class="memItemLeft" align="right" valign="top"><a id="aae3985550316b3eb19a12255cb32191a" name="aae3985550316b3eb19a12255cb32191a"></a>
+attr_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>attr_begin</b> () noexcept</td></tr>
+<tr class="separator:aae3985550316b3eb19a12255cb32191a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0e8541d4b22c562a76733c8341e7aa9"><td class="memItemLeft" align="right" valign="top"><a id="af0e8541d4b22c562a76733c8341e7aa9" name="af0e8541d4b22c562a76733c8341e7aa9"></a>
+attr_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>attr_end</b> () noexcept</td></tr>
+<tr class="separator:af0e8541d4b22c562a76733c8341e7aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70bc9634cec5f61ebeb33e020a59bcde"><td class="memItemLeft" align="right" valign="top"><a id="a70bc9634cec5f61ebeb33e020a59bcde" name="a70bc9634cec5f61ebeb33e020a59bcde"></a>
+attr_const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>attr_begin</b> () const noexcept</td></tr>
+<tr class="separator:a70bc9634cec5f61ebeb33e020a59bcde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a181b80badd230ac875374985bc038d3c"><td class="memItemLeft" align="right" valign="top"><a id="a181b80badd230ac875374985bc038d3c" name="a181b80badd230ac875374985bc038d3c"></a>
+attr_const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>attr_end</b> () const noexcept</td></tr>
+<tr class="separator:a181b80badd230ac875374985bc038d3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4afa44226fdbeccd9fa9efb6c791d4cd"><td class="memItemLeft" align="right" valign="top"><a id="a4afa44226fdbeccd9fa9efb6c791d4cd" name="a4afa44226fdbeccd9fa9efb6c791d4cd"></a>
+attr_const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>attr_cbegin</b> () const noexcept</td></tr>
+<tr class="separator:a4afa44226fdbeccd9fa9efb6c791d4cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b218e4270f56b3cb92934d641cf8d69"><td class="memItemLeft" align="right" valign="top"><a id="a1b218e4270f56b3cb92934d641cf8d69" name="a1b218e4270f56b3cb92934d641cf8d69"></a>
+attr_const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>attr_cend</b> () const noexcept</td></tr>
+<tr class="separator:a1b218e4270f56b3cb92934d641cf8d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Методы для работы с дочерними узлами</div></td></tr>
+<tr class="memitem:a5db877ceda73fd2e5de540d505da3397"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1Node.html">node_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a5db877ceda73fd2e5de540d505da3397">add_child</a> (const <a class="el" href="classXMLB_1_1Node.html">node_type</a> &amp;node) &amp;</td></tr>
+<tr class="memdesc:a5db877ceda73fd2e5de540d505da3397"><td class="mdescLeft">&#160;</td><td class="mdescRight">Добавить дочерний узел  <a href="classXMLB_1_1Node.html#a5db877ceda73fd2e5de540d505da3397">Подробнее...</a><br /></td></tr>
+<tr class="separator:a5db877ceda73fd2e5de540d505da3397"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9cb33cbde41e80e329064e24c348f56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1Node.html">node_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#af9cb33cbde41e80e329064e24c348f56">add_child</a> (<a class="el" href="classXMLB_1_1Node.html">node_type</a> &amp;&amp;node) &amp;</td></tr>
+<tr class="memdesc:af9cb33cbde41e80e329064e24c348f56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Добавить дочерний узел  <a href="classXMLB_1_1Node.html#af9cb33cbde41e80e329064e24c348f56">Подробнее...</a><br /></td></tr>
+<tr class="separator:af9cb33cbde41e80e329064e24c348f56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a783bc4effe4bcda5ae865489c49b7b78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1Node.html">node_type</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a783bc4effe4bcda5ae865489c49b7b78">add_child</a> (Ptr node) &amp;</td></tr>
+<tr class="memdesc:a783bc4effe4bcda5ae865489c49b7b78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Добавить дочерний узел  <a href="classXMLB_1_1Node.html#a783bc4effe4bcda5ae865489c49b7b78">Подробнее...</a><br /></td></tr>
+<tr class="separator:a783bc4effe4bcda5ae865489c49b7b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac368a99a746c6bfec79e1983581a981d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1detail_1_1Node__iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#ac368a99a746c6bfec79e1983581a981d">erase_child</a> (std::size_t index)</td></tr>
+<tr class="memdesc:ac368a99a746c6bfec79e1983581a981d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить дочерний узел  <a href="classXMLB_1_1Node.html#ac368a99a746c6bfec79e1983581a981d">Подробнее...</a><br /></td></tr>
+<tr class="separator:ac368a99a746c6bfec79e1983581a981d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab72ce1771a0f0bafc042f23aff12c458"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1detail_1_1Node__iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#ab72ce1771a0f0bafc042f23aff12c458">erase_child</a> (<a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a> node)</td></tr>
+<tr class="memdesc:ab72ce1771a0f0bafc042f23aff12c458"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить дочерний узел  <a href="classXMLB_1_1Node.html#ab72ce1771a0f0bafc042f23aff12c458">Подробнее...</a><br /></td></tr>
+<tr class="separator:ab72ce1771a0f0bafc042f23aff12c458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfd6b5279237fad3215a658fe59a5039"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1detail_1_1Node__iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#acfd6b5279237fad3215a658fe59a5039">erase_child</a> (<a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a> node_first, <a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a> node_last)</td></tr>
+<tr class="memdesc:acfd6b5279237fad3215a658fe59a5039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Удалить дочерние узлы  <a href="classXMLB_1_1Node.html#acfd6b5279237fad3215a658fe59a5039">Подробнее...</a><br /></td></tr>
+<tr class="separator:acfd6b5279237fad3215a658fe59a5039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9eb5d2ecc1d9f5a2decdb81fe299a78"><td class="memItemLeft" align="right" valign="top"><a id="ac9eb5d2ecc1d9f5a2decdb81fe299a78" name="ac9eb5d2ecc1d9f5a2decdb81fe299a78"></a>
+first_level_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>first_level_begin</b> () noexcept</td></tr>
+<tr class="separator:ac9eb5d2ecc1d9f5a2decdb81fe299a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d7232342d52356515c46b3e48e410fa"><td class="memItemLeft" align="right" valign="top"><a id="a2d7232342d52356515c46b3e48e410fa" name="a2d7232342d52356515c46b3e48e410fa"></a>
+first_level_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>first_level_end</b> () noexcept</td></tr>
+<tr class="separator:a2d7232342d52356515c46b3e48e410fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6a28f5d743dab87d6eb5aa31f392189"><td class="memItemLeft" align="right" valign="top"><a id="ad6a28f5d743dab87d6eb5aa31f392189" name="ad6a28f5d743dab87d6eb5aa31f392189"></a>
+first_level_const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>first_level_begin</b> () const noexcept</td></tr>
+<tr class="separator:ad6a28f5d743dab87d6eb5aa31f392189"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace06eb9165462564a060643200d4b130"><td class="memItemLeft" align="right" valign="top"><a id="ace06eb9165462564a060643200d4b130" name="ace06eb9165462564a060643200d4b130"></a>
+first_level_const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>first_level_end</b> () const noexcept</td></tr>
+<tr class="separator:ace06eb9165462564a060643200d4b130"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4792955ab528ec4f3e5cdfdf7ce61625"><td class="memItemLeft" align="right" valign="top"><a id="a4792955ab528ec4f3e5cdfdf7ce61625" name="a4792955ab528ec4f3e5cdfdf7ce61625"></a>
+first_level_const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>first_level_cbegin</b> () const noexcept</td></tr>
+<tr class="separator:a4792955ab528ec4f3e5cdfdf7ce61625"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a427cfc6c7b8e9d5fb1a6bd6bce34b170"><td class="memItemLeft" align="right" valign="top"><a id="a427cfc6c7b8e9d5fb1a6bd6bce34b170" name="a427cfc6c7b8e9d5fb1a6bd6bce34b170"></a>
+first_level_const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>first_level_cend</b> () const noexcept</td></tr>
+<tr class="separator:a427cfc6c7b8e9d5fb1a6bd6bce34b170"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6c6d675cd403c09e6a71c0435ee3c2e"><td class="memItemLeft" align="right" valign="top"><a id="ac6c6d675cd403c09e6a71c0435ee3c2e" name="ac6c6d675cd403c09e6a71c0435ee3c2e"></a>
+<a class="el" href="classXMLB_1_1detail_1_1Node__iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () noexcept</td></tr>
+<tr class="separator:ac6c6d675cd403c09e6a71c0435ee3c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87515c764cab621f78254bb4ef7caba8"><td class="memItemLeft" align="right" valign="top"><a id="a87515c764cab621f78254bb4ef7caba8" name="a87515c764cab621f78254bb4ef7caba8"></a>
+<a class="el" href="classXMLB_1_1detail_1_1Node__iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () noexcept</td></tr>
+<tr class="separator:a87515c764cab621f78254bb4ef7caba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a618ec3d87c8202b13884c6117b7b5925"><td class="memItemLeft" align="right" valign="top"><a id="a618ec3d87c8202b13884c6117b7b5925" name="a618ec3d87c8202b13884c6117b7b5925"></a>
+<a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () const noexcept</td></tr>
+<tr class="separator:a618ec3d87c8202b13884c6117b7b5925"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab04a5b193d4819fef541ccef1bd646c3"><td class="memItemLeft" align="right" valign="top"><a id="ab04a5b193d4819fef541ccef1bd646c3" name="ab04a5b193d4819fef541ccef1bd646c3"></a>
+<a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const noexcept</td></tr>
+<tr class="separator:ab04a5b193d4819fef541ccef1bd646c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf7c8ba8be414c9b17ab1b3fd8dca7fc"><td class="memItemLeft" align="right" valign="top"><a id="acf7c8ba8be414c9b17ab1b3fd8dca7fc" name="acf7c8ba8be414c9b17ab1b3fd8dca7fc"></a>
+<a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>cbegin</b> () const noexcept</td></tr>
+<tr class="separator:acf7c8ba8be414c9b17ab1b3fd8dca7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecc5ea6da3bb7f41162f3d26e364f28e"><td class="memItemLeft" align="right" valign="top"><a id="aecc5ea6da3bb7f41162f3d26e364f28e" name="aecc5ea6da3bb7f41162f3d26e364f28e"></a>
+<a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><b>cend</b> () const noexcept</td></tr>
+<tr class="separator:aecc5ea6da3bb7f41162f3d26e364f28e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Вспомогательные методы</div></td></tr>
+<tr class="memitem:a7e7b3c0858ede16b6e109c7f68503b4c"><td class="memItemLeft" align="right" valign="top">size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a7e7b3c0858ede16b6e109c7f68503b4c">child_size</a> () const noexcept</td></tr>
+<tr class="memdesc:a7e7b3c0858ede16b6e109c7f68503b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получить количество дочерних узлов первого уровня  <a href="classXMLB_1_1Node.html#a7e7b3c0858ede16b6e109c7f68503b4c">Подробнее...</a><br /></td></tr>
+<tr class="separator:a7e7b3c0858ede16b6e109c7f68503b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae81510d938066b3300659cae9392c267"><td class="memItemLeft" align="right" valign="top">size_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#ae81510d938066b3300659cae9392c267">size</a> () const noexcept</td></tr>
+<tr class="memdesc:ae81510d938066b3300659cae9392c267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получить общее количество дочерних узлов  <a href="classXMLB_1_1Node.html#ae81510d938066b3300659cae9392c267">Подробнее...</a><br /></td></tr>
+<tr class="separator:ae81510d938066b3300659cae9392c267"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42e69e0c81fd04eca8f68351460b1626"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classXMLB_1_1Node.html">node_type</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a42e69e0c81fd04eca8f68351460b1626">get_parent</a> () const noexcept</td></tr>
+<tr class="memdesc:a42e69e0c81fd04eca8f68351460b1626"><td class="mdescLeft">&#160;</td><td class="mdescRight">Получить родителя текущего узла  <a href="classXMLB_1_1Node.html#a42e69e0c81fd04eca8f68351460b1626">Подробнее...</a><br /></td></tr>
+<tr class="separator:a42e69e0c81fd04eca8f68351460b1626"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5abc1430753bb0a368b73d46d7d1fd56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a5abc1430753bb0a368b73d46d7d1fd56">swap</a> (<a class="el" href="classXMLB_1_1Node.html">node_type</a> &amp;node) noexcept</td></tr>
+<tr class="memdesc:a5abc1430753bb0a368b73d46d7d1fd56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обменять данные  <a href="classXMLB_1_1Node.html#a5abc1430753bb0a368b73d46d7d1fd56">Подробнее...</a><br /></td></tr>
+<tr class="separator:a5abc1430753bb0a368b73d46d7d1fd56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Методы поиска</div></td></tr>
+<tr class="memitem:a47aed7b9d2ddc65f39d16319426b51ab"><td class="memTemplParams" colspan="2">template&lt;typename ContT&gt; </td></tr>
+<tr class="memitem:a47aed7b9d2ddc65f39d16319426b51ab"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1detail_1_1Node__iterator.html">iterator</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a47aed7b9d2ddc65f39d16319426b51ab">find</a> (const ContT *container, <a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a> offset=<a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>{ nullptr })</td></tr>
+<tr class="memdesc:a47aed7b9d2ddc65f39d16319426b51ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Найти узел  <a href="classXMLB_1_1Node.html#a47aed7b9d2ddc65f39d16319426b51ab">Подробнее...</a><br /></td></tr>
+<tr class="separator:a47aed7b9d2ddc65f39d16319426b51ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecb3388ae9fca990640b32b1368bb1f1"><td class="memTemplParams" colspan="2">template&lt;typename ContT&gt; </td></tr>
+<tr class="memitem:aecb3388ae9fca990640b32b1368bb1f1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1detail_1_1Node__iterator.html">iterator</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#aecb3388ae9fca990640b32b1368bb1f1">find</a> (const ContT &amp;container, <a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a> offset=<a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>{ nullptr })</td></tr>
+<tr class="memdesc:aecb3388ae9fca990640b32b1368bb1f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Найти узел(ы)  <a href="classXMLB_1_1Node.html#aecb3388ae9fca990640b32b1368bb1f1">Подробнее...</a><br /></td></tr>
+<tr class="separator:aecb3388ae9fca990640b32b1368bb1f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95a4651d4a6468ad28b2ae9e6dfdc9df"><td class="memTemplParams" colspan="2">template&lt;typename ContT&gt; </td></tr>
+<tr class="memitem:a95a4651d4a6468ad28b2ae9e6dfdc9df"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1detail_1_1Node__iterator.html">iterator</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a95a4651d4a6468ad28b2ae9e6dfdc9df">find</a> (const ContT &amp;container, <a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a> offset=<a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>{ nullptr })</td></tr>
+<tr class="memdesc:a95a4651d4a6468ad28b2ae9e6dfdc9df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Найти узел(ы)  <a href="classXMLB_1_1Node.html#a95a4651d4a6468ad28b2ae9e6dfdc9df">Подробнее...</a><br /></td></tr>
+<tr class="separator:a95a4651d4a6468ad28b2ae9e6dfdc9df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a143151d1a650fa32b7ca3a11f3e5d5ad"><td class="memTemplParams" colspan="2">template&lt;typename ContT&gt; </td></tr>
+<tr class="memitem:a143151d1a650fa32b7ca3a11f3e5d5ad"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a143151d1a650fa32b7ca3a11f3e5d5ad">find</a> (const ContT *container, <a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a> offset=<a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>{ nullptr }) const</td></tr>
+<tr class="memdesc:a143151d1a650fa32b7ca3a11f3e5d5ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Найти узел  <a href="classXMLB_1_1Node.html#a143151d1a650fa32b7ca3a11f3e5d5ad">Подробнее...</a><br /></td></tr>
+<tr class="separator:a143151d1a650fa32b7ca3a11f3e5d5ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77070c5194f4c98921e76979415e097c"><td class="memTemplParams" colspan="2">template&lt;typename ContT&gt; </td></tr>
+<tr class="memitem:a77070c5194f4c98921e76979415e097c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#a77070c5194f4c98921e76979415e097c">find</a> (const ContT &amp;container, <a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a> offset=<a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>{ nullptr }) const</td></tr>
+<tr class="memdesc:a77070c5194f4c98921e76979415e097c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Найти узел(ы)  <a href="classXMLB_1_1Node.html#a77070c5194f4c98921e76979415e097c">Подробнее...</a><br /></td></tr>
+<tr class="separator:a77070c5194f4c98921e76979415e097c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbd6ea28886071998ace5be457814fe6"><td class="memTemplParams" colspan="2">template&lt;typename ContT&gt; </td></tr>
+<tr class="memitem:afbd6ea28886071998ace5be457814fe6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classXMLB_1_1Node.html#afbd6ea28886071998ace5be457814fe6">find</a> (const ContT &amp;container, <a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a> offset=<a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>{ nullptr }) const</td></tr>
+<tr class="memdesc:afbd6ea28886071998ace5be457814fe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Найти узел(ы)  <a href="classXMLB_1_1Node.html#afbd6ea28886071998ace5be457814fe6">Подробнее...</a><br /></td></tr>
+<tr class="separator:afbd6ea28886071998ace5be457814fe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Подробное описание</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename CharT&gt;<br />
+class XMLB::Node&lt; CharT &gt;</div><p >XML узел </p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">CharT</td><td>- тип символов </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Конструктор(ы)</h2>
+<a id="a32506ee02ca49eab14c65b79016b019f" name="a32506ee02ca49eab14c65b79016b019f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32506ee02ca49eab14c65b79016b019f">&#9670;&#160;</a></span>Node() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::Node </td>
+          <td>(</td>
+          <td class="paramtype">const string_type &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string_type &amp;&#160;</td>
+          <td class="paramname"><em>value</em> = <code>string_type{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>- имя узла </td></tr>
+    <tr><td class="paramname">value</td><td>- значение узла </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa7efc0b20e041cc1e4ae234fa9dbf33d" name="aa7efc0b20e041cc1e4ae234fa9dbf33d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7efc0b20e041cc1e4ae234fa9dbf33d">&#9670;&#160;</a></span>Node() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::Node </td>
+          <td>(</td>
+          <td class="paramtype">string_type &amp;&amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string_type &amp;&amp;&#160;</td>
+          <td class="paramname"><em>value</em> = <code>string_type{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>- имя узла </td></tr>
+    <tr><td class="paramname">value</td><td>- значение узла </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Методы</h2>
+<a id="a342e6e36dd9eed5ea4cfea7324b718b9" name="a342e6e36dd9eed5ea4cfea7324b718b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a342e6e36dd9eed5ea4cfea7324b718b9">&#9670;&#160;</a></span>add_attribute() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::node_type &amp; <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::add_attribute </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structXMLB_1_1Node__attribute.html">attribute_type</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>attribute</em></td><td>)</td>
+          <td> &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Добавить атрибут </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attribute</td><td>- атрибут</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>текущий узел </dd></dl>
+
+</div>
+</div>
+<a id="af8e3bf4bc294dfc5cf7fd4486e5768f6" name="af8e3bf4bc294dfc5cf7fd4486e5768f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8e3bf4bc294dfc5cf7fd4486e5768f6">&#9670;&#160;</a></span>add_attribute() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::node_type &amp; <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::add_attribute </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structXMLB_1_1Node__attribute.html">attribute_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>attribute</em></td><td>)</td>
+          <td> &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Добавить атрибут </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attribute</td><td>- атрибута</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>текущий узел </dd></dl>
+
+</div>
+</div>
+<a id="a5db877ceda73fd2e5de540d505da3397" name="a5db877ceda73fd2e5de540d505da3397"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5db877ceda73fd2e5de540d505da3397">&#9670;&#160;</a></span>add_child() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::node_type &amp; <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::add_child </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classXMLB_1_1Node.html">node_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td> &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Добавить дочерний узел </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td>- узел, который нужно добавить</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>добавленный дочерний узел. Если узел не был добавлен, возращает текущий узел </dd></dl>
+
+</div>
+</div>
+<a id="af9cb33cbde41e80e329064e24c348f56" name="af9cb33cbde41e80e329064e24c348f56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9cb33cbde41e80e329064e24c348f56">&#9670;&#160;</a></span>add_child() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::node_type &amp; <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::add_child </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classXMLB_1_1Node.html">node_type</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td> &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Добавить дочерний узел </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td>- узел, который нужно добавить</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>добавленный дочерний узел. Если узел не был добавлен, возращает текущий узел </dd></dl>
+
+</div>
+</div>
+<a id="a783bc4effe4bcda5ae865489c49b7b78" name="a783bc4effe4bcda5ae865489c49b7b78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a783bc4effe4bcda5ae865489c49b7b78">&#9670;&#160;</a></span>add_child() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::node_type &amp; <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::add_child </td>
+          <td>(</td>
+          <td class="paramtype">Ptr&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td> &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Добавить дочерний узел </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td>- узел, который нужно добавить</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>добавленный дочерний узел. Если узел не был добавлен, возращает текущий узел </dd></dl>
+
+</div>
+</div>
+<a id="a2379160bebe670e79aa323c18cb8deda" name="a2379160bebe670e79aa323c18cb8deda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2379160bebe670e79aa323c18cb8deda">&#9670;&#160;</a></span>attr_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::size_type <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::attr_size</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получить количество атрибутов </p>
+<dl class="section return"><dt>Возвращает</dt><dd>количество атрибутов </dd></dl>
+
+</div>
+</div>
+<a id="a7e7b3c0858ede16b6e109c7f68503b4c" name="a7e7b3c0858ede16b6e109c7f68503b4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e7b3c0858ede16b6e109c7f68503b4c">&#9670;&#160;</a></span>child_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::size_type <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::child_size</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получить количество дочерних узлов первого уровня </p>
+<dl class="section return"><dt>Возвращает</dt><dd>количество дочерних узлов первого уровня </dd></dl>
+
+</div>
+</div>
+<a id="a3eb3e79076836ddf41e4d4f09be12cd7" name="a3eb3e79076836ddf41e4d4f09be12cd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3eb3e79076836ddf41e4d4f09be12cd7">&#9670;&#160;</a></span>erase_attribute() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::attr_iterator <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::erase_attribute </td>
+          <td>(</td>
+          <td class="paramtype">attr_const_iterator&#160;</td>
+          <td class="paramname"><em>attribute</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Удалить атрибут </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attribute</td><td>- итератор на атрибут</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>итератор на атрибут после удаленного атрибута. Если не удалось удалить атрибут, то возвращает итератор на attr_end() </dd></dl>
+
+</div>
+</div>
+<a id="abc5ad78cdd9059c938f7823ecfe87935" name="abc5ad78cdd9059c938f7823ecfe87935"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc5ad78cdd9059c938f7823ecfe87935">&#9670;&#160;</a></span>erase_attribute() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::attr_iterator <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::erase_attribute </td>
+          <td>(</td>
+          <td class="paramtype">attr_const_iterator&#160;</td>
+          <td class="paramname"><em>attribute_fisrt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">attr_const_iterator&#160;</td>
+          <td class="paramname"><em>attribute_last</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Удалить атрибуты </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attribute_first</td><td>- итератор на первый атрибут </td></tr>
+    <tr><td class="paramname">attribute_last</td><td>- итератор за последним атрибутом</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>итератор на атрибут после последнего удаленного атрибута. Если не удалось удалить атрибуты, то возвращает итератор на attr_end() или на атрибут, который после последнего успешно удаленного атрибута </dd></dl>
+
+</div>
+</div>
+<a id="a346e9d9fea2f85602e62514af37dd1c5" name="a346e9d9fea2f85602e62514af37dd1c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a346e9d9fea2f85602e62514af37dd1c5">&#9670;&#160;</a></span>erase_attribute() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::attr_iterator <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::erase_attribute </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Удалить атрибут </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>- позиция атрибута</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>итератор на атрибут после удаленного атрибута. Если не удалось удалить атрибут, то возвращает итератор на attr_end() </dd></dl>
+
+</div>
+</div>
+<a id="ab72ce1771a0f0bafc042f23aff12c458" name="ab72ce1771a0f0bafc042f23aff12c458"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab72ce1771a0f0bafc042f23aff12c458">&#9670;&#160;</a></span>erase_child() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::iterator <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::erase_child </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Удалить дочерний узел </p>
+<p >Так как все узлы, которые являются дочерними узлами дочерних узлов текущего узла и т.д., то можно удалить любой дочерний узел в диапазоне [begin(), end())</p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td>- итератор указывающий на узел, который нужно удалить</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>итератор на следующий узел после удаленного. Если узел не был удален, возвращает итератор на end() </dd></dl>
+
+</div>
+</div>
+<a id="acfd6b5279237fad3215a658fe59a5039" name="acfd6b5279237fad3215a658fe59a5039"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfd6b5279237fad3215a658fe59a5039">&#9670;&#160;</a></span>erase_child() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::iterator <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::erase_child </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td>
+          <td class="paramname"><em>node_first</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td>
+          <td class="paramname"><em>node_last</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Удалить дочерние узлы </p>
+<p >Так как все узлы, которые являются дочерними узлами дочерних узлов текущего узла и т.д., то можно удалить любой дочерний узел в диапазоне [begin(), end())</p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node_first</td><td>- итератор указывающий на первый удаляемый узел </td></tr>
+    <tr><td class="paramname">node_last</td><td>- итератор указывающий за последний удаляемый узел</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>итератор на следующий узел после последнего удаленного. Если узлы не были удалены, возвращает итератор на end() или на следующий после последнего успешно удаленного узла </dd></dl>
+
+</div>
+</div>
+<a id="ac368a99a746c6bfec79e1983581a981d" name="ac368a99a746c6bfec79e1983581a981d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac368a99a746c6bfec79e1983581a981d">&#9670;&#160;</a></span>erase_child() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::iterator <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::erase_child </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Удалить дочерний узел </p>
+<p >Так как все узлы, которые являются дочерними узлами дочерних узлов текущего узла и т.д., то можно удалить любой дочерний узел в диапазоне [0, <a class="el" href="classXMLB_1_1Node.html#ae81510d938066b3300659cae9392c267" title="Получить общее количество дочерних узлов">size()</a>)</p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>- позиция дочернего узла</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>итератор на следующий узел после удаленного. Если узел не был удален, возвращает итератор на end() </dd></dl>
+
+</div>
+</div>
+<a id="aecb3388ae9fca990640b32b1368bb1f1" name="aecb3388ae9fca990640b32b1368bb1f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecb3388ae9fca990640b32b1368bb1f1">&#9670;&#160;</a></span>find() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<div class="memtemplate">
+template&lt;typename ContT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::iterator <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::find </td>
+          <td>(</td>
+          <td class="paramtype">const ContT &amp;&#160;</td>
+          <td class="paramname"><em>container</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td>
+          <td class="paramname"><em>offset</em> = <code><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>{&#160;nullptr&#160;}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Найти узел(ы) </p>
+<p >Перегрузка для работы с контейнерами содержащие простые типы, например: std::string, std::vector&lt;char&gt;, std::string_view</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ContT</td><td>- тип контейнера </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">container</td><td>- список имён узлов, которые нужно найти </td></tr>
+    <tr><td class="paramname">offset</td><td>- итератор, с которого начать искать</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>итератор на узел - если он был найден. В противном случае возвращает итератор указывающий на end() </dd></dl>
+
+</div>
+</div>
+<a id="a95a4651d4a6468ad28b2ae9e6dfdc9df" name="a95a4651d4a6468ad28b2ae9e6dfdc9df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95a4651d4a6468ad28b2ae9e6dfdc9df">&#9670;&#160;</a></span>find() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<div class="memtemplate">
+template&lt;typename ContT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1detail_1_1Node__iterator.html">iterator</a> <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::find </td>
+          <td>(</td>
+          <td class="paramtype">const ContT &amp;&#160;</td>
+          <td class="paramname"><em>container</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td>
+          <td class="paramname"><em>offset</em> = <code><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>{&#160;nullptr&#160;}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Найти узел(ы) </p>
+<p >Перегрузка для работы с контейнерами содержащие строко-подобные типы, например: std::vector&lt;std::string&gt;, std::vector&lt;const char*&gt;, std::initializer_list&lt;const char*&gt;, std::initializer_list&lt;std::string&gt;</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ContT</td><td>- тип контейнера </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">container</td><td>- список имён узлов, которые нужно найти </td></tr>
+    <tr><td class="paramname">offset</td><td>- итератор, с которого начать искать</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>итератор на узел - если он был найден. В противном случае возвращает итератор указывающий на end() </dd></dl>
+
+</div>
+</div>
+<a id="a77070c5194f4c98921e76979415e097c" name="a77070c5194f4c98921e76979415e097c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77070c5194f4c98921e76979415e097c">&#9670;&#160;</a></span>find() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<div class="memtemplate">
+template&lt;typename ContT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::const_iterator <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::find </td>
+          <td>(</td>
+          <td class="paramtype">const ContT &amp;&#160;</td>
+          <td class="paramname"><em>container</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td>
+          <td class="paramname"><em>offset</em> = <code><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>{&#160;nullptr&#160;}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Найти узел(ы) </p>
+<p >Перегрузка для работы с контейнерами содержащие простые типы, например: std::string, std::vector&lt;char&gt;, std::string_view</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ContT</td><td>- тип контейнера </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">container</td><td>- список имён узлов, которые нужно найти </td></tr>
+    <tr><td class="paramname">offset</td><td>- итератор, с которого начать искать</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>константный итератор на узел - если он был найден. В противном случае возвращает константній итератор указывающий на end() </dd></dl>
+
+</div>
+</div>
+<a id="afbd6ea28886071998ace5be457814fe6" name="afbd6ea28886071998ace5be457814fe6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbd6ea28886071998ace5be457814fe6">&#9670;&#160;</a></span>find() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<div class="memtemplate">
+template&lt;typename ContT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a> <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::find </td>
+          <td>(</td>
+          <td class="paramtype">const ContT &amp;&#160;</td>
+          <td class="paramname"><em>container</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td>
+          <td class="paramname"><em>offset</em> = <code><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>{&#160;nullptr&#160;}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Найти узел(ы) </p>
+<p >Перегрузка для работы с контейнерами содержащие строко-подобные типы, например: std::vector&lt;std::string&gt;, std::vector&lt;const char*&gt;, std::initializer_list&lt;const char*&gt;, std::initializer_list&lt;std::string&gt;</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ContT</td><td>- тип контейнера </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">container</td><td>- список имён узлов, которые нужно найти </td></tr>
+    <tr><td class="paramname">offset</td><td>- итератор, с которого начать искать</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>константный итератор на узел - если он был найден. В противном случае возвращает константній итератор указывающий на end() </dd></dl>
+
+</div>
+</div>
+<a id="a47aed7b9d2ddc65f39d16319426b51ab" name="a47aed7b9d2ddc65f39d16319426b51ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47aed7b9d2ddc65f39d16319426b51ab">&#9670;&#160;</a></span>find() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<div class="memtemplate">
+template&lt;typename ContT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::iterator <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::find </td>
+          <td>(</td>
+          <td class="paramtype">const ContT *&#160;</td>
+          <td class="paramname"><em>container</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td>
+          <td class="paramname"><em>offset</em> = <code><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>{&#160;nullptr&#160;}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Найти узел </p>
+<p >Перегрузка для работы с указателями на строки, например: const char*, const wchar_t*</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ContT</td><td>- тип контейнера </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">container</td><td>- имя узла, который нужно найти </td></tr>
+    <tr><td class="paramname">offset</td><td>- итератор, с которого начать искать</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>итератор на узел - если он был найден. В противном случае возвращает итератор указывающий на end() </dd></dl>
+
+</div>
+</div>
+<a id="a143151d1a650fa32b7ca3a11f3e5d5ad" name="a143151d1a650fa32b7ca3a11f3e5d5ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a143151d1a650fa32b7ca3a11f3e5d5ad">&#9670;&#160;</a></span>find() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<div class="memtemplate">
+template&lt;typename ContT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::const_iterator <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::find </td>
+          <td>(</td>
+          <td class="paramtype">const ContT *&#160;</td>
+          <td class="paramname"><em>container</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>&#160;</td>
+          <td class="paramname"><em>offset</em> = <code><a class="el" href="classXMLB_1_1detail_1_1Node__const__iterator.html">const_iterator</a>{&#160;nullptr&#160;}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Найти узел </p>
+<p >Перегрузка для работы с указателями на строки, например: const char*, const wchar_t*</p>
+<dl class="tparams"><dt>Параметры шаблона</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">ContT</td><td>- тип контейнера </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">container</td><td>- имя узла, который нужно найти </td></tr>
+    <tr><td class="paramname">offset</td><td>- итератор, с которого начать искать</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Возвращает</dt><dd>константный итератор на узел - если он был найден. В противном случае возвращает константній итератор указывающий на end() </dd></dl>
+
+</div>
+</div>
+<a id="a09fa00ef88a315ec6e236e2a829176d2" name="a09fa00ef88a315ec6e236e2a829176d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09fa00ef88a315ec6e236e2a829176d2">&#9670;&#160;</a></span>get_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::string_wrapper <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::get_name </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получить имя узла </p>
+<dl class="section return"><dt>Возвращает</dt><dd>невладеющий объект-обертку строки с именем узла </dd></dl>
+
+</div>
+</div>
+<a id="a42e69e0c81fd04eca8f68351460b1626" name="a42e69e0c81fd04eca8f68351460b1626"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42e69e0c81fd04eca8f68351460b1626">&#9670;&#160;</a></span>get_parent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::node_type * <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::get_parent</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получить родителя текущего узла </p>
+<dl class="section return"><dt>Возвращает</dt><dd>nullptr - если родителя нет. В противном случае вернет указатель на родителя </dd></dl>
+
+</div>
+</div>
+<a id="a2d4a447088a57a1507806e0863278fb6" name="a2d4a447088a57a1507806e0863278fb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d4a447088a57a1507806e0863278fb6">&#9670;&#160;</a></span>get_value()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::string_wrapper <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::get_value </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получить значение узла </p>
+<dl class="section return"><dt>Возвращает</dt><dd>невладеющий объект-обертку строки со значением узла </dd></dl>
+
+</div>
+</div>
+<a id="a97b9264a483729f78c47019cc31d81f9" name="a97b9264a483729f78c47019cc31d81f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97b9264a483729f78c47019cc31d81f9">&#9670;&#160;</a></span>set_name() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::set_name </td>
+          <td>(</td>
+          <td class="paramtype">const string_type &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Изменить имя узла </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>- новое имя узла </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0a40274ff4adb7e3b6f88ee3ff1ce615" name="a0a40274ff4adb7e3b6f88ee3ff1ce615"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a40274ff4adb7e3b6f88ee3ff1ce615">&#9670;&#160;</a></span>set_name() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::set_name </td>
+          <td>(</td>
+          <td class="paramtype">string_type &amp;&amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Изменить имя узла </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>- новое имя узла </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6a26771b5b147f45d37b3ac59548ad06" name="a6a26771b5b147f45d37b3ac59548ad06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a26771b5b147f45d37b3ac59548ad06">&#9670;&#160;</a></span>set_value() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::set_value </td>
+          <td>(</td>
+          <td class="paramtype">const string_type &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Изменить значение узла </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>- новое значение узла </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4092514ff0ba2f8ba172f7f6cbfdc28a" name="a4092514ff0ba2f8ba172f7f6cbfdc28a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4092514ff0ba2f8ba172f7f6cbfdc28a">&#9670;&#160;</a></span>set_value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::set_value </td>
+          <td>(</td>
+          <td class="paramtype">string_type &amp;&amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Изменить значение узла </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>- новое значение узла </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae81510d938066b3300659cae9392c267" name="ae81510d938066b3300659cae9392c267"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae81510d938066b3300659cae9392c267">&#9670;&#160;</a></span>size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classXMLB_1_1Node.html">Node</a>&lt; CharT &gt;::size_type <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::size</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Получить общее количество дочерних узлов </p>
+<dl class="section return"><dt>Возвращает</dt><dd>общее количество дочерних узлов, не включая текущий узел </dd></dl>
+
+</div>
+</div>
+<a id="a5abc1430753bb0a368b73d46d7d1fd56" name="a5abc1430753bb0a368b73d46d7d1fd56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5abc1430753bb0a368b73d46d7d1fd56">&#9670;&#160;</a></span>swap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename CharT &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classXMLB_1_1Node.html">XMLB::Node</a>&lt; CharT &gt;::swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classXMLB_1_1Node.html">node_type</a> &amp;&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Обменять данные </p>
+<dl class="params"><dt>Аргументы</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td>- правый <a class="el" href="classXMLB_1_1Node.html" title="XML узел">Node</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>Объявления и описания членов классов находятся в файлах:<ul>
+<li><a class="el" href="XMLB__fwd_8h_source.html">XMLB_fwd.h</a></li>
+<li><a class="el" href="XMLB__Node_8h_source.html">XMLB_Node.h</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5
+</small></address>
+</body>
+</html>

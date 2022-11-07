@@ -1,18 +1,28 @@
-/******************************************************************************
-* @file
-* Данный файл объявляет и определяет итератор для XML узлов. Итератор является
-* деталью реализации и настоятельно рекомендуется использовать его отдельно
-* от классов, которые сами создают объекты данного итератора.
-*
-* @author Bruvamasc
-* @date   2022-08-25
-*
-* @todo Нужно подумать, как добавить режим дебага; Оператор инкремента;
-* Подумать, как изменить хранение и нужно ли Node_tree_impl в итератор.
-* Подумать над операторами и конструкторами для итератора с константными типами
-* ///< Указывает, что элемент недоступен для использования
-*
-******************************************************************************/
+//*****************************************************************************
+// MIT License
+//
+// Copyright(c) 2022 Vladislav Kurmanenko (Bruvamasc)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+//
+// The above copyright noticeand this permission notice shall be included in 
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//*****************************************************************************
+
+
 
 #ifndef XMLB_NODE_ITERATOR_H
 #define XMLB_NODE_ITERATOR_H
@@ -21,10 +31,14 @@
 
 #include "XMLB/detail/utilities/XMLB_sup_types.h"
 
+
+
 namespace XMLB { namespace detail {
 
 	/**************************************************************************
-	* @brief Константный итератор XML структуры
+	* @brief Константный итератор для XML структуры
+	* 
+	* @tparam T - тип объекта, который будет хранить итератора
 	**************************************************************************/
 	template<typename T>
 	class Node_const_iterator
@@ -36,8 +50,10 @@ namespace XMLB { namespace detail {
 		using reference = const value_type&;
 		using pointer = const value_type*;
 
-		// Конструкторы, деструкторы и т.п.
 
+
+		/// @name Конструкторы, деструктор
+		/// @{
 		Node_const_iterator(detail::Node_tree<T>* ptr = nullptr) noexcept;
 
 		Node_const_iterator(const Node_const_iterator& iter) noexcept;
@@ -46,14 +62,22 @@ namespace XMLB { namespace detail {
 
 		Node_const_iterator(Node_const_iterator&& iter) noexcept;
 		Node_const_iterator& operator=(Node_const_iterator&& iter) noexcept;
+		
+		~Node_const_iterator() = default;
+		/// @}
 
-		// Функции сравнения
 
+
+		/// @name Операторы сравнения
+		/// @{
 		bool operator==(const Node_const_iterator& node_iter) const noexcept;
 		bool operator!=(const Node_const_iterator& node_iter) const noexcept;
+		/// @}
 
-		// Основной интерфейс
 
+
+		/// @name Методы доступа
+		/// @{
 		reference operator*() const;
 		pointer operator->() const;
 
@@ -62,7 +86,12 @@ namespace XMLB { namespace detail {
 
 		Node_const_iterator& operator--();
 		Node_const_iterator operator--(int);
+		/// @}
 
+
+
+		/// @name Вспомагательные методы
+		/// @{
 		/**********************************************************************
 		* @brief Данная функция возвращает размер отступа, таба, офсета
 		* XML тега в контейнере
@@ -74,28 +103,30 @@ namespace XMLB { namespace detail {
 		**********************************************************************/
 		unsigned int get_offset() const noexcept;
 
-		void swap(Node_const_iterator& iter) noexcept;
-
-		// Детали реализации!
-
 		/**********************************************************************
-		* @brief Данная функция проверяет, принадлежит ли текущий итератор
-		* последовательности.
+		* @brief Обменять данные
 		*
-		* @todo Не нашел способа, чтобы убрать эту функцию из
-		* пользовательского интерфейса. Нужно подумать, как это исправить.
-		* Возможно, всё же придется прибегнуть к наследованию или friend
-		* функциям
-		*
-		* @details Функция не сравнивает на равенство begin и end. Она
-		* просто итератоивно проверяет по родителям. Если у текущего
-		* итератор родитель или один из родителей будет равен родителю
-		* последовательности.
-		*
-		* @param[in] seq_start - итератора на начало последовательности
-		*
-		* @return true - если принадлежит, в противном случае - false
+		* @param iter - правый Node_const_iterator
 		**********************************************************************/
+		void swap(Node_const_iterator& iter) noexcept;
+		/// @}
+
+		// @brief Данная функция проверяет, принадлежит ли текущий итератор
+		// последовательности.
+		//
+		// @todo Не нашел способа, чтобы убрать эту функцию из
+		// пользовательского интерфейса. Нужно подумать, как это исправить.
+		// Возможно, всё же придется прибегнуть к наследованию или friend
+		// функциям
+		//
+		// @details Функция не сравнивает на равенство begin и end. Она
+		// просто итератоивно проверяет по родителям. Если у текущего
+		// итератор родитель или один из родителей будет равен родителю
+		// последовательности.
+		//
+		// @param[in] seq_start - итератора на начало последовательности
+		//
+		// @return true - если принадлежит, в противном случае - false
 		bool _is_in_sequences(Node_const_iterator seq_start) const noexcept;
 
 	protected:
@@ -108,7 +139,9 @@ namespace XMLB { namespace detail {
 
 
 	/**************************************************************************
-	* @brief Итератор XML структуры
+	* @brief Ттератор для XML структуры
+	*
+	* @tparam T - тип объекта, который будет хранить итератора
 	**************************************************************************/
 	template<typename T>
 	class Node_iterator : public Node_const_iterator<T>
@@ -121,6 +154,10 @@ namespace XMLB { namespace detail {
 		using reference = value_type&;
 		using pointer = value_type*;
 
+
+
+		/// @name Методы доступа
+		/// @{
 		reference operator*() const;
 		pointer operator->() const;
 
@@ -129,15 +166,16 @@ namespace XMLB { namespace detail {
 
 		Node_iterator& operator--();
 		Node_iterator operator--(int);
+		/// @}
 	};
 
 	//*************************************************************************
 
 
 
-	/**************************************************************************
-	*					NODE_CONST_ITERATOR IMPLEMENTATION
-	**************************************************************************/
+	//**************************************************************************
+	//					NODE_CONST_ITERATOR IMPLEMENTATION
+	//**************************************************************************
 
 	template<typename T>
 	inline Node_const_iterator<T>::Node_const_iterator(
@@ -389,9 +427,9 @@ namespace XMLB { namespace detail {
 
 
 
-	/**************************************************************************
-	*					NODE_ITERATOR IMPLEMENTATION
-	**************************************************************************/
+	//*************************************************************************
+	//						NODE_ITERATOR IMPLEMENTATION
+	//*************************************************************************
 
 	template<typename T>
 	inline typename Node_iterator<T>::reference Node_iterator<T>::operator*() 
@@ -457,10 +495,18 @@ namespace XMLB { namespace detail {
 
 
 
-	/**************************************************************************
-	*					NODE_CONST_ITERATOR SUPPORT FUNCTIONS
-	**************************************************************************/
+	//*************************************************************************
+	//					NODE_CONST_ITERATOR SUPPORT FUNCTIONS
+	//*************************************************************************
 
+	/**************************************************************************
+	* @brief Обменять данные двух Node_const_iterator
+	*
+	* @tparam IterT - тип итератора
+	*
+	* @param lhs - первый Node_const_iterator
+	* @param rhs - второй Node_const_iterator
+	**************************************************************************/
 	template<typename T>
 	inline void swap(Node_const_iterator<T>& lhs, Node_const_iterator<T>& rhs) 
 		noexcept

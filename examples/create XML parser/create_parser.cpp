@@ -74,21 +74,21 @@ inline decltype(auto) create_my_parser()
 	Parser<CharT, decorator, data_contoller> my_parser{ 
 		default_functor_count };
 	
-	my_parser.add_functor(Start_functor{});							//0
-	my_parser.add_functor(Open_tag_functor{});						//1
-	my_parser.add_functor(Close_tag_functor{});						//2
-	my_parser.add_functor(Last_tag_functor{});						//3
-	my_parser.add_functor(Single_tag_functor{});					//4
-	my_parser.add_functor(Name_tag_functor{});						//5
-	my_parser.add_functor(Value_tag_functor{});						//6
+	my_parser.add_functor(Start_state, Start_functor{});					//0
+	my_parser.add_functor(Open_tag_state, Open_tag_functor{});				//1
+	my_parser.add_functor(Close_tag_state, Close_tag_functor{});			//2
+	my_parser.add_functor(Last_tag_state, Last_tag_functor{});				//3
+	my_parser.add_functor(Single_tag_state, Single_tag_functor{});			//4
+	my_parser.add_functor(Name_tag_state, Name_tag_functor{});				//5
+	my_parser.add_functor(Value_tag_state, Value_tag_functor{});			//6
 
 	//Мой кастомный функторы
-	my_parser.add_functor(my_attribute_functor{});					//7
+	my_parser.add_functor(Attribute_name_state, my_attribute_functor{});	//7
 	//Attribute_value_functor - в данном случае просто "заглушка"
-	my_parser.add_functor(Attribute_value_functor{});				//8
+	my_parser.add_functor(Attribute_value_state, Attribute_value_functor{});//8
 
-	my_parser.add_functor(Comment_functor{});						//9
-	my_parser.add_functor(Document_info_functor{});					//10
+	my_parser.add_functor(Comment_state, Comment_functor{});				//9
+	my_parser.add_functor(Document_state, Document_info_functor{});			//10
 
 	return my_parser;
 

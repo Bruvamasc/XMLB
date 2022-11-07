@@ -1,16 +1,28 @@
-/******************************************************************************
-* @file
-* Данный файл объявлет основной строительный элемент(узел) XML документа.
-* На текущий момент, является завершенным без дебаг функций
-*
-* @author Bruvamasc
-* @date   2022-09-17
-*
-* @todo Нужно подумать, как добавить режим дебага. Также нужно подумать, над
-* кодировками - возможно, как-то их переделать
-* ///< Указывает, что элемент недоступен для использования
-*
-******************************************************************************/
+//*****************************************************************************
+// MIT License
+//
+// Copyright(c) 2022 Vladislav Kurmanenko (Bruvamasc)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this softwareand associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+//
+// The above copyright noticeand this permission notice shall be included in 
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//*****************************************************************************
+
+
 
 #ifndef XMLB_TYPE_SPECIAL_GENERAL_TRAITS_H
 #define XMLB_TYPE_SPECIAL_GENERAL_TRAITS_H
@@ -20,11 +32,13 @@
 #include "XMLB/detail/traits/XMLB_Type_converting_traits.h"
 #include "XMLB/detail/traits/XMLB_Type_callable_traits.h"
 
+
+
 namespace XMLB { namespace detail {
 
-	/**************************************************************************
-	*						COMMON SUPPORT TRAITS
-	**************************************************************************/
+	//*************************************************************************
+	//						COMMON SUPPORT TRAITS
+	//*************************************************************************
 
 	template<typename ClassT, typename ParamT>
 	using self_return_assign_signature = 
@@ -102,9 +116,9 @@ namespace XMLB { namespace detail {
 
 
 
-	/**************************************************************************
-	*						TYPE TRAITS FOR DECORATOR
-	**************************************************************************/
+	//*************************************************************************
+	//						TYPE TRAITS FOR DECORATOR
+	//*************************************************************************
 
 	template<typename, typename = void>
 	struct type_for_decorator;
@@ -174,9 +188,9 @@ namespace XMLB { namespace detail {
 
 
 
-	/**************************************************************************
-	*						TYPE TRAITS FOR SAVE FUNCTIONS
-	**************************************************************************/
+	//*************************************************************************
+	//						TYPE TRAITS FOR SAVE FUNCTIONS
+	//*************************************************************************
 
 	template<typename, typename, typename = void>
 	struct is_back_inserter_iterator_to_symbol : std::false_type {};
@@ -327,9 +341,9 @@ namespace XMLB { namespace detail {
 
 
 
-	/**************************************************************************
-	*						TYPE TRAITS FOR LOAD FUNCTIONS
-	**************************************************************************/
+	//*************************************************************************
+	//						TYPE TRAITS FOR LOAD FUNCTIONS
+	//*************************************************************************
 
 	template<typename, typename = void>
 	struct is_iterator_and_char : std::false_type {};
