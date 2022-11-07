@@ -5,6 +5,7 @@ some_reserve/
 *.vcxproj
 *.filters
 *.sln
+*.txt
 
 #Temp files
 todo.txt
