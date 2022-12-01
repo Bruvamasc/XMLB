@@ -71,7 +71,7 @@ namespace XMLB { namespace detail {
 
 		/// @name Конструкторы, деструктор
 		/// @{
-		Parser(std::size_t functors_count = 0);
+		Parser(std::size_t functors_count = 1);
 		Parser(const Parser&) = default;
 		Parser& operator=(const Parser&) = default;
 		Parser(Parser&&) = default;
@@ -169,10 +169,9 @@ namespace XMLB { namespace detail {
 
 	template<typename InputT, typename DecorT, typename DataT>
 	Parser<InputT, DecorT, DataT>::Parser(std::size_t functors_count)
-		:m_functors(Start_state{}, functors_count), 
-		m_current_state {Start_state{}}
+		:m_current_state {Start_state{}}
 	{
-
+		m_functors.reserve(functors_count);
 	}
 
 	//*************************************************************************
