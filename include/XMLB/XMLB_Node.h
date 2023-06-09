@@ -1427,8 +1427,8 @@ namespace XMLB
 		using std::begin;
 		using std::end;
 
-		iterator first = this->begin();
-		iterator last = this->end();
+		const_iterator first = this->begin();
+		const_iterator last = this->end();
 
 		if (offset != const_iterator{ nullptr } &&
 			offset._is_in_sequences(this->begin()))
@@ -1477,8 +1477,8 @@ namespace XMLB
 		using std::begin;
 		using std::end;
 
-		iterator first = this->begin();
-		iterator last = this->end();
+		const_iterator first = this->begin();
+		const_iterator last = this->end();
 
 		auto word_it = begin(container);
 		auto word_end = end(container);
@@ -1486,7 +1486,7 @@ namespace XMLB
 		if (offset != const_iterator{ nullptr } &&
 			offset._is_in_sequences(this->begin()))
 		{
-			first = iterator{ &offset->m_tree_node };
+			first = cosnt_iterator{ &offset->m_tree_node };
 		}
 
 		if (offset == last)
@@ -1537,8 +1537,8 @@ namespace XMLB
 		using std::begin;
 		using std::end;
 
-		iterator first = this->begin();
-		iterator last = this->end();
+		const_iterator first = this->begin();
+		const_iterator last = this->end();
 
 		auto word_it = begin(container);
 		auto word_end = end(container);
@@ -1546,7 +1546,7 @@ namespace XMLB
 		if (offset != const_iterator{ nullptr } &&
 			offset._is_in_sequences(this->begin()))
 		{
-			first = iterator{ &offset->m_tree_node };
+			first = const_iterator{ &offset->m_tree_node };
 		}
 
 		if (offset == last)

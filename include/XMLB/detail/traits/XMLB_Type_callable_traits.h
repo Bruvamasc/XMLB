@@ -103,3 +103,15 @@ namespace XMLB { namespace detail {
 }} // namespace XMLB::detail
 
 #endif // !XMLB_TYPE_CALLABLE_TRAITS_H
+
+
+// ДОБАВИТЬ ВОТ ЭТО. ТАК КАК ЛЯБДЫ КОНСТАНТЫНЙ ИЛИ ЖЕ ОБЫЧНЫЕ МЕТОДЫ КОНСТАНТЫЕ НЕ БУДУТ РАБОТАТЬ
+////-------------------------------------------------------------------------
+//
+//	template<typename T, typename U, typename ... Args>
+//	struct function_signature<T(U::*)(Args...)>
+//	{
+//		using return_type = T;
+//		using arguments = std::tuple<Args...>;
+//		using signature = T(U::*)(Args...);
+//	};
