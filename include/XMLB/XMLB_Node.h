@@ -194,6 +194,25 @@ namespace XMLB
 		* @return текущий узел
 		**********************************************************************/
 		node_type& add_attribute(attribute_type&& attribute) &;
+		
+		/**********************************************************************
+		* @brief Найти атрибут
+		*
+		* @param attribute_name - название атрибута
+		*
+		* @return текущий узел
+		**********************************************************************/
+		attr_iterator find_attribute(const string_type& attribute_name);
+		
+		/**********************************************************************
+		* @brief Найти атрибут
+		*
+		* @param attribute_name - название атрибута
+		*
+		* @return текущий узел
+		**********************************************************************/
+		attr_const_iterator find_attribute(const string_type& attribute_name) 
+			const;
 
 		/**********************************************************************
 		* @brief Удалить атрибут
@@ -762,6 +781,42 @@ namespace XMLB
 		m_attributes.push_back(std::move(attribute));
 
 		return *this;
+	}
+	
+	//*************************************************************************
+
+	template<typename CharT>
+	inline typename Node<CharT>::attr_iterator 
+		Node<CharT>::find_attribute(const string_type& attribute_name)
+	{
+		using std::begin;
+		using std::end;
+		
+		auto&& attr_founder = [&](auto&& attribute)
+		{
+			return attribute.name == attribute_name;
+		};
+		
+		return std::find_if(begin(m_attributes), end(m_attributes), 
+			attr_founder);
+	}
+	
+	//*************************************************************************
+
+	template<typename CharT>
+	inline typename Node<CharT>::attr_const_iterator 
+		Node<CharT>::find_attribute(const string_type& attribute_name) const
+	{
+		using std::begin;
+		using std::end;
+		
+		auto&& attr_founder = [&](auto&& attribute)
+		{
+			return attribute.name == attribute_name;
+		};
+		
+		return std::find_if(begin(m_attributes), end(m_attributes), 
+			attr_founder);
 	}
 
 	//*************************************************************************
